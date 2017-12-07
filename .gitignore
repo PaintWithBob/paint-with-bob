@@ -1,5 +1,5 @@
 # Don't want to lock packages for security
-**/.package-lock.json
+**/package-lock.json
 
 **/.DS_Store
 
@@ -61,4 +61,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
