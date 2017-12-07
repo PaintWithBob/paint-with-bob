@@ -17,6 +17,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { StreamEmbedComponent } from './components/stream-embed/stream-embed.component';
 
+// 3P Modules
+import { ColorPickerModule } from 'ngx-color-picker';
+
 
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
@@ -45,7 +48,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
-    )
+    ),
+    ColorPickerModule
   ],
   providers: [],
   bootstrap: [AppComponent],

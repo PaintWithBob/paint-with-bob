@@ -8,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class CanvasComponent implements OnInit {
 
   canvas: any;
+  brushColor: any;
 
   constructor() { }
 
   ngOnInit() {
+    this.brushColor = '#222';
     let options = {
-      primaryColor: '#222',
+      primaryColor: this.brushColor,
       secondaryColor: '#444',
       backgroundColor: 'transparent',
       strokeWidths: [1, 2, 5, 10, 20, 30],
@@ -26,6 +28,11 @@ export class CanvasComponent implements OnInit {
       keyboardShortcuts: false,
     }
     this.canvas = (<any>window).LC.init(document.querySelector('#my-canvas'), options);
+  }
+
+  brushColorChange(event) {
+    this.brushColor = event;
+    this.canvas.setColor('primary', event);
   }
 
 }
