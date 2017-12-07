@@ -1,0 +1,22 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item" routerLink="/">
+                <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+            </a>
+            <button class="button navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+                <a class="navbar-item" routerLink="/account" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Account</a>
+                <a class="navbar-item" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Lobby</a>
+                <a class="navbar-item" routerLink="/test-canvas" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Test Canvas</a>
+            </div>
+        </div>
+    </div>
+</nav>

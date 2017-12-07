@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "./scss/literally-canvas";
+
+/* This is where all of the bulma variable overrides will go. */
+
+// 1. Import the initial variables
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+@import "../node_modules/bulma/sass/utilities/functions";
+
+// 2. Set your own initial variables
+$pink: #ffb3b3;
+$pink-invert: #fff;
+
+// 3. Set the derived variables (overrides)
+$footer-background-color: #363636;
+
+// 4. Setup your Custom Colors
+$linkedin: #0077B5;
+$linkedin-invert: findColorInvert($linkedin);
+$twitter: #1DA1F2;
+$twitter-invert: findColorInvert($twitter);
+$github: #222222;
+$github-invert: findColorInvert($github);
+
+// 5. Add new color variables to the color map.
+@import "../node_modules/bulma/sass/utilities/derived-variables.sass";
+$addColors: (
+  "twitter":($twitter, $twitter-invert),
+  "linkedin": ($linkedin, $linkedin-invert),
+  "github": ($github, $github-invert)
+);
+$colors: map-merge($colors, $addColors);
+
+// 6. Import the rest of Bulma
+@import "../node_modules/bulma/sass/utilities/_all";
+@import "../node_modules/bulma/sass/base/_all";
+@import "../node_modules/bulma/sass/elements/_all";
+@import "../node_modules/bulma/sass/components/_all";
+
+// This file gets rid of all of the warnings in the console.
+// Replaces the bulma file 'columns.sass' and just changes the last 
+// .columns.is-variable part that was causing warnings. Will need to 
+// watch for changes in future updates of bulma.
+// Thread where I found fix https://github.com/jgthms/bulma/issues/1190
+@import "./scss/bulma-column-fix";
+
+@import "../node_modules/bulma/sass/grid/tiles.sass";
+@import "../node_modules/bulma/sass/layout/_all";
+

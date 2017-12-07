@@ -1,0 +1,9 @@
+component-header {
+    display: block;
+}
+.navbar-brand .navbar-item {
+    background: none;
+    &:hover {
+        background: none;
+    }
+}
