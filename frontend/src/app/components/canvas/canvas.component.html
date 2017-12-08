@@ -1,3 +1,10 @@
 <div class="app-canvas">
+  <input [(colorPicker)]="brushColor"
+  [style.background]="brushColor"
+  style="color: #FFF"
+  [value]="brushColor"
+  [cpPosition]="'left'"
+  (colorPickerChange)="brushColorChange($event)"
+  readonly/>
     <div id="my-canvas"></div>
 </div>
