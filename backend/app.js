@@ -30,6 +30,12 @@ app.use('*', function(req, res, next) {
 });
 
 // MongoDB setup / connection
+
+require('./models/user');
+
+
+
+
 const MongoOptions = require('./config/mongo').connection;
 let MongoConnectionUri = 'mongodb://localhost/paintwithbob';
 if (MongoOptions.credentials.user && MongoOptions.credentials.pass) {
