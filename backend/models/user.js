@@ -33,4 +33,7 @@ var userSchema = new Schema({
       ref: "User"
     }]
 
-})
+});
+
+//Models
+module.exports = mongoose.model('User', userSchema);
