@@ -33,24 +33,28 @@ router.post('/join', function(req, res) {
 
 
   // https://javascript.info/async-await
-  const findIfUserAlreadyExists = async () => {
+  const findIfUserDoesNotAlreadyExists = async () => {
     const user = await User.findOne({
 		    email: userEmail
     });
 
     if(user) {
-      throw new Error('User Already Exists, please login');
+      throw {
+        status: 409,
+        message: 'User Already Exists, please login'
+      };
     }
 
-    throw new Error("yoooo");
     return true;
   }
 
-  findIfUserAlreadyExists().then(() => {
+  findIfUserDoesNotAlreadyExists().then(() => {
+    // YAY continue!
     res.send('respond with a resource');
-  }).catch((err) => {;
-    res.send(err.message);
+  }).catch((err) => {
+    res.status(err.status).send(err.message);
   });
+
 });
 
 module.exports = router;
