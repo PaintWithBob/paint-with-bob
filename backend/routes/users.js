@@ -45,6 +45,29 @@ router.post('/login', function(req //request from the client (browser)
         res.status(400).send('Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend.');
       }
 
+      const getUser = async () => {
+
+        const user = await User.findOne({ //wait for another promise
+          email: userEmail
+        });
+
+        if (!user){ //check for the user, return it if it exists
+          throw new Error('Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend.')
+        }
+
+        return user;
+      }
+
+      const hashPassword = async (user) => {
+
+        pwd.hash(userPassword, function (err, hash) {
+          if (err) throw err
+
+          //TODO: add hashing
+
+
+      }
+
       res.send('Josh, you better friggin go to the taco party');
 
     });
