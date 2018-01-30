@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../providers/auth-service/auth.service';
 
 @Component({
 	selector: 'page-account',
 	templateUrl: 'account.html',
 })
-export class AccountPage {
+export class AccountPage implements OnInit {
 
-    constructor() { }
+    constructor(private authService) { }
+
+		ngOnInit() {
+
+		}
 
 }

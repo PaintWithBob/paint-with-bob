@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule} from '@angular/forms';
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 
 import { AppComponent } from './app.component';
 
@@ -16,6 +18,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { StreamEmbedComponent } from './components/stream-embed/stream-embed.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+
+//Providers
+import { AuthService } from './providers/auth-service/auth.service';
 
 
 // The main app routes that will be used for navigation.
@@ -23,6 +29,7 @@ const appRoutes: Routes = [
   { path: 'lobby', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
   { path: 'test-canvas', component: TestCanvasComponent, data: { title: 'Test Canvas Page' } },
+  { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: '', component: HomePage, data: { title: 'Home Page' } },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -38,16 +45,19 @@ const appRoutes: Routes = [
     CanvasComponent,
     TestCanvasComponent,
     LobbyPageComponent,
-    StreamEmbedComponent
+    StreamEmbedComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    AsyncLocalStorageModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent],
   entryComponents: [
     PageNotFoundComponent,
