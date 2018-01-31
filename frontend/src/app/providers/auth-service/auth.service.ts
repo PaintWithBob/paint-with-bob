@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AsyncLocalStorageModule } from 'angular-async-local-storage';
+import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
 
-  constructor(protected localStorage: AsyncLocalStorageModule, private router: Router) { }
+  constructor(protected localStorage: AsyncLocalStorage, private router: Router) { }
 
   // Sets the logged in user in local storage.
   setLoggedInUser(credentials: any) {
@@ -19,8 +20,8 @@ export class AuthService {
     })
   }
 
-  getCredentials(): Observable<{}> {
-    return this.localStorage.getItem('user');
+  getCredentials(): Observable<any> {
+    return this.localStorage.getItem('brUser');
   }
 
 }

@@ -7,10 +7,15 @@ import { AuthService } from '../../providers/auth-service/auth.service';
 })
 export class AccountPage implements OnInit {
 
-    constructor(private authService) { }
-
-		ngOnInit() {
-
-		}
-
+	user: any = {};
+	
+	constructor(private authService: AuthService) { }
+	
+	ngOnInit() {
+		this.authService.getCredentials().subscribe(user => {
+			console.log(user);
+			this.user = user;
+		});
+	}
+	
 }
