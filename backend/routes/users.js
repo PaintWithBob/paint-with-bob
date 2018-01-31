@@ -50,25 +50,28 @@ router.post('/join', function(req, res) {
 
   const hashUserPassword = async () => {
     const userPasswordBuffer = Buffer.from(userPass);
-    return pwd.hashSync(userPasswordBuffer);
+    const hash = pwd.hashSync(userPasswordBuffer);
+
+    if (!hash) {
+      throw {
+        status: 500,
+        message: "Error hashing password"
+      }
+    }
+
+    return JSON.stringify(hash);
   };
 
   const createNewUser = async () => {
 
     try {
       await findIfUserDoesNotAlreadyExists();
-      const hash = await hashUserPassword();
-      if (!hash) {
-        throw {
-          status: 500,
-          message: "Error hashing password"
-        }
-      }
+      const hashJsonString = await hashUserPassword();
 
       // Create the user
       const user = new User({
         email: userEmail,
-        hash: JSON.stringify(hash)
+        hash: hashJsonString
       });
 
       // Save the user
