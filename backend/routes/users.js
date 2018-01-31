@@ -48,9 +48,56 @@ router.post('/join', function(req, res) {
     return true;
   }
 
-  findIfUserDoesNotAlreadyExists().then(() => {
-    // YAY continue!
-    res.send('respond with a resource');
+  const hashUserPassword = async () => {
+    const userPasswordBuffer = Buffer.from(userPass);
+    return pwd.hashSync(userPasswordBuffer);
+  };
+
+  const createNewUser = async () => {
+
+    try {
+      await findIfUserDoesNotAlreadyExists();
+      const hash = await hashUserPassword();
+      if (!hash) {
+        throw {
+          status: 500,
+          message: "Error hashing password"
+        }
+      }
+
+      // Create the user
+      const user = new User({
+        email: userEmail,
+        hash: JSON.stringify(hash)
+      });
+
+      // Save the user
+      const savedUser = await user.save((err) => {
+        if (err) {
+						throw {
+              status: 500,
+              message: "Error saving the user"
+            }
+				}
+      });
+
+      delete savedUser.hash;
+      return savedUser;
+    } catch(err) {
+      console.log(err);
+      if(!err || !err.status) {
+        throw {
+          status: 500,
+          message: "Error creating the user"
+        };
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  createNewUser().then((response) => {
+    res.status(200).send(response);
   }).catch((err) => {
     res.status(err.status).send(err.message);
   });
