@@ -59,19 +59,19 @@ router.post('/join', function(req, res) {
       }
     }
 
-    return JSON.stringify(hash);
+    return hash;
   };
 
   const createNewUser = async () => {
 
     try {
       await findIfUserDoesNotAlreadyExists();
-      const hashJsonString = await hashUserPassword();
+      const hash = await hashUserPassword();
 
       // Create the user
       const user = new User({
         email: userEmail,
-        hash: hashJsonString
+        hash: JSON.stringify(hash)
       });
 
       // Save the user
