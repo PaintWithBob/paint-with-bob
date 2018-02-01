@@ -25,6 +25,9 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 //Providers
 import { AuthService } from './providers/auth-service/auth.service';
 
+// 3P Modules
+import { ColorPickerModule } from 'ngx-color-picker';
+
 
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
@@ -57,6 +60,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     AsyncLocalStorageModule,
+    ColorPickerModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only

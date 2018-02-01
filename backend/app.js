@@ -30,8 +30,19 @@ app.use('*', function(req, res, next) {
 });
 
 // MongoDB setup / connection
+
+require('./models/user');
+
+
+
+
 const MongoOptions = require('./config/mongo').connection;
-const MongoConnectionUri = `mongodb://${MongoOptions.credentials.user}:${MongoOptions.credentials.pass}@${MongoOptions.uri}:${MongoOptions.port}/${MongoOptions.db}?authSource=admin`;
+let MongoConnectionUri = 'mongodb://localhost/paintwithbob';
+if (MongoOptions.credentials.user && MongoOptions.credentials.pass) {
+  MongoConnectionUri = `mongodb://${MongoOptions.credentials.user}:${MongoOptions.credentials.pass}@${MongoOptions.uri}:${MongoOptions.port}/${MongoOptions.db}?authSource=admin`;
+} else {
+  console.log('Using the default Mongo Connection, no credntials found');
+}
 const promiseLib = global.Promise; //mongoose' Promise library is deprecated, so we need to provide our own.
 mongoose.Promise = promiseLib;
 mongoose.connect(MongoConnectionUri, {
@@ -71,7 +82,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
+
   // render the error page
   res.status(err.status || 500);
   res.render('error');
