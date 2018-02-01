@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule} from '@angular/forms';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
@@ -19,6 +20,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { StreamEmbedComponent } from './components/stream-embed/stream-embed.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 //Providers
 import { AuthService } from './providers/auth-service/auth.service';
@@ -30,6 +32,7 @@ const appRoutes: Routes = [
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
   { path: 'test-canvas', component: TestCanvasComponent, data: { title: 'Test Canvas Page' } },
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
+  { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
   { path: '', component: HomePage, data: { title: 'Home Page' } },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -46,11 +49,13 @@ const appRoutes: Routes = [
     TestCanvasComponent,
     LobbyPageComponent,
     StreamEmbedComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    RegisterPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     AsyncLocalStorageModule,
     RouterModule.forRoot(
       appRoutes,

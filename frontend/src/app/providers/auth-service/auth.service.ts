@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class AuthService {
 
-  constructor(protected localStorage: AsyncLocalStorage, private router: Router) { }
+  constructor(
+    protected localStorage: AsyncLocalStorage,
+    private router: Router,
+    private http: Http
+  ) { }
 
   // Sets the logged in user in local storage.
   setLoggedInUser(credentials: any) {
@@ -18,6 +23,10 @@ export class AuthService {
       console.log(credentials);
       this.router.navigate(['/account']);
     })
+  }
+
+  register(form: any): Observable<any> {
+    return this.http.post('https://addo.serveo.net', form);
   }
 
   getCredentials(): Observable<any> {
