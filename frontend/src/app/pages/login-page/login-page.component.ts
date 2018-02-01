@@ -10,6 +10,7 @@ import { AuthService } from '../../providers/auth-service/auth.service';
 export class LoginPageComponent implements OnInit {
 
   form: any = {};
+  formError: any;
 
   constructor(private authService: AuthService) { }
 
@@ -19,8 +20,11 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit(form: NgForm) {
+    this.formError = null;
     if(form.valid) {
-      this.authService.login(this.form);
+      this.authService.login(this.form).subscribe(token => {}, error => {
+        this.formError = error._body;
+      });
     }
   }
 

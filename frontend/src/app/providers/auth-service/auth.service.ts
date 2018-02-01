@@ -1,35 +1,81 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Http } from '@angular/http';
+import { environment } from '../../../environments/environment';
+
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
+
+  public userLoggedOut: EventEmitter<any>;
+  public userLoggedIn: EventEmitter<any>;
 
   constructor(
     protected localStorage: AsyncLocalStorage,
     private router: Router,
     private http: Http
-  ) { }
+  ) {
+    this.userLoggedOut = new EventEmitter();
+    this.userLoggedIn = new EventEmitter();
+  }
 
   // Sets the logged in user in local storage.
-  setLoggedInUser(credentials: any) {
-    return this.localStorage.setItem('brUser', credentials);
+  setLoggedInUser(user: any): Observable<any> {
+    return Observable.create(observer => {
+      return this.localStorage.setItem('brUser', user).subscribe(response => {
+        return observer.next(response);
+      }, () => {
+        return observer.error('Error storing token');
+      });
+    });
   }
 
-  login(credentials: any) {
-    this.setLoggedInUser(credentials).subscribe((credentials) => {
-      console.log(credentials);
-      this.router.navigate(['/account']);
-    })
-  }
-
+  // Register route for user.
   register(form: any): Observable<any> {
-    return this.http.post('https://addo.serveo.net', form);
+    return Observable.create(observer => {
+      return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe(user => {
+        console.log('User successfully created, logging in...');
+        return observer.next(this.login({email: form.email, password: form.password}));
+      }, error => {
+        return observer.error(error);
+      });
+    });
   }
 
-  getCredentials(): Observable<any> {
+  // Logs user in and sets local storage key for future use.
+  login(credentials: any): Observable<any> {
+    return Observable.create(observer => {
+      return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe(token => {
+        return this.setLoggedInUser(token).subscribe(response => {
+          this.userLoggedIn.emit();
+          observer.next(token);
+          return this.router.navigate(['/account']);
+        }, error => {
+          return observer.error(error);
+        });
+      }, error => {
+        return observer.error(error);
+      });
+    });
+  }
+
+  // Logs user out by destroying local storage key and returns observable to be subscribe to.
+  logout(): Observable<any> {
+    return Observable.create(observer => {
+      return this.localStorage.removeItem('brUser').subscribe(() => {
+        this.userLoggedOut.emit();
+        observer.next("Successfully logged out");
+        return this.router.navigate(['/login']);
+      }, error => {
+        return observer.error(error);
+      });
+    });
+  }
+
+  // Requests the user from local storage.
+  getUser(): Observable<any> {
     return this.localStorage.getItem('brUser');
   }
 

@@ -1,7 +1,7 @@
 <section class="section">
   <div class="container">
     <form (ngSubmit)="submit(signUpForm)" #signUpForm="ngForm" novalidate>
-
+      
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
@@ -9,7 +9,7 @@
         </div>
         <div class="help is-danger" *ngIf="signUpForm.submitted && username.hasError('required')">Please enter your username.</div>
       </div>
-
+      
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
@@ -18,7 +18,7 @@
         <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('required')">Please enter your email.</div>
         <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('email') && !email.hasError('required')">Invalid email.</div>
       </div>
-
+      
       <div class="field">
         <label class="label">Password</label>
         <div class="control">
@@ -26,7 +26,7 @@
         </div>
         <div class="help is-danger" *ngIf="signUpForm.submitted && password.hasError('required')">Please enter your password.</div>
       </div>
-
+      
       <div class="field">
         <label class="label">Confirm Password</label>
         <div class="control">
@@ -34,13 +34,18 @@
         </div>
         <div class="help is-danger" *ngIf="signUpForm.submitted && confPass.hasError('required')">Please confirm your password.</div>
       </div>
-
+      <div class="field" *ngIf="formError">
+        <div class="help is-danger">{{formError}}</div>
+      </div>
+      <div class="field" *ngIf="registerSuccess">
+        <div class="help is-success">{{registerSuccess}}</div>
+      </div>
       <div class="field">
         <div class="control">
           <button type="submit" class="button is-primary">Submit</button>
         </div>
       </div>
-
+      
     </form>
   </div>
 </section>
