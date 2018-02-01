@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+
 // Get passwords
 const securePassword = require('secure-password');
 // Initialise our password policy
@@ -17,7 +18,6 @@ var User = mongoose.model('User');
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
-
 
 router.post('/login', function(req //request from the client (browser)
   , res // what we send back to the browser
@@ -38,44 +38,100 @@ router.post('/login', function(req //request from the client (browser)
     var userEmail = req.body.email
     var userPassword = req.body.password
 
-    User.findOne({
-        email: userEmail //look for email (user.js), and use the userEmail (right above) variable for it
-    }, function(err, user) {
-      if (err || !user){
-        res.status(400).send('Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend.');
-      }
 
-      const getUser = async () => {
+    //======================
 
-        const user = await User.findOne({ //wait for another promise
-          email: userEmail
-        });
+    const doesUserExist = async () => {
 
-        if (!user){ //check for the user, return it if it exists
-          throw new Error('Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend.')
+      const user = await User.findOne({
+
+        email: userEmail
+
+      });
+
+      if (!user){ //check for the user, return it if it exists, add ! in final version
+        console.log("7")
+        throw {
+          status: 400,
+          message: "Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend."
         }
-
-        return user;
       }
 
+      return user;
+
+    }
+
+    //============================================
       const hashPassword = async (user) => {
 
-        pwd.hash(userPassword, function (err, hash) {
-          if (err) throw err
+        const userPasswd = Buffer.from(userPassword);
 
-          //TODO: add hashing
+        const hash = pwd.hashSync(userPasswd);
+        if (!hash){
+          throw {
+            status: 500,
+            message: "We messed up and couldn\'t hash your password. I hope you can forgive us for this happy little accident."
+          }
 
+        }
+
+        return hash;
 
       }
 
-      res.send('Josh, you better friggin go to the taco party');
 
-    });
-
+    //===========================================
 
 
 
+    const verifyPasswd = async () => {
 
+      const passwdHash = await hashPassword();
+      const variedSync = pwd.verifySync(userPassword, passwdHash);
+
+      return variedSync.VALID ? true : false;
+
+    }
+
+
+    //==============================================
+
+    const loginUser = async () => {
+
+      const due = await doesUserExist();
+      if (!due){
+        throw {
+          status: 500,
+          message: "The user doesn\'t seem to exist. Don\'t worry, we\'ll wait for them."
+        }
+      }
+
+      const vp = await verifyPasswd();
+      if(!vp){
+        throw {
+          status: 500,
+          message: "Sometimes in life, your password doesn\'t verify. That\'s ok. Sometimes you need the darkness along with the light, to make you appreciate the good times."
+        }
+      }
+
+      return jwt.sign(user, "", {
+
+        expiresIn: '7 days'
+
+      });
+
+    }
+
+    //====================================
+      loginUser().then(
+        (response) => {
+          res.status(200).send(response);
+        }
+      ).catch(
+        (error) => {
+          res.status(error.status).send(error.message);
+        }
+      );
 
 
 });
