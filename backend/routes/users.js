@@ -26,7 +26,8 @@ router.post('/join', function(req, res) {
 	if (!req.body ||
 		!req.body.email ||
 		!req.body.password) {
-		res.status(401).send('Uh Oh, Something went wrong. Missing Fields');
+		res.status(401).send('It seems like our fields are missing. It looks like we will have to just paint some new ones.');
+    return;
 	}
 
   const userEmail = req.body.email;
@@ -42,7 +43,7 @@ router.post('/join', function(req, res) {
     if(user) {
       throw {
         status: 409,
-        message: 'User Already Exists, please login'
+        message: 'The user seems to already exist. That\'s ok though. Sometimes even I like to talk to myself.'
       };
     }
 
@@ -56,7 +57,7 @@ router.post('/join', function(req, res) {
     if (!hash) {
       throw {
         status: 500,
-        message: "Error hashing password"
+        message: "There has been an error with the password hashing. Don\'t panic though, we\'ll find a way through this."
       }
     }
 
@@ -80,7 +81,7 @@ router.post('/join', function(req, res) {
         if (err) {
 						throw {
               status: 500,
-              message: "Error saving the user"
+              message: "The user hasn\'t been saved. Lets paint them a happy little life saver and fix that problem."
             }
 				}
       });
@@ -92,7 +93,7 @@ router.post('/join', function(req, res) {
       if(!err || !err.status) {
         throw {
           status: 500,
-          message: "Error creating the user"
+          message: "We had a happy little accident when we made the user. Let\'s try that again, shall we?"
         };
       } else {
         throw err;
@@ -137,7 +138,6 @@ router.post('/login', function(req //request from the client (browser)
       }).lean();
 
       if (!user){ //check for the user, return it if it exists, add ! in final version
-        console.log("7")
         throw {
           status: 400,
           message: "Uh oh, someone doesn\'t exist. Once you exist, we will be here for you, because everyone needs a friend."
@@ -200,7 +200,6 @@ router.post('/login', function(req //request from the client (browser)
         }
       }
 
-      console.log(user);
       return jwt.sign(user, "im sorry kyle", {
         expiresIn: '7 days'
       });
