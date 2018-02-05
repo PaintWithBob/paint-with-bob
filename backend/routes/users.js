@@ -73,7 +73,7 @@ router.post('/join', function(req, res) {
       // Create the user
       const user = new User({
         email: userEmail,
-        hash: JSON.stringify(hash)
+        hash: hash.toString()
       });
 
       // Save the user
@@ -122,11 +122,11 @@ router.post('/login', function(req //request from the client (browser)
     if (!req.body.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
 
       res.status(400).send('Send an actual email and try again. Don\'t worry, we\'ll wait for you.');
-
+      return;
     }
 
-    var userEmail = req.body.email
-    var userPassword = req.body.password
+    var userEmail = req.body.email;
+    var userPassword = req.body.password;
 
 
     //======================
@@ -148,6 +148,8 @@ router.post('/login', function(req //request from the client (browser)
     }
 
     //============================================
+
+    /**
       const hashPassword = async (user) => {
 
         const userPasswd = Buffer.from(userPassword);
@@ -164,17 +166,20 @@ router.post('/login', function(req //request from the client (browser)
         return hash;
 
       }
+      **/
+
+
+
 
 
     //===========================================
 
 
 
-    const verifyPasswd = async () => {
+    const verifyPasswd = async (user) => {
 
-      const passwdHash = await hashPassword();
       const userPasswd = Buffer.from(userPassword);
-      const variedSync = pwd.verifySync(userPasswd, passwdHash);
+      const variedSync = pwd.verifySync(userPasswd, Buffer.from(user.hash));
       return variedSync === SecurePassword.VALID ? true : false;
 
     }
@@ -192,7 +197,7 @@ router.post('/login', function(req //request from the client (browser)
         }
       }
 
-      const vp = await verifyPasswd();
+      const vp = await verifyPasswd(user);
       if(!vp){
         throw {
           status: 500,
