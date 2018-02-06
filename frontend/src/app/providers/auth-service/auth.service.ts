@@ -35,9 +35,14 @@ export class AuthService {
   // Register route for user.
   register(form: any): Observable<any> {
     return Observable.create(observer => {
-      return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe(user => {
-        console.log('User successfully created, logging in...');
-        return observer.next(this.login({email: form.email, password: form.password}));
+      return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe((response: any) => {
+        const hash = response._body.hash;
+        return this.setLoggedInUser(hash).subscribe(response => {
+          this.userLoggedIn.emit();
+          return observer.next(hash);
+        }, error => {
+          return observer.error(error);
+        });
       }, error => {
         return observer.error(error);
       });

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service/auth.service';
 
@@ -13,7 +14,10 @@ export class RegisterPageComponent implements OnInit {
   formError: any;
   registerSuccess: any;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.form.email = "";
@@ -32,7 +36,7 @@ export class RegisterPageComponent implements OnInit {
           this.registerSuccess = "Successfully created account, logging in...";
           setTimeout(() => {
             this.registerSuccess = null;
-            login.subscribe(response => {}, error => { console.error(error); });
+            this.router.navigate(['/account']);
           }, 3000);
         }, error => {
           this.formError = error._body;

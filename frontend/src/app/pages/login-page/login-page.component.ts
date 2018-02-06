@@ -23,6 +23,7 @@ export class LoginPageComponent implements OnInit {
     this.formError = null;
     if(form.valid) {
       this.authService.login(this.form).subscribe(token => {}, error => {
+        console.log(error);
         this.formError = error._body;
       });
     }
