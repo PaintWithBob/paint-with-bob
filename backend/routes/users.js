@@ -30,6 +30,11 @@ router.post('/join', function(req, res) {
     return;
 	}
 
+  if(req.body.password.length <= 5) {
+    res.status(406).send('Coming up with a password longer than five characters can be hard. But remember: Believe that you can do it cause you can do it.');
+    return;
+  }
+
   const userEmail = req.body.email;
 	const userPass = req.body.password;
 
@@ -86,8 +91,11 @@ router.post('/join', function(req, res) {
 				}
       });
 
-      delete savedUser.hash;
-      return savedUser;
+      const savedUserJson = savedUser.toJSON();
+      delete savedUserJson.hash;
+      return jwt.sign(savedUserJson, "im sorry kyle", {
+        expiresIn: '7 days'
+      });
     } catch(err) {
       console.log(err);
       if(!err || !err.status) {
@@ -102,7 +110,9 @@ router.post('/join', function(req, res) {
   }
 
   createNewUser().then((response) => {
-    res.status(200).send(response);
+    res.status(200).json({
+      token: response
+    });
   }).catch((err) => {
     res.status(err.status).send(err.message);
   });
