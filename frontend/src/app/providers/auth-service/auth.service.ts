@@ -11,6 +11,7 @@ export class AuthService {
 
   public userLoggedOut: EventEmitter<any>;
   public userLoggedIn: EventEmitter<any>;
+  public userRegistered: EventEmitter<any>;
 
   constructor(
     protected localStorage: AsyncLocalStorage,
@@ -19,6 +20,7 @@ export class AuthService {
   ) {
     this.userLoggedOut = new EventEmitter();
     this.userLoggedIn = new EventEmitter();
+    this.userRegistered = new EventEmitter();
   }
 
   // Sets the logged in user in local storage.
@@ -36,10 +38,10 @@ export class AuthService {
   register(form: any): Observable<any> {
     return Observable.create(observer => {
       return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe((response: any) => {
-        const hash = response._body.hash;
-        return this.setLoggedInUser(hash).subscribe(response => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
           this.userLoggedIn.emit();
-          return observer.next(hash);
+          this.userRegistered.emit();
+          return observer.next("Successfully created account and logged in");
         }, error => {
           return observer.error(error);
         });

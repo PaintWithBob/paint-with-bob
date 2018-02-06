@@ -13,9 +13,9 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <a class="navbar-item" routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Home</a>
-                <a class="navbar-item" routerLink="/account" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="userLoggedIn">Account</a>
                 <a class="navbar-item" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Lobby</a>
-                <a class="navbar-item" routerLink="/test-canvas" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Test Canvas</a>
+                <a class="navbar-item" routerLink="/account" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="userLoggedIn">Account</a>
+                <a class="navbar-item" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Register</a>
             </div>
         </div>
     </div>
