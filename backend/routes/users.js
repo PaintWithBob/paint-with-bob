@@ -215,7 +215,7 @@ router.post('/login', function(req //request from the client (browser)
         }
       }
 
-      return jwt.sign(user, "im sorry kyle", {
+      return jwt.sign(user, "asdfasdf", {
         expiresIn: '7 days'
       });
 
