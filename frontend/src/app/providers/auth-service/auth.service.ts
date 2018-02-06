@@ -52,10 +52,10 @@ export class AuthService {
   // Logs user in and sets local storage key for future use.
   login(credentials: any): Observable<any> {
     return Observable.create(observer => {
-      return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe(token => {
-        return this.setLoggedInUser(token).subscribe(response => {
+      return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe((response: any) => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
           this.userLoggedIn.emit();
-          observer.next(token);
+          observer.next("Successfully logged in");
           return this.router.navigate(['/account']);
         }, error => {
           return observer.error(error);
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   // Requests the user from local storage.
-  getUser(): Observable<any> {
+  getToken(): Observable<any> {
     return this.localStorage.getItem('brUser');
   }
 
