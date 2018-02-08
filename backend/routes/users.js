@@ -24,6 +24,7 @@ router.post('/join', function(req, res) {
 
   //Get the required fields
 	if (!req.body ||
+    !req.body.username ||
 		!req.body.email ||
 		!req.body.password) {
 		res.status(401).send('It seems like our fields are missing. It looks like we will have to just paint some new ones.');
@@ -37,6 +38,7 @@ router.post('/join', function(req, res) {
 
   const userEmail = req.body.email;
 	const userPass = req.body.password;
+  const username = req.body.username;
 
 
   // https://javascript.info/async-await
@@ -77,6 +79,7 @@ router.post('/join', function(req, res) {
 
       // Create the user
       const user = new User({
+        username: username,
         email: userEmail,
         hash: hash.toString()
       });
