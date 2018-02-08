@@ -20,48 +20,57 @@
 #
 # https://stackoverflow.com/questions/12771909/bash-using-trap-ctrlc
 
-# Allow for CTRL+C to exit
-trap ctrl-c-handler SIGHUP SIGINT SIGTERM
-
-function ctrl-c-handler() {
-  # Killing VLC is ridicolous and literally requires kill -9
-  # And pump the nasty output into /dev/null
-  {
-    kill -9 $(ps aux | grep VLC | awk '{print $2}')
-  } &> /dev/null
-
-  echo "Vlc has been killed."
-}
-
-# Print our nice header
-./printheader.sh
-
-echo " "
-echo "Video Stream started at: http://localhost:9000/stream.ogg"
-echo " "
-
-# Set our vlc depending on OS
-# https://gist.github.com/britzl/267a70d2cf144d651285
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  # Vlc for osx
-  vlc=/Applications/VLC.app/Contents/MacOS/VLC
-elif [[ "$OSTYPE" == "cygwin" ]]; then
-        # POSIX compatibility layer and Linux environment emulation for Windows
-        echo "TODO: Find path for cygwin"
-elif [[ "$OSTYPE" == "msys" ]]; then
-        # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
-        vlc="/c/Program\ Files/VideoLAN/VLC/vlc.exe"
-elif [[ "$OSTYPE" == "win32" ]]; then
-        # I'm not sure this can happen.
-        echo "TODO: Find path for win32"
+if [ "$#" -ne 1 ]; then
+  # Echo Usage if not working
+  echo " "
+  echo "Paint with Bob Video Service USAGE"
+  echo " "
+  echo "./index.sh [Port number]"
 else
-  echo "Vlc Path could not be found on this OS."
+
+  # Allow for CTRL+C to exit
+  trap ctrl-c-handler SIGHUP SIGINT SIGTERM
+
+  function ctrl-c-handler() {
+    # Killing VLC is ridicolous and literally requires kill -9
+    # And pump the nasty output into /dev/null
+    {
+      kill -9 $(ps aux | grep VLC | awk '{print $2}')
+    } &> /dev/null
+
+    echo "Vlc has been killed."
+  }
+
+  # Print our nice header
+  ./printheader.sh
+
+  echo " "
+  echo "Video Stream started at: http://localhost:$1/stream.ogg"
+  echo " "
+
+  # Set our vlc depending on OS
+  # https://gist.github.com/britzl/267a70d2cf144d651285
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Vlc for osx
+    vlc=/Applications/VLC.app/Contents/MacOS/VLC
+  elif [[ "$OSTYPE" == "cygwin" ]]; then
+          # POSIX compatibility layer and Linux environment emulation for Windows
+          echo "TODO: Find path for cygwin"
+  elif [[ "$OSTYPE" == "msys" ]]; then
+          # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+          vlc="/c/Program\ Files/VideoLAN/VLC/vlc.exe"
+  elif [[ "$OSTYPE" == "win32" ]]; then
+          # I'm not sure this can happen.
+          echo "TODO: Find path for win32"
+  else
+    vlc=cvlc
+  fi
+
+  # Run in background to stop it from catching and removing CTRL C catch
+  # And wait for it to finish, or for ctrl c
+  bash -c "\"$vlc\" -LZ './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:$1/stream.ogg}' --sout-keep" \
+  & wait
+
+  # Inform of exit
+  echo "Stopping Stream... Have a nice day!"
 fi
-
-# Run in background to stop it from catching and removing CTRL C catch
-# And wait for it to finish, or for ctrl c
-bash -c "\"$vlc\" -LZ './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:9000/stream.ogg}' --sout-keep" \
-& wait
-
-# Inform of exit
-echo "Stopping Stream... Have a nice day!"
