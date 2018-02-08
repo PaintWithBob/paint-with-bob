@@ -45,7 +45,7 @@ else
   ./printheader.sh
 
   echo " "
-  echo "Video Stream started at: http://localhost:9000/stream.ogg"
+  echo "Video Stream started at: http://localhost:$1/stream.ogg"
   echo " "
 
   # Set our vlc depending on OS
@@ -63,7 +63,7 @@ else
           # I'm not sure this can happen.
           echo "TODO: Find path for win32"
   else
-    vlc=vlc
+    vlc=cvlc
   fi
 
   # Run in background to stop it from catching and removing CTRL C catch
