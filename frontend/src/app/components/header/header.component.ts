@@ -12,8 +12,8 @@ export class HeaderComponent {
 
     constructor(private authService: AuthService) {
 		// Check if there is a user logged in and set boolean accordingly.
-		this.authService.getUser().subscribe(user => {
-			if(user) {
+		this.authService.getToken().subscribe(token => {
+			if(token) {
 				this.userLoggedIn = true;
 			} else {
 				this.userLoggedIn = false;

@@ -11,6 +11,7 @@ export class AuthService {
 
   public userLoggedOut: EventEmitter<any>;
   public userLoggedIn: EventEmitter<any>;
+  public userRegistered: EventEmitter<any>;
 
   constructor(
     protected localStorage: AsyncLocalStorage,
@@ -19,6 +20,7 @@ export class AuthService {
   ) {
     this.userLoggedOut = new EventEmitter();
     this.userLoggedIn = new EventEmitter();
+    this.userRegistered = new EventEmitter();
   }
 
   // Sets the logged in user in local storage.
@@ -35,9 +37,14 @@ export class AuthService {
   // Register route for user.
   register(form: any): Observable<any> {
     return Observable.create(observer => {
-      return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe(user => {
-        console.log('User successfully created, logging in...');
-        return observer.next(this.login({email: form.email, password: form.password}));
+      return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe((response: any) => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
+          this.userLoggedIn.emit();
+          this.userRegistered.emit();
+          return observer.next("Successfully created account and logged in");
+        }, error => {
+          return observer.error(error);
+        });
       }, error => {
         return observer.error(error);
       });
@@ -47,10 +54,10 @@ export class AuthService {
   // Logs user in and sets local storage key for future use.
   login(credentials: any): Observable<any> {
     return Observable.create(observer => {
-      return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe(token => {
-        return this.setLoggedInUser(token).subscribe(response => {
+      return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe((response: any) => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
           this.userLoggedIn.emit();
-          observer.next(token);
+          observer.next("Successfully logged in");
           return this.router.navigate(['/account']);
         }, error => {
           return observer.error(error);
@@ -75,7 +82,7 @@ export class AuthService {
   }
 
   // Requests the user from local storage.
-  getUser(): Observable<any> {
+  getToken(): Observable<any> {
     return this.localStorage.getItem('brUser');
   }
 

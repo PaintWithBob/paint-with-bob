@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found';
 import { AccountPage } from './pages/account/account';
 import { HomePage } from './pages/home/home';
-import { TestCanvasComponent } from './pages/test-canvas/test-canvas.component';
 import { LobbyPageComponent } from './pages/lobby-page/lobby-page.component';
 
 // Components
@@ -33,7 +32,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
 const appRoutes: Routes = [
   { path: 'lobby', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
-  { path: 'test-canvas', component: TestCanvasComponent, data: { title: 'Test Canvas Page' } },
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
   { path: '', component: HomePage, data: { title: 'Home Page' } },
@@ -49,7 +47,6 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     CanvasComponent,
-    TestCanvasComponent,
     LobbyPageComponent,
     StreamEmbedComponent,
     LoginPageComponent,
