@@ -16,6 +16,7 @@
                 <a class="navbar-item" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Lobby</a>
                 <a class="navbar-item" routerLink="/account" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="userLoggedIn">Account</a>
                 <a class="navbar-item" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Register</a>
+                <a class="navbar-item" routerLink="/login" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Login</a>
             </div>
         </div>
     </div>
