@@ -20,7 +20,7 @@
 #
 # https://stackoverflow.com/questions/12771909/bash-using-trap-ctrlc
 
-if [ "" -ne 1 ]; then
+if [ "$#" -ne 1 ]; then
   # Echo Usage if not working
   echo " "
   echo "Paint with Bob Video Service USAGE"
