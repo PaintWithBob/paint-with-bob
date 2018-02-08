@@ -55,7 +55,7 @@ elif [[ "$OSTYPE" == "win32" ]]; then
         # I'm not sure this can happen.
         echo "TODO: Find path for win32"
 else
-  echo "Vlc Path could not be found on this OS."
+  vlc=vlc
 fi
 
 # Run in background to stop it from catching and removing CTRL C catch
