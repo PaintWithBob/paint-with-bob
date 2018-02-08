@@ -18,9 +18,9 @@ git pull origin master
 echo "Restarting Paint with bob services..."
 
 # Requires Aaron's dotfiles :p
-sudo systemctl restart paintWithBobFrontendNgServe.service
-sudo systemctl restart paintWithBobBackend.service
-sudo systemctl restart paintWithBobStream.service
+sudo /bin/systemctl restart paintWithBobFrontendNgServe.service
+sudo /bin/systemctl restart paintWithBobBackend.service
+sudo /bin/systemctl restart paintWithBobStream.service
 
 echo "Done!"
 
