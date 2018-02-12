@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-stream-embed',
@@ -6,14 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stream-embed.component.scss',]
 })
 export class StreamEmbedComponent implements OnInit {
-
+  
   streamURL: string
-
+  
   constructor() {
-    this.streamURL = 'http://localhost:9000/stream.ogg';
+    this.streamURL = environment.streamUrl;
   }
-
+  
   ngOnInit() {
   }
-
+  
 }
