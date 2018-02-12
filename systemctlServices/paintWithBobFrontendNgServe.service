@@ -10,7 +10,7 @@ After=network.target
 Type=simple
 User=torch2424
 WorkingDirectory=/home/torch2424
-ExecStart=/bin/bash --login -c 'source $HOME/.bashrc; cd /home/torch2424/paint-with-bob/frontend && npm install && ng serve --host=0.0.0.0 --port=6971 --watch false --live-reload false --disable-host-check'
+ExecStart=/bin/bash --login -c 'source $HOME/.bashrc; cd /home/torch2424/paint-with-bob/frontend && npm install && ng serve --host=0.0.0.0 --environment=stage --port=6971 --watch=false --live-reload=false --disable-host-check'
 Restart=always
 
 [Install]
