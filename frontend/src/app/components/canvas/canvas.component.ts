@@ -13,6 +13,8 @@ export class CanvasComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+
     this.brushColor = '#222';
     let options = {
       primaryColor: this.brushColor,
@@ -28,6 +30,49 @@ export class CanvasComponent implements OnInit {
       keyboardShortcuts: false,
     }
     this.canvas = (<any>window).LC.init(document.querySelector('#my-canvas'), options);
+
+    /**NEW CODE TEST**/
+    var tools = [
+      {
+        name: 'pencil',
+        el: document.getElementById('tool-pencil'),
+        //tool: new LC.tools.Pencil(lc)
+        tool: new (<any>window).LC.tools.Pencil(this.canvas)
+      },
+      {
+        name: 'eraser',
+        el: document.getElementById('tool-eraser'),
+        tool: new (<any>window).LC.tools.Eraser(this.canvas)
+      }
+    ];
+
+    //Also new code (delete if no work)
+    var activateTool = function(t) {
+        this.canvas.setTool(t.tool);
+
+        tools.forEach(function(t2) {
+          if (t == t2) {
+            t2.el.style.backgroundColor = 'yellow';
+          } else {
+            t2.el.style.backgroundColor = 'transparent';
+          }
+        });
+
+
+    }
+
+
+    //New code (continued)
+    tools.forEach(function(t) {
+    t.el.style.cursor = "pointer";
+    t.el.onclick = function(e) {
+      e.preventDefault();
+      activateTool(t);
+    };
+    });
+    activateTool(tools[0]);
+
+
   }
 
   brushColorChange(event) {
