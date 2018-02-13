@@ -16,27 +16,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // Set CORS policy
-// app.use('*', function(req, res, next) {
-//   const allowedOrigins = [
-//     'http://localhost:3000',
-//     'http://localhost:4200',
-//     'http://localhost:9000',
-//     'http://dev.paintwithbob.com',
-//     'http://api.paintwithbob.com',
-//     'http://stream.paintwithbob.com',
-//     'https://dev.paintwithbob.com',
-//     'https://api.paintwithbob.com',
-//     'https://stream.paintwithbob.com'
-//   ];
-//   const origin = req.headers.origin;
-//   if(allowedOrigins.indexOf(origin) > -1){
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-//   }
-//   next();
-// });
-
+app.use(cors());
+// Use npm cors
 // const whitelist = [
 //   'localhost:3000',
 //   'http://localhost:3000',
@@ -59,13 +40,36 @@ app.set('view engine', 'hbs');
 //   }
 // }
 
-app.use(cors());
-
+// Allow ALL origins
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   next();
 // });
+
+// Manually setup cors
+// app.use('*', function(req, res, next) {
+//   const allowedOrigins = [
+//     'http://localhost:3000',
+//     'http://localhost:4200',
+//     'http://localhost:9000',
+//     'http://dev.paintwithbob.com',
+//     'http://api.paintwithbob.com',
+//     'http://stream.paintwithbob.com',
+//     'https://dev.paintwithbob.com',
+//     'https://api.paintwithbob.com',
+//     'https://stream.paintwithbob.com'
+//   ];
+//   const origin = req.headers.origin;
+//   if(allowedOrigins.indexOf(origin) > -1){
+//     res.setHeader('Access-Control-Allow-Origin', origin);
+//     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+//   }
+//   next();
+// });
+
+// MongoDB setup / connection
 
 require('./models/user');
 
