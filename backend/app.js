@@ -16,7 +16,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // Set CORS policy
+
 app.use(cors());
+
+app.options('*', cors());
+
 // Use npm cors
 // const whitelist = [
 //   'localhost:3000',
@@ -40,13 +44,6 @@ app.use(cors());
 //   }
 // }
 
-// Allow ALL origins
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
 // Manually setup cors
 // app.use('*', function(req, res, next) {
 //   const allowedOrigins = [
@@ -68,10 +65,6 @@ app.use(cors());
 //   }
 //   next();
 // });
-
-// MongoDB setup / connection
-
-require('./models/user');
 
 // MongoDB setup / connection
 const MongoOptions = require('./config/mongo').connection;
@@ -99,6 +92,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+require('./models/user');
 
 // Routes files
 var index = require('./routes/index');
