@@ -18,7 +18,14 @@ app.set('view engine', 'hbs');
 app.use('*', function(req, res, next) {
   const allowedOrigins = [
     'http://localhost:3000',
-    'http://localhost:4200'
+    'http://localhost:4200',
+    'http://localhost:9000',
+    'http://dev.paintwithbob.com',
+    'http://api.paintwithbob.com',
+    'http://stream.paintwithbob.com',
+    'https://dev.paintwithbob.com',
+    'https://api.paintwithbob.com',
+    'https://stream.paintwithbob.com'
   ];
   const origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
