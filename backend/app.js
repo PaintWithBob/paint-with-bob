@@ -7,7 +7,6 @@ bodyParser = require('body-parser'),
 mongoose = require('mongoose'),
 MongoClient = require('mongodb').MongoClient,
 dotenv = require('dotenv').config({ path: '.env' });
-cors = require('cors');
 
 app = express();
 
