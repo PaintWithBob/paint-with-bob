@@ -68,10 +68,12 @@ require('./models/user');
 // Routes files
 var index = require('./routes/index');
 var users = require('./routes/users');
+var lobby = require('./routes/lobby');
 
 // Tell app to use routes with these namespaces.
 app.use('/', index);
 app.use('/users', users);
+app.use('/lobby', lobby);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
