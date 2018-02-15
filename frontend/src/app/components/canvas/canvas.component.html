@@ -8,9 +8,6 @@
   readonly/>
     <div id="my-canvas"></div>
     <div class="tools">
-      <div class="tool button is-primary" *ngFor="let tool of tools" (click)="activateTool(tool)">
-        {{tool.name}}
-      </div>
+      <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
     </div>
-
 </div>
