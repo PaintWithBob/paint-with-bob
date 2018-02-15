@@ -21,11 +21,12 @@ import { StreamEmbedComponent } from './components/stream-embed/stream-embed.com
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
-//Providers
+// Providers
 import { AuthService } from './providers/auth-service/auth.service';
 
 // 3P Modules
 import { ColorPickerModule } from 'ngx-color-picker';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 // The main app routes that will be used for navigation.
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     HttpModule,
     AsyncLocalStorageModule,
     ColorPickerModule,
+    AngularFontAwesomeModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
