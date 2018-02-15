@@ -47,7 +47,7 @@ export class CanvasComponent implements OnInit {
     ];
 
     //Also new code (delete if no work)
-    var activateTool = function(t) {
+    var activateTool = (t)=> {
         this.canvas.setTool(t.tool);
 
         tools.forEach(function(t2) {
@@ -63,9 +63,9 @@ export class CanvasComponent implements OnInit {
 
 
     //New code (continued)
-    tools.forEach(function(t) {
+    tools.forEach( (t)=> {
     t.el.style.cursor = "pointer";
-    t.el.onclick = function(e) {
+    t.el.onclick = (e)=> {
       e.preventDefault();
       activateTool(t);
     };
