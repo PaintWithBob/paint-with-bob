@@ -8,9 +8,9 @@
   readonly/>
     <div id="my-canvas"></div>
     <div class="tools">
-      <a id="tool-pencil">pencil</a>
-      |
-      <a id="tool-eraser">eraser</a>
+      <div class="tool button is-primary" *ngFor="let tool of tools" (click)="activateTool(tool)">
+        {{tool.name}}
+      </div>
     </div>
 
 </div>

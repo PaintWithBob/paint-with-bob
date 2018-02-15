@@ -9,6 +9,7 @@ export class CanvasComponent implements OnInit {
 
   canvas: any;
   brushColor: any;
+  tools: any[];
 
   constructor() { }
 
@@ -31,51 +32,28 @@ export class CanvasComponent implements OnInit {
     }
     this.canvas = (<any>window).LC.init(document.querySelector('#my-canvas'), options);
 
-    /**NEW CODE TEST**/
-    var tools = [
+    this.tools = [ //array of tools, add here to add new tools
       {
         name: 'pencil',
-        el: document.getElementById('tool-pencil'),
-        //tool: new LC.tools.Pencil(lc)
         tool: new (<any>window).LC.tools.Pencil(this.canvas)
       },
       {
         name: 'eraser',
-        el: document.getElementById('tool-eraser'),
         tool: new (<any>window).LC.tools.Eraser(this.canvas)
       }
     ];
 
-    //Also new code (delete if no work)
-    var activateTool = (t)=> {
-        this.canvas.setTool(t.tool);
-
-        tools.forEach(function(t2) {
-          if (t == t2) {
-            t2.el.style.backgroundColor = 'yellow';
-          } else {
-            t2.el.style.backgroundColor = 'transparent';
-          }
-        });
-
-
-    }
-
-
-    //New code (continued)
-    tools.forEach( (t)=> {
-    t.el.style.cursor = "pointer";
-    t.el.onclick = (e)=> {
-      e.preventDefault();
-      activateTool(t);
-    };
-    });
-    activateTool(tools[0]);
+    this.activateTool(this.tools[0]); //default tool is pencil
 
 
   }
 
-  brushColorChange(event) {
+  activateTool(t) { //what happens when you select a tool
+      this.canvas.setTool(t.tool);
+  }
+
+
+  brushColorChange(event) { //change color of brush
     this.brushColor = event;
     this.canvas.setColor('primary', event);
   }
