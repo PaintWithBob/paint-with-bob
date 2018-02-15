@@ -7,4 +7,10 @@
   (colorPickerChange)="brushColorChange($event)"
   readonly/>
     <div id="my-canvas"></div>
+    <div class="tools">
+      <div class="tool button is-primary" *ngFor="let tool of tools" (click)="activateTool(tool)">
+        {{tool.name}}
+      </div>
+    </div>
+
 </div>
