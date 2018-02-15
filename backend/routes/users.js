@@ -7,8 +7,8 @@ const SecurePassword = require('secure-password');
 // Initialise our password policy
 const pwd = SecurePassword();
 
-//JWTs
-const jwt = require('jsonwebtoken');
+// Our token service
+const TokenService = require('../services/token');
 
 // Mongoose requirements
 const mongoose = require('mongoose');
@@ -96,9 +96,9 @@ router.post('/join', function(req, res) {
 
       const savedUserJson = savedUser.toJSON();
       delete savedUserJson.hash;
-      return jwt.sign(savedUserJson, "im sorry kyle", {
-        expiresIn: '7 days'
-      });
+
+      const token = await TokenService.getToken(user);
+      return token;
     } catch(err) {
       console.log(err);
       if(!err || !err.status) {
@@ -218,10 +218,9 @@ router.post('/login', function(req //request from the client (browser)
         }
       }
 
-      return jwt.sign(user, "asdfasdf", {
-        expiresIn: '7 days'
-      });
-
+      delete user.hash;
+      const token = await TokenService.getToken(user);
+      return token;
     }
 
     //====================================
