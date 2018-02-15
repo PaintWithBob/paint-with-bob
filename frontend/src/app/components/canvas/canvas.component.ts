@@ -9,10 +9,13 @@ export class CanvasComponent implements OnInit {
 
   canvas: any;
   brushColor: any;
+  tools: any[];
 
   constructor() { }
 
   ngOnInit() {
+
+
     this.brushColor = '#222';
     let options = {
       primaryColor: this.brushColor,
@@ -28,9 +31,29 @@ export class CanvasComponent implements OnInit {
       keyboardShortcuts: false,
     }
     this.canvas = (<any>window).LC.init(document.querySelector('#my-canvas'), options);
+
+    this.tools = [ //array of tools, add here to add new tools
+      {
+        name: 'pencil',
+        tool: new (<any>window).LC.tools.Pencil(this.canvas)
+      },
+      {
+        name: 'eraser',
+        tool: new (<any>window).LC.tools.Eraser(this.canvas)
+      }
+    ];
+
+    this.activateTool(this.tools[0]); //default tool is pencil
+
+
   }
 
-  brushColorChange(event) {
+  activateTool(t) { //what happens when you select a tool
+      this.canvas.setTool(t.tool);
+  }
+
+
+  brushColorChange(event) { //change color of brush
     this.brushColor = event;
     this.canvas.setColor('primary', event);
   }
