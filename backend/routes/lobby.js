@@ -61,6 +61,23 @@ router.post('/create', function(req, res, next) {
   createLobbyTask();
 });
 
+router.post('/join', function(req, res, next) {
+    // Check the required fields
+    if (!req.body || !req.body.roomId) {
+        res.status(400).send('It seems like our fields are missing. It looks like we will have to just paint some new ones.');
+        return;
+    }
+
+    if(rooms[req.body.roomId].usersInRoom.length === 4) {
+        res.status(400).send('It seems like our room is full. Looks like we will just have to paint a new one.');
+        return;
+    }
+
+    // If successfull, emit user can join event.
+    // socket.emit('user joined', data);
+
+})
+
 
 module.exports = (importedSocketIo) => {
   socketIo = importedSocketIo;

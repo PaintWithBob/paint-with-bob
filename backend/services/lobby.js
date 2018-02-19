@@ -3,7 +3,7 @@
 const LobbyService = {};
 
 LobbyService.addListenersToRoom = (socketIoRoom) => {
-  
+
 }
 
 module.exports = LobbyService;

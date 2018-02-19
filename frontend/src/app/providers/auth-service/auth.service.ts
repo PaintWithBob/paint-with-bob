@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { environment } from '../../../environments/environment';
 
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +38,7 @@ export class AuthService {
   register(form: any): Observable<any> {
     return Observable.create(observer => {
       return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe((response: any) => {
-        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(() => {
           this.userLoggedIn.emit();
           this.userRegistered.emit();
           return observer.next("Successfully created account and logged in");
@@ -55,7 +55,7 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return Observable.create(observer => {
       return this.http.post(`${environment.apiUrl}/users/login`, credentials).subscribe((response: any) => {
-        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(response => {
+        return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(() => {
           this.userLoggedIn.emit();
           observer.next("Successfully logged in");
           return this.router.navigate(['/account']);

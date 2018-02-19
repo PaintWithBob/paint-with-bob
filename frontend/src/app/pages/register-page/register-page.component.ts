@@ -9,23 +9,23 @@ import { AuthService } from '../../providers/auth-service/auth.service';
   styleUrls: ['./register-page.component.scss']
 })
 export class RegisterPageComponent implements OnInit {
-  
+
   form: any = {};
   formError: any;
   registerSuccess: any;
-  
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) { }
-  
+
   ngOnInit() {
     this.form.email = "";
     this.form.password = "";
     this.form.confPass = "";
     this.form.username = "";
   }
-  
+
   submit(form: NgForm) {
     this.formError = null;
     if(form.valid) {
@@ -36,9 +36,9 @@ export class RegisterPageComponent implements OnInit {
           this.router.navigate(['/account']);
         }, error => {
           this.formError = error._body;
-        }); 
+        });
       }
     }
   }
-  
+
 }

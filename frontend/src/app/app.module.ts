@@ -22,7 +22,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 // Providers
-import { AuthService } from './providers/auth-service/auth.service';
+import { AuthService, LobbyService } from './providers';
 
 // 3P Modules
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -65,8 +65,8 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     )
   ],
-  providers: [AuthService],
-  bootstrap: [AppComponent],
+  providers: [ AuthService, LobbyService ],
+  bootstrap: [ AppComponent ],
   entryComponents: [
     PageNotFoundComponent,
     AccountPage,
