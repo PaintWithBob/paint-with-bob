@@ -2,8 +2,11 @@
 
 const LobbyService = {};
 
-LobbyService.addListenersToRoom = (socketIoRoom) => {
-  
+LobbyService.addListenersToRoom = (socketIoRoom, rooms) => {
+  room.on('connection', (socket) => {
+    console.log('someone connected');
+  })
+
 }
 
 module.exports = LobbyService;
