@@ -42,7 +42,7 @@ router.post('/create', function(req, res, next) {
       LobbyService.addListenersToRoom(socketIoRoom, rooms, roomId);
 
       // Populate our room properties
-      rooms[roomId].owner = user.id;
+      rooms[roomId].owner = user._id;
       rooms[roomId].socketIoRoom = socketIoRoom;
 
       res.status(200).json({
