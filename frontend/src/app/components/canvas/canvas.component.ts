@@ -63,11 +63,11 @@ export class CanvasComponent implements OnInit {
 
   //bad code, pls edit
   decBrush(){
-    this.activeTool.tool.strokeWidth = 3;
+    this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
   }
 
   incBrush(){
-    this.activeTool.tool.strokeWidth = 30;
+    this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
   }
 
 }
