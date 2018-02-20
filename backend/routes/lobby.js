@@ -39,10 +39,10 @@ router.post('/create', function(req, res, next) {
       rooms[roomId] = Object.assign({}, roomObjectSchema);
 
       const socketIoRoom = socketIo.of('/lobby/room/' + roomId);
-      LobbyService.addListenersToRoom(socketIoRoom);
+      LobbyService.addListenersToRoom(socketIoRoom, rooms, roomId);
 
       // Populate our room properties
-      rooms[roomId].owner = user.id;
+      rooms[roomId].owner = user._id;
       rooms[roomId].socketIoRoom = socketIoRoom;
 
       res.status(200).json({
