@@ -5,6 +5,16 @@ const LobbyService = {};
 // Constants for a lobby
 const MAX_USERS_IN_ROOM = 4;
 
+// Canvas
+const CANVAS_EVENT = {
+  EVENT_ID: 'CANVAS_UPDATE',
+}
+
+// Chat
+const CHAT_EVENT = {
+  EVENT_ID: 'CHAT_MESSAGE'
+}
+
 // Room
 const ROOM_EVENT = {
   EVENT_ID: 'ROOM_UPDATE',
