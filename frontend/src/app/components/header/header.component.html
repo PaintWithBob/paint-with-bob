@@ -4,13 +4,15 @@
             <a class="navbar-item" routerLink="/">
                 <img src="/assets/images/bobrosscutout.png" alt="Logo" border="1"/>
             </a>
-            <button class="button navbar-burger">
+
+            <button class="button navbar-burger" (click)="ButtonClick = !ButtonClick">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
+
         </div>
-        <div class="navbar-menu">
+        <div class="navbar-menu" [ngClass]="{'is-active':ButtonClick}">
             <div class="navbar-end">
                 <a class="navbar-item" routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Home</a>
                 <a class="navbar-item" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Lobby</a>
