@@ -98,7 +98,7 @@ const connectionHandler = (socket, socketIoRoom, rooms, roomId) => {
   });
 }
 
-const disconnectEventHandler() = (rooms) => {
+const disconnectEventHandler = (rooms) => {
 
   // Get the user index
   let userIndex = -1;
