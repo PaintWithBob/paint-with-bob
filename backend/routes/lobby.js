@@ -3,6 +3,10 @@ const router = express.Router();
 const TokenService = require('../services/token');
 const LobbyService = require('../services/lobby');
 
+// Constant for how often to check rooms for deletion in milli
+// 10 minutes
+const ROOM_DELETE_INTERVAL = 600000;
+
 // Socket IO will be passed in by www, and used from there
 let socketIo = {};
 const rooms = {};
@@ -61,22 +65,29 @@ router.post('/create', function(req, res, next) {
   createLobbyTask();
 });
 
-router.post('/join', function(req, res, next) {
-    // Check the required fields
-    if (!req.body || !req.body.roomId) {
-        res.status(400).send('It seems like our fields are missing. It looks like we will have to just paint some new ones.');
-        return;
+// Interval to continually check if we should delete a room
+setInterval(() => {
+  Object.keys(rooms).forEach((roomKey) => {
+    // Check if we should delete a room
+    if (rooms[roomKey].shouldDelete && rooms[roomKey].usersInRoom.length <= 0) {
+
+      // Delete the room because there still are no users
+      if (rooms[roomKey].usersInRoom.length <= 0) {
+        delete rooms[roomKey];
+      } else {
+        // Some new users joined, un mark for deletion
+        rooms[roomKey].shouldDelete = false;
+      }
+
+    } else {
+
+      // Check if we should make for deletion
+      if (rooms[roomKey].usersInRoom.length <= 0) {
+        rooms[roomKey].shouldDelete = true;
+      }
     }
-
-    if(rooms[req.body.roomId].usersInRoom.length === 4) {
-        res.status(400).send('It seems like our room is full. Looks like we will just have to paint a new one.');
-        return;
-    }
-
-    // If successfull, emit user can join event.
-    // socket.emit('user joined', data);
-
-})
+  });
+}, ROOM_DELETE_INTERVAL);
 
 
 module.exports = (importedSocketIo) => {

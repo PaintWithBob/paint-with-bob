@@ -30,7 +30,7 @@ export class RegisterPageComponent implements OnInit {
     this.formError = null;
     if(form.valid) {
       if(this.form.password != this.form.confPass) {
-        this.formError = "Passwords must match.";
+        this.formError = "The passwords need to match. Everyone needs a friend, after all.";
       } else {
         this.authService.register(this.form).subscribe(login => {
           this.router.navigate(['/account']);
