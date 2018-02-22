@@ -1,7 +1,7 @@
 //JWTs
 const jwt = require('jsonwebtoken');
 
-const tokenSecret = process.env.TOKEN_SECRET || (Math.random() * 100).toString(36).substring(7);
+const tokenSecret = process.env.TOKEN_SECRET || 'Default_Token_Secret';
 
 const TokenService = {};
 

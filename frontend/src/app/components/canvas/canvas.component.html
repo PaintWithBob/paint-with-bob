@@ -6,6 +6,12 @@
   [cpPosition]="'left'"
   (colorPickerChange)="brushColorChange($event)"
   readonly/>
+
+ <!-- NEW CODE -->
+  <button (click)="decBrush()"> - </button>
+  <button (click)="incBrush()"> + </button>
+  <p> Brush Size: {{this.activeTool.tool.strokeWidth}} </p>
+
     <div id="my-canvas"></div>
     <div class="tools">
       <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>

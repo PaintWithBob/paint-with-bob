@@ -6,6 +6,8 @@
             <div class="user-details" *ngIf="token">
                 <p style="word-wrap: break-word;"><strong>Token:</strong> {{token}}</p>
             </div>
+            <div class="button is-primary" (click)="createLobby()">Create Lobby</div>
+            <div class="help is-danger" *ngIf="createLobbyError">{{createLobbyError}}</div>
         </div>
     </section>
 </div>

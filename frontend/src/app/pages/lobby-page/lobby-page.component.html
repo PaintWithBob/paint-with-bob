@@ -1,16 +1,17 @@
-<div id="lobby">
+<div id="lobby" *ngIf="okToJoin">
     <section class="section">
         <div class="container">
             <h1 class="title">Lobby Page</h1>
             <h2 class="subtitle">Hell yeah, Chelsea was here and made it work!</h2>
+            <h4>Number of users: {{numberOfUsers}}</h4>
             <div class="columns">
-              <div class="column is-half">
-                <app-stream-embed></app-stream-embed>
-              </div>
-          <div class="column is-half">
-            <app-canvas></app-canvas>
-          </div>
-          </div>
+                <div class="column is-half">
+                    <app-stream-embed></app-stream-embed>
+                </div>
+                <div class="column is-half">
+                    <app-canvas></app-canvas>
+                </div>
+            </div>
         </div>
     </section>
 </div>

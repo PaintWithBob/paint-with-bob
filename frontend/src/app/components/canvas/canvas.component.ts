@@ -47,7 +47,6 @@ export class CanvasComponent implements OnInit {
     // Default tool is pencil
     this.activateTool(this.tools[0]);
 
-
   }
 
   // What happens when you select a tool
@@ -60,6 +59,16 @@ export class CanvasComponent implements OnInit {
   brushColorChange(event) {
     this.brushColor = event;
     this.canvas.setColor('primary', event);
+  }
+
+  //bad code, pls edit
+  decBrush(){
+    if (this.activeTool.tool.strokeWidth - 5 > 0)
+      this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth - 5;
+  }
+
+  incBrush(){
+    this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
   }
 
 }

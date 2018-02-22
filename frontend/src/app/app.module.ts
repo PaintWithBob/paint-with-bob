@@ -31,7 +31,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
-  { path: 'lobby', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
+  { path: 'lobby/:roomId', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
