@@ -112,16 +112,19 @@ const disconnectEventHandler = (rooms) => {
 
   // Remove the user if we found them
   if(userIndex > -1) {
-    rooms[roomId].usersInRoom.splice(userIndex, 1)
+    rooms[roomId].usersInRoom.splice(userIndex, 1);
 
-    // Let everyone know that a user has left
-    socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
-      reason: ROOM_EVENT.REASON.USER_LEFT,
-      room: LobbyService.getRoomForClient(rooms[roomId])
-    });
-
-    // Emit a disconnect event to users
-    console.log(`${roomId} Disconnect Event:`, rooms);
+    // Check how many rooms are left
+    if(rooms[roomId].usersInRoom <= 0) {
+      // Delete the room
+      delete rooms[roomId]
+    } else {
+      // Let everyone know that a user has left
+      socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
+        reason: ROOM_EVENT.REASON.USER_LEFT,
+        room: LobbyService.getRoomForClient(rooms[roomId])
+      });
+    }
   }
 }
 
