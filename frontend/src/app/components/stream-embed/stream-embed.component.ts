@@ -7,14 +7,14 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./stream-embed.component.scss',]
 })
 export class StreamEmbedComponent implements OnInit {
-  
-  streamURL: string
-  
+
+  streamURL: string;
+
   constructor() {
     this.streamURL = environment.streamUrl;
   }
-  
+
   ngOnInit() {
   }
-  
+
 }

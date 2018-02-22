@@ -7,9 +7,9 @@ import { AuthService } from './providers/auth-service/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  
+
   newUserRegistered: any;
-  
+
   constructor(private authService: AuthService) {
     authService.userRegistered.subscribe(user => {
       this.newUserRegistered = "Account successfully created";
@@ -18,5 +18,5 @@ export class AppComponent {
       }, 5000);
     })
   }
-  
+
 }

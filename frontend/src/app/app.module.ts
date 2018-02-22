@@ -22,7 +22,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 // Providers
-import { AuthService } from './providers/auth-service/auth.service';
+import { AuthService, LobbyService } from './providers';
 
 // 3P Modules
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -31,7 +31,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
-  { path: 'lobby', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
+  { path: 'lobby/:roomId', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
@@ -65,8 +65,8 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     )
   ],
-  providers: [AuthService],
-  bootstrap: [AppComponent],
+  providers: [ AuthService, LobbyService ],
+  bootstrap: [ AppComponent ],
   entryComponents: [
     PageNotFoundComponent,
     AccountPage,

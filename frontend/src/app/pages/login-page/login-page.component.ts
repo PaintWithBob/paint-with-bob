@@ -21,7 +21,7 @@ export class LoginPageComponent implements OnInit {
 
   submit(form: NgForm) {
     this.formError = null;
-    if(form.valid) {
+    if (form.valid) {
       this.authService.login(this.form).subscribe(token => {}, error => {
         console.error(error);
         this.formError = error._body;
