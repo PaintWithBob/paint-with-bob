@@ -37,7 +37,7 @@ const KICK_EVENT = {
 // Function to intialize a room on connection
 // Maybe not query param
 LobbyService.addListenersToRoom = (socketIoRoom, rooms, roomId) => {
-  socketIoRoom.on('connection', (socket, socketIoRoom, rooms, roomId) => {
+  socketIoRoom.on('connection', (socket) => {
     connectionEventHandler(socket, socketIoRoom, rooms, roomId)
   });
 }
@@ -59,10 +59,12 @@ LobbyService.getRoomForClient = (room) => {
   // Remove unwanted keys from the schema, see routes/lobby.js
   delete clientRoom.socketIoRoom
   delete clientRoom.shouldDelete
+
+  return clientRoom;
 }
 
 // Socket.io on connection handler
-const connectionHandler = (socket, socketIoRoom, rooms, roomId) => {
+const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   const token = socket.handshake.query.token;
 
   // Validate token
@@ -79,13 +81,13 @@ const connectionHandler = (socket, socketIoRoom, rooms, roomId) => {
         socketId: socket.id
     });
 
+
     // Let everyone know that a user has joined
     socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
       reason: ROOM_EVENT.REASON.USER_JOINED,
       room: LobbyService.getRoomForClient(rooms[roomId])
     });
 
-    console.log(`${roomId} Connected Event:`, rooms);
 
     // Handle disconnections as well
     socket.on('disconnect', () => {

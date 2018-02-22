@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import * as io from 'socket.io-client';
@@ -9,7 +9,7 @@ import { AuthService } from '../../providers';
     templateUrl: './lobby-page.component.html',
     styleUrls: ['./lobby-page.component.scss']
 })
-export class LobbyPageComponent implements OnInit {
+export class LobbyPageComponent implements OnInit, OnDestroy {
 
     roomId: any;
     socket: any;
@@ -69,5 +69,9 @@ export class LobbyPageComponent implements OnInit {
                 });
             });
         });
+    }
+
+    ngOnDestroy() {
+        this.socket.disconnect();
     }
 }
