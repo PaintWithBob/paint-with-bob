@@ -9,36 +9,36 @@ import { AuthService } from '../../providers/auth-service/auth.service';
   styleUrls: ['./register-page.component.scss']
 })
 export class RegisterPageComponent implements OnInit {
-  
+
   form: any = {};
   formError: any;
   registerSuccess: any;
-  
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) { }
-  
+
   ngOnInit() {
     this.form.email = "";
     this.form.password = "";
     this.form.confPass = "";
     this.form.username = "";
   }
-  
+
   submit(form: NgForm) {
     this.formError = null;
     if(form.valid) {
       if(this.form.password != this.form.confPass) {
-        this.formError = "Passwords must match.";
+        this.formError = "The passwords need to match. Everyone needs a friend, after all.";
       } else {
         this.authService.register(this.form).subscribe(login => {
           this.router.navigate(['/account']);
         }, error => {
           this.formError = error._body;
-        }); 
+        });
       }
     }
   }
-  
+
 }
