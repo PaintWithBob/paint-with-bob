@@ -97,7 +97,7 @@ router.post('/join', function(req, res) {
       const savedUserJson = savedUser.toJSON();
       delete savedUserJson.hash;
 
-      const token = await TokenService.getToken(user);
+      const token = await TokenService.getToken(savedUserJson);
       return token;
     } catch(err) {
       console.log(err);
