@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import * as io from 'socket.io-client';
 import { AuthService } from '../../providers';
+import * as io from 'socket.io-client';
 
 @Component({
     selector: 'app-lobby-page',
@@ -29,6 +29,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe((params: Params) => {
             this.roomId = params['roomId'];
             this.authService.getToken().subscribe(token => {
+
                 // Connect to correct socket namespace. (emits connection event)
                 this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`, { query: { token: token} });
                 this.socket.on('connect', () => {
@@ -40,8 +41,10 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
                     console.log('Room updated: ', data);
                     if(data.reason === 'USER_JOINED') {
                         this.numberOfUsers = data.room.usersInRoom.length;
+                        // Display message to users in room informing them of user who joined.
                     } else if(data.reason === 'USER_LEFT') {
                         this.numberOfUsers = data.room.usersInRoom.length;
+                        // Display message to users still in room informing them of user who left.
                     }
                 });
 
