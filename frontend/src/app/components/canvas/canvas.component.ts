@@ -61,6 +61,7 @@ export class CanvasComponent implements OnInit {
     this.canvas.setColor('primary', event);
   }
 
+  //bad code, pls edit
   decBrush(){
     if (this.activeTool.tool.strokeWidth - 5 > 0)
       this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth - 5;
@@ -68,6 +69,14 @@ export class CanvasComponent implements OnInit {
 
   incBrush(){
     this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
+  }
+
+  undoButton(){
+    this.canvas.undo();
+  }
+
+  redoButton(){
+    this.canvas.redo();
   }
 
 }
