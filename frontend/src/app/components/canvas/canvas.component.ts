@@ -70,4 +70,12 @@ export class CanvasComponent implements OnInit {
     this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
   }
 
+  undoButton(){
+    this.canvas.undo();
+  }
+
+  redoButton(){
+    this.canvas.redo();
+  }
+
 }

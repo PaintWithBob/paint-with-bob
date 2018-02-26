@@ -10,6 +10,8 @@
  <!-- NEW CODE -->
   <button (click)="decBrush()"> - </button>
   <button (click)="incBrush()"> + </button>
+  <button (click)="undoButton()"> ← </button>
+  <button (click)="redoButton()"> → </button>
   <p> Brush Size: {{this.activeTool.tool.strokeWidth}} </p>
 
     <div id="my-canvas"></div>
