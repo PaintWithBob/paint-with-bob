@@ -30,13 +30,14 @@ const KICK_EVENT = {
   EVENT_ID: 'KICK',
   REASON: {
     INVALID_TOKEN: 'INVALID_TOKEN',
-    ROOM_FULL: 'ROOM_FULL'
+    ROOM_FULL: 'ROOM_FULL',
+    ROOM_DOES_NOT_EXIST: 'ROOM_DOES_NOT_EXIST'
   }
 }
 
 
 // Function to intialize a room on connection
-// Maybe not query param
+// All events additional events will be conditionally applied by handlers
 LobbyService.addListenersToRoom = (socketIoRoom, rooms, roomId) => {
   socketIoRoom.on('connection', (socket) => {
     connectionEventHandler(socket, socketIoRoom, rooms, roomId)
@@ -66,41 +67,60 @@ LobbyService.getRoomForClient = (room) => {
 
 // Socket.io on connection handler
 const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
+
+  // Check if the room exitsts
+  if(!rooms[roomId]) {
+    LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_DOES_NOT_EXIST, "The room no longer exists.");
+    return;
+  }
+
+  // Check if the room is full
+  if (rooms[roomId].usersInRoom.length > MAX_USERS_IN_ROOM) {
+    LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_FULL, "The room is currently full");
+  }
+
   const token = socket.handshake.query.token;
 
   // Validate token
-  TokenService.validateToken(token).then((user) => {
-
-    // Check if the room is full
-    if (rooms[roomId].usersInRoom.length > MAX_USERS_IN_ROOM) {
-      LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_FULL, "The room is currently full");
-    }
-
-    // Add the user to the room
-    rooms[roomId].usersInRoom.push({
-        user: user,
-        socketId: socket.id,
-        timeJoined: Date.now()
+  if(token === undefined) {
+    // Pass guest info
+    const guestId = `guest${(Math.random() * 100).toString(36).substring(7)}`;
+    addUserToRoom(socket, socketIoRoom, rooms, roomId, {
+      _id: guestId,
+      email: guestId,
+      dateJoined: Date.now()
     });
-
-
-    // Let everyone know that a user has joined
-    socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
-      reason: ROOM_EVENT.REASON.USER_JOINED,
-      room: LobbyService.getRoomForClient(rooms[roomId])
+  } else {
+    TokenService.validateToken(token).then((user) => {
+      addUserToRoom(socket, socketIoRoom, rooms, roomId, user);
+    }).catch((error) => {
+      console.log(error);
+      LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.INVALID_TOKEN, error.message);
     });
-
-
-    // Handle disconnections as well
-    socket.on('disconnect', () => {
-      disconnectEventHandler(socket, socketIoRoom, rooms, roomId);
-    });
-
-  }).catch((error) => {
-    console.log(error);
-    LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.INVALID_TOKEN, error.message);
-  });
+  }
 }
+
+const addUserToRoom = (socket, socketIoRoom, rooms, roomId, user) => {
+  // Add the user to the room
+  rooms[roomId].usersInRoom.push({
+      user: user,
+      socketId: socket.id,
+      timeJoined: Date.now()
+  });
+
+
+  // Let everyone know that a user has joined
+  socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
+    reason: ROOM_EVENT.REASON.USER_JOINED,
+    room: LobbyService.getRoomForClient(rooms[roomId])
+  });
+
+
+  // Handle disconnections as well
+  socket.on('disconnect', () => {
+    disconnectEventHandler(socket, socketIoRoom, rooms, roomId);
+  });
+};
 
 const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
@@ -136,6 +156,11 @@ const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
       rooms[roomId].usersInRoom.some((user) => {
         if (rooms[roomId].owner !== user._id) {
           rooms[roomId].owner = user._id;
+          // Let everyone know that there is a new owner
+          socketIoRoom.emit(ROOM_EVENT.EVENT_ID, {
+            reason: ROOM_EVENT.REASON.NEW_OWNER,
+            owner: user
+          });
           return true;
         }
         return false;
