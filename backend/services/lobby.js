@@ -20,7 +20,8 @@ const ROOM_EVENT = {
   EVENT_ID: 'ROOM_UPDATE',
   REASON: {
     USER_JOINED: 'USER_JOINED',
-    USER_LEFT: 'USER_LEFT'
+    USER_LEFT: 'USER_LEFT',
+    NEW_OWNER: 'NEW_OWNER'
   }
 }
 
@@ -78,7 +79,8 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
     // Add the user to the room
     rooms[roomId].usersInRoom.push({
         user: user,
-        socketId: socket.id
+        socketId: socket.id,
+        timeJoined: Date.now()
     });
 
 
@@ -105,7 +107,6 @@ const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   // Get the user index
   let userIndex = -1;
   rooms[roomId].usersInRoom.some((element, index) => {
-    // TODO: Check if the user is the owner
     if(element.socketId === socket.id) {
       userIndex = index;
       return true;
@@ -115,10 +116,37 @@ const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
   // Remove the user if we found them
   if(userIndex > -1) {
+    // Check if the user is the owner
+    if(rooms[roomId].usersInRoom[userIndex].user._id === rooms[roomId].owner &&
+      rooms[roomId].usersInRoom.length > 1) {
+      // Find the next oldest user
+      rooms[roomId].usersInRoom.sort((a, b) => {
+        if(a.timeJoined < b.timeJoined) {
+          return -1;
+        }
+
+        if(a.timeJoined > b.timeJoined) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+      // The new owner will be the first user that is not the current owner in the newly sorted array
+      rooms[roomId].usersInRoom.some((user) => {
+        if (rooms[roomId].owner !== user._id) {
+          rooms[roomId].owner = user._id;
+          return true;
+        }
+        return false;
+      });
+    }
+
+    // Remove the user
     rooms[roomId].usersInRoom.splice(userIndex, 1);
 
     // Check how many rooms are left
-    if(rooms[roomId].usersInRoom <= 0) {
+    if(rooms[roomId].usersInRoom.length <= 0) {
       // Delete the room
       delete rooms[roomId]
     } else {

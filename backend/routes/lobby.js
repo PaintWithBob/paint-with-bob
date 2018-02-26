@@ -3,10 +3,6 @@ const router = express.Router();
 const TokenService = require('../services/token');
 const LobbyService = require('../services/lobby');
 
-// Constant for how often to check rooms for deletion in milli
-// 10 minutes
-const ROOM_DELETE_INTERVAL = 600000;
-
 // Socket IO will be passed in by www, and used from there
 let socketIo = {};
 const rooms = {};
@@ -64,31 +60,6 @@ router.post('/create', function(req, res, next) {
   // Kick off our async task
   createLobbyTask();
 });
-
-// Interval to continually check if we should delete a room
-setInterval(() => {
-  Object.keys(rooms).forEach((roomKey) => {
-    // Check if we should delete a room
-    if (rooms[roomKey].shouldDelete && rooms[roomKey].usersInRoom.length <= 0) {
-
-      // Delete the room because there still are no users
-      if (rooms[roomKey].usersInRoom.length <= 0) {
-        delete rooms[roomKey];
-      } else {
-        // Some new users joined, un mark for deletion
-        rooms[roomKey].shouldDelete = false;
-      }
-
-    } else {
-
-      // Check if we should make for deletion
-      if (rooms[roomKey].usersInRoom.length <= 0) {
-        rooms[roomKey].shouldDelete = true;
-      }
-    }
-  });
-}, ROOM_DELETE_INTERVAL);
-
 
 module.exports = (importedSocketIo) => {
   socketIo = importedSocketIo;
