@@ -91,7 +91,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
     // Handle disconnections as well
     socket.on('disconnect', () => {
-      disconnectEventHandler(rooms);
+      disconnectEventHandler(socket, socketIoRoom, rooms, roomId);
     });
 
   }).catch((error) => {
@@ -100,11 +100,12 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   });
 }
 
-const disconnectEventHandler = (rooms) => {
+const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
   // Get the user index
   let userIndex = -1;
   rooms[roomId].usersInRoom.some((element, index) => {
+    // TODO: Check if the user is the owner
     if(element.socketId === socket.id) {
       userIndex = index;
       return true;
