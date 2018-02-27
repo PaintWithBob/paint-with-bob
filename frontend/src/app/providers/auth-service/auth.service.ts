@@ -26,7 +26,10 @@ export class AuthService {
   // Sets the logged in user in local storage.
   setLoggedInUser(user: any): Observable<any> {
     return Observable.create(observer => {
-      return this.localStorage.setItem('brUser', user).subscribe(response => {
+      return this.localStorage.setItem('brUser', {
+        token: user.token,
+        user: user.user
+      }).subscribe(response => {
         return observer.next(response);
       }, () => {
         return observer.error('Error storing token');
@@ -81,9 +84,25 @@ export class AuthService {
     });
   }
 
-  // Requests the user from local storage.
+  // Requests the token from local storage.
   getToken(): Observable<any> {
-    return this.localStorage.getItem('brUser');
+    return new Observable((observer) => {
+      this.localStorage.getItem('brUser').subscribe((response) => {
+        return observer.next(response.token);
+      }, () => {
+        return observer.error('Could not get token');
+      });
+    });
   }
 
+  // Requests the token from local storage.
+  getUser(): Observable<any> {
+    return new Observable((observer) => {
+      this.localStorage.getItem('brUser').subscribe((response) => {
+        return observer.next(response.user);
+      }, () => {
+        return observer.error('Could not get token');
+      });
+    });
+  }
 }
