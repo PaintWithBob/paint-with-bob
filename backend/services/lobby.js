@@ -84,7 +84,8 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   // Validate token
   if(token === undefined) {
     // Pass guest info
-    const guestId = `guest${(Math.random() * 100).toString(36).substring(7)}`;
+    // TODO: If no owner, U DA OWNAH
+    const guestId = `guest#${(Math.random() * 100).toString(36).substring(7)}`;
     addUserToRoom(socket, socketIoRoom, rooms, roomId, {
       _id: guestId,
       email: guestId,
