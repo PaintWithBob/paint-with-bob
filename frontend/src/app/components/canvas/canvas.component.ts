@@ -78,4 +78,10 @@ export class CanvasComponent implements OnInit {
     this.canvas.redo();
   }
 
+
+  //should return an iamge, still have to do stuff with it.
+  saveImage(){
+    this.canvas.getImage();
+  }
+
 }
