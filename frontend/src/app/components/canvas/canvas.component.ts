@@ -1,4 +1,5 @@
-import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
+
 
 @Component({
   selector: 'app-canvas',
@@ -11,7 +12,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
   brushColor: any = '#222';
   tools: any[];
   activeTool: any;
-  socket: any;
+  @Input() socket: any;
   socketInitialized: boolean = false;
   lcDrawingChangeListener: any;
 
@@ -55,7 +56,8 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
         // Get our canvasSnapshot
         const canvasSnapshot = JSON.stringify(this.canvas.getSnapshot());
 
-        // Emit to the socket server
+        // Emit to the server, which will then bounce to the approprite users
+        // TODO: Pass the actual user
         this.socket.emit('CANVAS_UPDATE', {
           user: 'testing',
           snapshot: canvasSnapshot
