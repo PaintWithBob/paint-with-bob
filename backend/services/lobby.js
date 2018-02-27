@@ -47,6 +47,7 @@ LobbyService.addListenersToRoom = (socketIoRoom, rooms, roomId) => {
 // Function to kick a user from a room
 LobbyService.kickUser = (socket, userSocketId, reasonId, message) => {
   // Emit the disconnect event
+  console.log('hi', reasonId);
   socket.broadcast.to(userSocketId).emit(KICK_EVENT.EVENT_ID, {
     reason: reasonId,
     message: message
@@ -70,6 +71,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
   // Check if the room exitsts
   if(!rooms[roomId]) {
+    console.log('hi');
     LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_DOES_NOT_EXIST, "The room no longer exists.");
     return;
   }
@@ -77,6 +79,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   // Check if the room is full
   if (rooms[roomId].usersInRoom.length > MAX_USERS_IN_ROOM) {
     LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_FULL, "The room is currently full");
+    return;
   }
 
   const token = socket.handshake.query.token;
@@ -84,7 +87,6 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
   // Validate token
   if(token === undefined) {
     // Pass guest info
-    // TODO: If no owner, U DA OWNAH
     const guestId = `guest#${(Math.random() * 100).toString(36).substring(7)}`;
     addUserToRoom(socket, socketIoRoom, rooms, roomId, {
       _id: guestId,
@@ -108,6 +110,11 @@ const addUserToRoom = (socket, socketIoRoom, rooms, roomId, user) => {
       socketId: socket.id,
       timeJoined: Date.now()
   });
+
+  // If we don't have an owner, this user is now the owner
+  if (!rooms[roomId].owner) {
+    rooms[roomId].owner = user._id;
+  }
 
 
   // Let everyone know that a user has joined

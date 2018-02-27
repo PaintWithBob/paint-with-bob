@@ -14,13 +14,20 @@ const roomObjectSchema = {
   shouldDelete: false
 }
 
+// Constant for how often to check rooms for deletion in milli
+// 10 minutes
+const ROOM_DELETE_INTERVAL = 600000;
+
 // Task for creating lobbies
 // Wrap in an async to allow await
 const createLobbyTask = async (res, token) => {
   try {
 
     // Verfiy the token
-    const user = await TokenService.validateToken(token);
+    let user = undefined;
+    if(token) {
+      user = await TokenService.validateToken(token);
+    }
 
     // Get a roomId
     let roomId = (Math.random() * 100).toString(36).substring(7);
@@ -35,8 +42,9 @@ const createLobbyTask = async (res, token) => {
     LobbyService.addListenersToRoom(socketIoRoom, rooms, roomId);
 
     // Populate our room properties
-    // TODO: if guest, owner undefined
-    rooms[roomId].owner = user._id;
+    if (user) {
+      rooms[roomId].owner = user._id;
+    }
     rooms[roomId].socketIoRoom = socketIoRoom;
 
     res.status(200).json({
@@ -66,9 +74,50 @@ router.post('/create', function(req, res, next) {
 
 // Lobby Joining and creation for guests
 router.get('/guest', function(req, res, next) {
-  // TODO: Find a non-private room
-  // TODO: Create a room for the guest
+  // Search all rooms for a non-private room
+  // If a non-private room is found, send that to the user
+  const foundRoom = Object.keys(rooms).some((roomId) => {
+    if(!rooms[roomId].isPrivate) {
+      res.status(200).json({
+        roomId: roomId
+      });
+      return true;
+    }
+    return false;
+  });
+
+  // Check if we did not find a room
+  if (!foundRoom) {
+    // Kick off our async task
+    createLobbyTask(res);
+  }
 });
+
+// Interval to continually check if we should delete a room
+// Since API can just create rooms without requiring a socket connection
+// This is required
+setInterval(() => {
+  Object.keys(rooms).forEach((roomKey) => {
+    // Check if we should delete a room
+    if (rooms[roomKey].shouldDelete && rooms[roomKey].usersInRoom.length <= 0) {
+
+      // Delete the room because there still are no users
+      if (rooms[roomKey].usersInRoom.length <= 0) {
+        delete rooms[roomKey];
+      } else {
+        // Some new users joined, un mark for deletion
+        rooms[roomKey].shouldDelete = false;
+      }
+
+    } else {
+
+      // Check if we should make for deletion
+      if (rooms[roomKey].usersInRoom.length <= 0) {
+        rooms[roomKey].shouldDelete = true;
+      }
+    }
+  });
+}, ROOM_DELETE_INTERVAL);
 
 module.exports = (importedSocketIo) => {
   socketIo = importedSocketIo;
