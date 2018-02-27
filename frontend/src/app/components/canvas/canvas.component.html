@@ -8,10 +8,10 @@
   readonly/>
 
  <!-- NEW CODE -->
-  <button (click)="decBrush()"> - </button>
-  <button (click)="incBrush()"> + </button>
-  <button (click)="undoButton()"> ← </button>
-  <button (click)="redoButton()"> → </button>
+  <button class="button is-primary" (click)="decBrush()"> - </button>
+  <button class="button is-primary" (click)="incBrush()"> + </button>
+  <button class="button is-primary" (click)="undoButton()"> ← </button>
+  <button class="button is-primary" (click)="redoButton()"> → </button>
   <p> Brush Size: {{this.activeTool.tool.strokeWidth}} </p>
 
     <div id="my-canvas"></div>
