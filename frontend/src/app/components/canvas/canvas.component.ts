@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 
+const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
 @Component({
   selector: 'app-canvas',
@@ -58,8 +59,8 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
         // Emit to the server, which will then bounce to the approprite users
         // TODO: Pass the actual user
-        this.socket.emit('CANVAS_UPDATE', {
-          user: 'testing',
+        this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+          user: CANVAS_UPDATE_EVENT_ID,
           snapshot: canvasSnapshot
         });
       }
@@ -72,8 +73,8 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
       this.socketInitialized = true;
 
       // Add the canvas update event
-      this.socket.on('CANVAS_UPDATE', (data) => {
-        console.log('CANVAS_UPDATE', data);
+      this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
+        console.log(CANVAS_UPDATE_EVENT_ID, data);
       });
     }
   }
