@@ -47,7 +47,6 @@ LobbyService.addListenersToRoom = (socketIoRoom, rooms, roomId) => {
 // Function to kick a user from a room
 LobbyService.kickUser = (socket, userSocketId, reasonId, message) => {
   // Emit the disconnect event
-  console.log('hi', reasonId);
   socket.broadcast.to(userSocketId).emit(KICK_EVENT.EVENT_ID, {
     reason: reasonId,
     message: message
@@ -71,7 +70,6 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
 
   // Check if the room exitsts
   if(!rooms[roomId]) {
-    console.log('hi');
     LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.ROOM_DOES_NOT_EXIST, "The room no longer exists.");
     return;
   }
