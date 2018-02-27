@@ -89,6 +89,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
     addUserToRoom(socket, socketIoRoom, rooms, roomId, {
       _id: guestId,
       email: guestId,
+      username: guestId,
       dateJoined: Date.now()
     });
   } else {
