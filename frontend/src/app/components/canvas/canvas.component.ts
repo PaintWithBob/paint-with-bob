@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
+
+const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.scss']
 })
-export class CanvasComponent implements OnInit {
+export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
   canvas: any;
   brushColor: any = '#222';
   tools: any[];
   activeTool: any;
+  @Input() socket: any;
+  socketInitialized: boolean = false;
+  lcDrawingChangeListener: any;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     const options = {
@@ -47,6 +52,31 @@ export class CanvasComponent implements OnInit {
     // Default tool is pencil
     this.activateTool(this.tools[0]);
 
+    this.lcDrawingChangeListener = this.canvas.on('drawingChange', () => {
+      if (this.socket) {
+        // Get our canvasSnapshot
+        const canvasSnapshot = JSON.stringify(this.canvas.getSnapshot());
+
+        // Emit to the server, which will then bounce to the approprite users
+        // TODO: Pass the actual user
+        this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+          user: CANVAS_UPDATE_EVENT_ID,
+          snapshot: canvasSnapshot
+        });
+      }
+    });
+  }
+
+  ngOnChanges() {
+    // Wait to get a socket
+    if(this.socket) {
+      this.socketInitialized = true;
+
+      // Add the canvas update event
+      this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
+        console.log(CANVAS_UPDATE_EVENT_ID, data);
+      });
+    }
   }
 
   // What happens when you select a tool
@@ -76,6 +106,12 @@ export class CanvasComponent implements OnInit {
 
   redoButton(){
     this.canvas.redo();
+  }
+
+  ngOnDestroy() {
+    if (this.lcDrawingChangeListener) {
+      this.lcDrawingChangeListener();
+    }
   }
 
 }

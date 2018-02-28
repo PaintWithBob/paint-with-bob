@@ -89,6 +89,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
     addUserToRoom(socket, socketIoRoom, rooms, roomId, {
       _id: guestId,
       email: guestId,
+      username: guestId,
       dateJoined: Date.now()
     });
   } else {
@@ -121,6 +122,10 @@ const addUserToRoom = (socket, socketIoRoom, rooms, roomId, user) => {
     room: LobbyService.getRoomForClient(rooms[roomId])
   });
 
+  // Handle canvas update events
+  socket.on('CANVAS_UPDATE', (event) => {
+    socketIoRoom.emit(CANVAS_EVENT.EVENT_ID, event);
+  });
 
   // Handle disconnections as well
   socket.on('disconnect', () => {
