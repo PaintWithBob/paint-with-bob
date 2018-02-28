@@ -36,7 +36,7 @@ export class AccountPage implements OnInit {
         }, error => {
             console.error(error);
             this.createLobbyError = error;
-        })
+        });
     }
 
 }

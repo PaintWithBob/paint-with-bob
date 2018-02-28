@@ -9,6 +9,7 @@ import { AuthService } from '../../providers/auth-service/auth.service';
 export class FooterComponent {
 
     userLoggedIn: boolean;
+    year: any;
 
     constructor(private authService: AuthService) {
         // Check if there is a user logged in and set boolean accordingly.
@@ -27,6 +28,7 @@ export class FooterComponent {
         this.authService.userLoggedOut.subscribe(() => {
             this.userLoggedIn = false;
         });
+        this.year = new Date().getFullYear();
     }
 
     logout() {

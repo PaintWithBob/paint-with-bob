@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    {{body}}
+</div>
+<div class="modal-footer">
+    <button *ngFor="let button of buttons" type="button" class="button is-primary" (click)="buttonClick(button)">{{button.text}}</button>
+</div>

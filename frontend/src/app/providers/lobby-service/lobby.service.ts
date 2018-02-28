@@ -12,7 +12,10 @@ export class LobbyService {
 
     socket: any = io(environment.apiUrl);
 
-    constructor(private http: Http, private authService: AuthService) { }
+    constructor(
+        private http: Http,
+        private authService: AuthService
+    ) { }
 
     // Used to send message to room
     sendMessageToRoom(data: any) {
