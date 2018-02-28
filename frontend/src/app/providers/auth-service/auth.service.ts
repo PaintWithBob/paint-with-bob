@@ -85,7 +85,6 @@ export class AuthService {
         });
     }
 
-<<<<<<< HEAD
   // Requests the token from local storage.
   getToken(): Observable<any> {
     return new Observable((observer) => {
@@ -96,12 +95,6 @@ export class AuthService {
       });
     });
   }
-=======
-    // Requests the user from local storage.
-    getToken(): Observable<any> {
-        return this.localStorage.getItem('brUser');
-    }
->>>>>>> 5808e6050feb277261b83975692305c3c81a5489
 
   // Requests the token from local storage.
   getUser(): Observable<any> {
