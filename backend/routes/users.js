@@ -98,7 +98,10 @@ router.post('/join', function(req, res) {
       delete savedUserJson.hash;
 
       const token = await TokenService.getToken(savedUserJson);
-      return token;
+      return {
+        token: token,
+        user: savedUserJson
+      };
     } catch(err) {
       console.log(err);
       if(!err || !err.status) {
@@ -114,7 +117,8 @@ router.post('/join', function(req, res) {
 
   createNewUser().then((response) => {
     res.status(200).json({
-      token: response
+      token: response.token,
+      user: response.user
     });
   }).catch((err) => {
     res.status(err.status).send(err.message);
@@ -220,14 +224,18 @@ router.post('/login', function(req //request from the client (browser)
 
       delete user.hash;
       const token = await TokenService.getToken(user);
-      return token;
+      return {
+        token: token,
+        user: user
+      };
     }
 
     //====================================
       loginUser().then(
         (response) => {
           res.status(200).json({
-            token: response
+            token: response.token,
+            user: response.user
           });
         }
       ).catch(
