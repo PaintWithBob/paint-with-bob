@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 import { AuthService } from '../../providers/auth-service/auth.service';
 
 @Component({
@@ -9,8 +10,16 @@ import { AuthService } from '../../providers/auth-service/auth.service';
 export class HeaderComponent {
 
     userLoggedIn: boolean;
+    menuOpen: boolean;
 
-    constructor(private authService: AuthService) {
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) {
+        // Disconnect from the socket when you leave the room.
+        this.router.events.filter(event => event instanceof NavigationStart).subscribe((event:any) => {
+            this.menuOpen = false;
+        });
         // Check if there is a user logged in and set boolean accordingly.
         this.authService.getToken().subscribe(token => {
             if (token) {

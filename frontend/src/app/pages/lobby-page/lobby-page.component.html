@@ -3,7 +3,15 @@
         <div class="container">
             <h1 class="title">Lobby Page</h1>
             <h2 class="subtitle">Hell yeah, Chelsea was here and made it work!</h2>
+            <div class="share-url">
+                <label>Share URL:</label>
+                <input type="text" class="input" [(ngModel)]="shareUrl" readonly />
+                <button class="button" ngxClipboard [cbContent]="shareUrl">Copy!</button>
+            </div>
             <h4>Number of users: {{numberOfUsers}}</h4>
+            <div class="users">
+                <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
+            </div>
             <div class="columns">
                 <div class="column is-half">
                     <app-stream-embed></app-stream-embed>
