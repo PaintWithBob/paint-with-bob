@@ -11,6 +11,7 @@
 // 2. Set your own initial variables
 $pink: #ffb3b3;
 $pink-invert: #fff;
+$navbar-item-img-max-height: 3rem;
 
 // 3. Set the derived variables (overrides)
 $footer-background-color: #363636;
@@ -39,8 +40,8 @@ $colors: map-merge($colors, $addColors);
 @import "../node_modules/bulma/sass/components/_all";
 
 // This file gets rid of all of the warnings in the console.
-// Replaces the bulma file 'columns.sass' and just changes the last 
-// .columns.is-variable part that was causing warnings. Will need to 
+// Replaces the bulma file 'columns.sass' and just changes the last
+// .columns.is-variable part that was causing warnings. Will need to
 // watch for changes in future updates of bulma.
 // Thread where I found fix https://github.com/jgthms/bulma/issues/1190
 @import "./scss/bulma-column-fix";
@@ -48,3 +49,5 @@ $colors: map-merge($colors, $addColors);
 @import "../node_modules/bulma/sass/grid/tiles.sass";
 @import "../node_modules/bulma/sass/layout/_all";
 
+
+@import "./scss/bootstrap-modals";

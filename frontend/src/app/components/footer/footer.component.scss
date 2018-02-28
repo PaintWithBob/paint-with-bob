@@ -1,3 +1,9 @@
-.footer .container {
-    color: #fff;
+.footer {
+    padding: 2rem 0 1rem;
+    .container {
+        color: #fff;
+        button {
+            margin-bottom: 10px;
+        }
+    }
 }
