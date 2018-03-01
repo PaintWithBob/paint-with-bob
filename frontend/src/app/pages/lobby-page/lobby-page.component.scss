@@ -9,3 +9,13 @@
         width: 33%;
     }
 }
+
+.lobby-canvases {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

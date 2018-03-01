@@ -1,5 +1,5 @@
 <div id="lobby" *ngIf="okToJoin">
-    <section class="section">
+    <main class="section">
         <div class="container">
             <h1 class="title">Lobby Page</h1>
             <h2 class="subtitle">Hell yeah, Chelsea was here and made it work!</h2>
@@ -12,14 +12,26 @@
             <div class="users">
                 <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
             </div>
-            <div class="columns">
+
+            <!-- Main Painting area -->
+            <section class="columns">
                 <div class="column is-half">
                     <app-stream-embed></app-stream-embed>
                 </div>
                 <div class="column is-half">
                     <app-canvas [socket]="socket"></app-canvas>
                 </div>
-            </div>
+            </section>
+
+            <!-- Friends Canvases -->
+            <section>
+              <ul class="lobby-canvases">
+                <li *ngFor="let user of getOtherUsersInLobby()">
+                  <app-canvas [socket]="socket" [user]="user.user">
+                  </app-canvas>
+                </li>
+              </ul>
+            </section>
         </div>
-    </section>
+    </main>
 </div>
