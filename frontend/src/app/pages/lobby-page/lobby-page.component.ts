@@ -22,6 +22,8 @@ export interface button {
 export class LobbyPageComponent implements OnInit, OnDestroy {
 
     roomId: any;
+    roomName: any;
+    isPrivate: boolean;
     socket: any;
     okToJoin: boolean;
     numberOfUsers: number = 0;
@@ -133,6 +135,8 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     roomUpdate(data: any) {
         this.numberOfUsers = data.room.usersInRoom.length;
         this.users = data.room.usersInRoom;
+        this.roomName = data.room.roomName;
+        this.isPrivate = data.room.isPrivate;
     }
 
     private getDismissReason(reason: any): string {

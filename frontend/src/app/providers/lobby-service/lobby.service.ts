@@ -23,10 +23,11 @@ export class LobbyService {
     }
 
     // Creates lobby with user token.
-    createLobby(): Observable<{}> {
+    createLobby(form: any): Observable<{}> {
         return Observable.create(observer => {
             return this.authService.getToken().subscribe(token => {
-                return this.http.post(`${environment.apiUrl}/lobby/create`, { token: token })
+                form.token = token;
+                return this.http.post(`${environment.apiUrl}/lobby/create`, form)
                 .map(response => response.json()).subscribe(response => {
                     return observer.next(response);
                 }, error => {

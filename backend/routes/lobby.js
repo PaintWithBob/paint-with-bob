@@ -8,6 +8,7 @@ let socketIo = {};
 const rooms = {};
 const roomObjectSchema = {
   isPrivate: false,
+  roomName: '',
   usersInRoom: [],
   owner: false,
   socketIoRoom: false,
@@ -20,7 +21,7 @@ const ROOM_DELETE_INTERVAL = 600000;
 
 // Task for creating lobbies
 // Wrap in an async to allow await
-const createLobbyTask = async (res, token) => {
+const createLobbyTask = async (req, res, token) => {
   try {
 
     // Verfiy the token
@@ -37,6 +38,17 @@ const createLobbyTask = async (res, token) => {
 
     //Define room ID
     rooms[roomId] = Object.assign({}, roomObjectSchema);
+
+    // Set room name
+    if(req.body.roomName) {
+        rooms[roomId].roomName = req.body.roomName;
+    } else {
+        rooms[roomId].roomName = req.body.roomId;
+    }
+
+    if(req.body.isPrivate) {
+        rooms[roomId].isPrivate = true;
+    }
 
     const socketIoRoom = socketIo.of('/lobby/room/' + roomId);
     LobbyService.addListenersToRoom(socketIoRoom, rooms, roomId);
@@ -69,7 +81,7 @@ router.post('/create', function(req, res, next) {
   }
 
   // Kick off our async task
-  createLobbyTask(res, req.body.token);
+  createLobbyTask(req, res, req.body.token);
 });
 
 // Lobby Joining and creation for guests
@@ -89,7 +101,7 @@ router.get('/guest', function(req, res, next) {
   // Check if we did not find a room
   if (!foundRoom) {
     // Kick off our async task
-    createLobbyTask(res);
+    createLobbyTask(req, res);
   }
 });
 

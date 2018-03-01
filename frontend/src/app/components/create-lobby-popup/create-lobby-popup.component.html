@@ -1,0 +1,28 @@
+<div class="modal-wrapper">
+    <div class="modal-header">
+        <h4 class="modal-title">Create Lobby</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form (submit)="submit(createLobbyForm)" #createLobbyForm="ngForm">
+        <div class="modal-body">
+            <div class="field">
+                <label class="label">Lobby Name</label>
+                <div class="control">
+                    <input class="input" type="text" name="roomName" [(ngModel)]="lobbyForm.roomName" #roomName="ngModel" required>
+                </div>
+                <div class="help is-danger" *ngIf="createLobbyForm.submitted && roomName.hasError('required')">Please enter a room name.</div>
+            </div>
+            <div class="field">
+                <label class="checkbox">
+                    <input type="checkbox" name="isPrivate" [(ngModel)]="lobbyForm.isPrivate" #isPrivate="ngModel">
+                    Private Lobby?
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="button is-primary">Create Lobby</button>
+        </div>
+    </form>
+</div>
