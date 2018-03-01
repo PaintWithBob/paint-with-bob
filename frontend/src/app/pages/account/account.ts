@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, LobbyService } from '../../providers';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/create-lobby-popup.component';
 
 @Component({
 	selector: 'page-account',
@@ -14,7 +16,8 @@ export class AccountPage implements OnInit {
 	constructor(
         private authService: AuthService,
         private lobbyService: LobbyService,
-        private router: Router
+        private router: Router,
+        private modal: NgbModal
     ) { }
 
 	ngOnInit() {
@@ -26,16 +29,14 @@ export class AccountPage implements OnInit {
     }
 
     createLobby() {
-        this.createLobbyError = null;
-        this.lobbyService.createLobby().subscribe((response: any) => {
-            if(response.roomId) {
-                this.router.navigate(['/lobby', response.roomId]);
-            } else {
-                this.createLobbyError = 'Error creating lobby: not roomId received.';
+        const modalRef = this.modal.open(CreateLobbyPopupComponent, { windowClass: 'create-lobby' });
+        modalRef.componentInstance.token = this.token;
+        modalRef.result.then((result) => {
+            if(result && !result.success) {
+                this.createLobbyError = 'Error creating lobby';
             }
-        }, error => {
-            console.error(error);
-            this.createLobbyError = error;
+        }, (reason) => {
+
         });
     }
 

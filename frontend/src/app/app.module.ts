@@ -21,6 +21,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { StreamEmbedComponent } from './components/stream-embed/stream-embed.component';
 import { LobbyPopupComponent } from './components/lobby-popup/lobby-popup.component';
+import { CreateLobbyPopupComponent } from './components/create-lobby-popup/create-lobby-popup.component';
 
 // Providers
 import { AuthService, LobbyService } from './providers';
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     StreamEmbedComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    LobbyPopupComponent
+    LobbyPopupComponent,
+    CreateLobbyPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +81,8 @@ const appRoutes: Routes = [
     HomePage,
     HeaderComponent,
     FooterComponent,
-    LobbyPopupComponent
+    LobbyPopupComponent,
+    CreateLobbyPopupComponent
   ]
 })
 export class AppModule { }
