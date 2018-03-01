@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { AuthService } from '../../providers';
 
 const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
@@ -7,11 +8,12 @@ const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.scss']
 })
-export class CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() socket: any;
   @Input() user: any;
 
+  authUser: any;
   canvasElementId: string;
   canvas: any;
   brushColor: any = '#222';
@@ -21,17 +23,22 @@ export class CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
   lcDrawingChangeListener: any;
   isReadOnly: boolean = false;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.canvasElementId = `literally-canvas-${Math.floor(Math.random() * 100000).toString(36)}`;
     console.log(this.canvasElementId);
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     // Check if we have a user
    if(this.user) {
     // If so, this is a canvas meant for simply listening and rendering events
     this.isReadOnly = true;
    }
+
+   // Get the current logged in user
+   this.authService.getUser().subscribe((user) => {
+      this.authUser = user;
+   });
 
    // Initialize our canvas
    this.initializeLiterallyCanvas();
@@ -80,11 +87,12 @@ export class CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
             const canvasSnapshot = JSON.stringify(this.canvas.getSnapshot());
 
             // Emit to the server, which will then bounce to the approprite users
-            // TODO: Pass the actual user
-            this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-              user: CANVAS_UPDATE_EVENT_ID,
-              snapshot: canvasSnapshot
-            });
+            if(this.authUser) {
+              this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+                user: this.authUser,
+                snapshot: canvasSnapshot
+              });
+            }
           }
         });
       }
@@ -97,12 +105,16 @@ export class CanvasComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.socketInitialized = true;
 
       // Add the canvas update event
-      this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
-        // check if this canvas has a user associated
-        if(this.user) {
-          console.log('User canvas event!', this.user, data);
-        }
-      });
+      if(this.user) {
+        this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
+          // check if this canvas has a user associated
+          if(this.user && this.user._id === data.user._id) {
+            // Get the snapshot, and set it to our canvas
+            const snapshot = JSON.parse(data.snapshot);
+            this.canvas.loadSnapshot(snapshot);
+          }
+        });
+      }
     }
   }
 
