@@ -1,3 +1,11 @@
+.read-only {
+  pointer-events: none;
+
+  & :not(.canvas-target) {
+    display: none;
+  }
+}
+
 .app-canvas {
     display: block;
     width: 500px;
