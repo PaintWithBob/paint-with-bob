@@ -1,4 +1,8 @@
-<div class="app-canvas">
+<div class="app-canvas"
+  *ngIf="canvasElementId"
+  [ngClass]="{
+    'read-only': isReadOnly
+  }">
   <input [(colorPicker)]="brushColor"
   [style.background]="brushColor"
   style="color: #FFF"
@@ -7,14 +11,19 @@
   (colorPickerChange)="brushColorChange($event)"
   readonly/>
 
- <!-- NEW CODE -->
-  <button class="button is-primary" (click)="decBrush()"> - </button>
-  <button class="button is-primary" (click)="incBrush()"> + </button>
-  <button class="button is-primary" (click)="undoButton()"> ← </button>
-  <button class="button is-primary" (click)="redoButton()"> → </button>
-  <p> Brush Size: {{this.activeTool.tool.strokeWidth}} </p>
+   <!-- NEW CODE -->
+    <button class="button is-primary" (click)="decBrush()"> - </button>
+    <button class="button is-primary" (click)="incBrush()"> + </button>
+    <button class="button is-primary" (click)="undoButton()"> ← </button>
+    <button class="button is-primary" (click)="redoButton()"> → </button>
+    <p *ngIf="activeTool">
+      Brush Size: {{this.activeTool.tool.strokeWidth}}
+    </p>
 
-    <div id="my-canvas"></div>
+    <div [attr.id]="canvasElementId"
+      class="canvas-target">
+    </div>
+
     <div class="tools">
       <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
     </div>

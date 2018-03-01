@@ -26,6 +26,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     okToJoin: boolean;
     numberOfUsers: number = 0;
     users: any[];
+    user: any;
     closeResult: any;
     shareUrl: any;
 
@@ -44,6 +45,11 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         // Disconnect from the socket when you leave the room.
         this.router.events.filter(event => event instanceof NavigationStart).subscribe((event:any) => {
             this.socket.disconnect();
+        });
+
+        // Get our current user
+        this.authService.getUser().subscribe((user) => {
+          this.user = user;
         });
 
         // Subscribe to router event and assign room id.
@@ -137,6 +143,25 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         } else {
             return  `with: ${reason}`;
         }
+    }
+
+    // Function to return all other users in the room
+    private getOtherUsersInLobby() {
+
+      if(!this.users || this.users.length <= 1) {
+        return [];
+      }
+
+      const otherUsers = this.users.filter((user) => {
+        if(user.user._id !== this.user._id) {
+          return true;
+        }
+        return false;
+      });
+
+      console.log(otherUsers);
+
+      return otherUsers;
     }
 
 }
