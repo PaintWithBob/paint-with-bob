@@ -1,6 +1,11 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { AuthService } from '../../providers';
 
+// NOTE: if requestAnimationFrame doesn't work out...
+// Need to use: https://www.npmjs.com/package/request-idle-callback
+//declare var require: any;
+//const ric = require('request-idle-callback');
+
 const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
 @Component({
@@ -22,6 +27,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
   socketInitialized: boolean = false;
   lcDrawingChangeListener: any;
   isReadOnly: boolean = false;
+  canvasUpdateEvent: any;
 
   constructor(private authService: AuthService) {
     this.canvasElementId = `literally-canvas-${Math.floor(Math.random() * 100000).toString(36)}`;
@@ -105,13 +111,23 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
       this.socketInitialized = true;
 
       // Add the canvas update event
-      if(this.user) {
+      if (this.user) {
         this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
           // check if this canvas has a user associated
-          if(this.user && this.user._id === data.user._id) {
-            // Get the snapshot, and set it to our canvas
-            const snapshot = JSON.parse(data.snapshot);
-            this.canvas.loadSnapshot(snapshot);
+          if (this.user._id === data.user._id) {
+
+            // Check if we had a pending request
+            if (this.canvasUpdateEvent) {
+              cancelAnimationFrame(this.canvasUpdateEvent);
+            }
+
+            // Wrap in a requestIdleCallback
+            this.canvasUpdateEvent = requestAnimationFrame(() => {
+              this.canvasUpdateEvent = false;
+              // Get the snapshot, and set it to our canvas
+              const snapshot = JSON.parse(data.snapshot);
+              this.canvas.loadSnapshot(snapshot);
+            });
           }
         });
       }
