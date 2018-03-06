@@ -29,12 +29,15 @@ export class LobbyService {
                 form.token = token;
                 return this.http.post(`${environment.apiUrl}/lobby/create`, form)
                 .map(response => response.json()).subscribe(response => {
-                    return observer.next(response);
+                    observer.next(response);
+                    return observer.complete();
                 }, error => {
-                    return observer.error(error);
+                    observer.error(error);
+                    return observer.complete();
                 });
             }, error => {
-                return observer.error(error);
+                observer.error(error);
+                return observer.complete();
             });
         });
     }

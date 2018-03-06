@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { LobbyPopupComponent } from '../../components/lobby-popup/lobby-popup.component';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../providers';
+import { forkJoin } from "rxjs/observable/forkJoin";
 import * as io from 'socket.io-client';
 import 'rxjs/add/operator/filter';
 
@@ -29,6 +30,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     numberOfUsers: number = 0;
     users: any[];
     user: any;
+    token: any;
     closeResult: any;
     shareUrl: any;
 
@@ -49,61 +51,36 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
             this.socket.disconnect();
         });
 
-        // Get our current user
-        this.authService.getUser().subscribe((user) => {
-          this.user = user;
-        });
-
         // Subscribe to router event and assign room id.
         // Initialize socket with roomId.
         this.activatedRoute.params.subscribe((params: Params) => {
+
             this.roomId = params['roomId'];
-            this.authService.getToken().subscribe(token => {
 
-                // Connect to correct socket namespace. (emits connection event)
-                this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`, { query: { token: token} });
-                this.socket.on('connect', () => {
-                    this.okToJoin = true;
-                });
+            forkJoin([
+              this.authService.getUser(),
+              this.authService.getToken()
+            ]).subscribe((responses) => {
+              // Success
 
-                // Runs when the room status is updated (users enters, user leaves, etc.)
-                this.socket.on('ROOM_UPDATE', data => {
-                    console.log('Room updated: ', data);
-                    if(data.reason === 'USER_JOINED') {
-                        this.roomUpdate(data);
-                    } else if(data.reason === 'USER_LEFT') {
-                        this.roomUpdate(data);
-                    }
-                });
+              this.user = responses[0];
+              this.token = responses[1];
 
-                // Listen for user getting kicked.
-                this.socket.on('KICK', data => {
-                    if(data.reason === 'ROOM_FULL') {
-                        console.log('KICK - ROOM_FULL: ', data);
-                        this.roomUpdate(data);
-                        this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-                    } else if(data.reason === 'ADMIN_KICK') {
-                        console.log('KICK - ADMIN_KICK: ', data);
-                        this.roomUpdate(data);
-                        this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-                    } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
-                        console.log("Room doesn't exist bro");
-                        this.roomUpdate(data);
-                    }
-                });
+              // Finally, connect to our socket
+              // Connect to correct socket namespace. (emits connection event)
+              this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`, {
+                query: {
+                  token: this.token
+                }
+              });
+              this.setEventHandlersOnSocket();
+            }, () => {
+              // Error
 
-                // Track any errors that occur with connection and redirect user out of room.
-                this.socket.on('error', (error) => {
-                    if(error === 'Invalid namespace') {
-                        console.log("Invalid room");
-                        this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-                    } else if (typeof console !== "undefined" && console !== null) {
-                        console.error("Socket.io reported a generic error");
-                        // Show a popup telling user that room does not exist
-                        // For now, redirect back to homepage.
-                        this.router.navigate(['../']);
-                    }
-                });
+              // Finally, connect to our socket
+              // Connect to correct socket namespace. (emits connection event)
+              this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`);
+              this.setEventHandlersOnSocket();
             });
         });
     }
@@ -133,10 +110,69 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
     // Whenever the room gets updated, run this method.
     roomUpdate(data: any) {
+
+        // If we are a guest, and we have no user, find ourselves
+        if(!this.user) {
+          data.room.usersInRoom.some((user) => {
+            if(user.socketId === this.socket.id) {
+              this.user = user.user;
+              return true;
+            }
+            return false;
+          });
+        }
+
         this.numberOfUsers = data.room.usersInRoom.length;
         this.users = data.room.usersInRoom;
         this.roomName = data.room.roomName;
         this.isPrivate = data.room.isPrivate;
+    }
+
+    // Function called in ngOnInit
+    private setEventHandlersOnSocket() {
+
+      this.socket.on('connect', () => {
+          this.okToJoin = true;
+      });
+
+      // Runs when the room status is updated (users enters, user leaves, etc.)
+      this.socket.on('ROOM_UPDATE', data => {
+          console.log('Room updated: ', data);
+          if(data.reason === 'USER_JOINED') {
+              this.roomUpdate(data);
+          } else if(data.reason === 'USER_LEFT') {
+              this.roomUpdate(data);
+          }
+      });
+
+      // Listen for user getting kicked.
+      this.socket.on('KICK', data => {
+          if(data.reason === 'ROOM_FULL') {
+              console.log('KICK - ROOM_FULL: ', data);
+              this.roomUpdate(data);
+              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+          } else if(data.reason === 'ADMIN_KICK') {
+              console.log('KICK - ADMIN_KICK: ', data);
+              this.roomUpdate(data);
+              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+          } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
+              console.log("Room doesn't exist bro");
+              this.roomUpdate(data);
+          }
+      });
+
+      // Track any errors that occur with connection and redirect user out of room.
+      this.socket.on('error', (error) => {
+          if(error === 'Invalid namespace') {
+              console.log("Invalid room");
+              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+          } else if (typeof console !== "undefined" && console !== null) {
+              console.error("Socket.io reported a generic error");
+              // Show a popup telling user that room does not exist
+              // For now, redirect back to homepage.
+              this.router.navigate(['../']);
+          }
+      });
     }
 
     private getDismissReason(reason: any): string {
@@ -152,7 +188,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     // Function to return all other users in the room
     private getOtherUsersInLobby() {
 
-      if(!this.users || this.users.length <= 1) {
+      if(!this.user || !this.users || this.users.length <= 1) {
         return [];
       }
 
@@ -162,8 +198,6 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         }
         return false;
       });
-
-      console.log(otherUsers);
 
       return otherUsers;
     }

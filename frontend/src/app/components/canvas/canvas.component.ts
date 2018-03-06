@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { AuthService } from '../../providers';
 
+declare var require: any;
+const ric = require('request-idle-callback');
+
 const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
 @Component({
@@ -11,7 +14,10 @@ const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() socket: any;
+    // User can either be our current user that was logged in (will be assumed on not isReadOnly)
+    // Or, a user to watch for changes to update
     @Input() user: any;
+    @Input() isReadOnly: boolean = false;
 
     authUser: any;
     canvasElementId: string;
@@ -23,28 +29,16 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     activeTool: any;
     socketInitialized: boolean = false;
     lcDrawingChangeListener: any;
-    isReadOnly: boolean = false;
+    canvasUpdateEvent: any;
 
     constructor(private authService: AuthService) {
         this.canvasElementId = `literally-canvas-${Math.floor(Math.random() * 100000).toString(36)}`;
     }
 
     ngOnInit() {
-        // Check if we have a user
-        if(this.user) {
-            // If so, this is a canvas meant for simply listening and rendering events
-            this.isReadOnly = true;
-        }
-
-        // Get the current logged in user
-        this.authService.getUser().subscribe((user) => {
-            this.authUser = user;
-        });
-
         // Initialize our canvas
         this.initializeLiterallyCanvas();
     }
-
 
     initializeLiterallyCanvas() {
 
@@ -61,8 +55,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     width: 500,
                     height: 500
                 },
-                keyboardShortcuts: false,
-                tools: (<any>window).LC.defaultTools.concat([this.lineTool])
+                keyboardShortcuts: false
             };
             this.canvas = (<any>window).LC.init(document.querySelector(`#${this.canvasElementId}`), options);
 
@@ -81,10 +74,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
             // Default tool is pencil
             this.activateTool(this.tools[0]);
 
-            // (<any>window).LC.defaultTools.concat([this.lineTool]);
-
-            console.log(this.canvas);
-
             if(!this.isReadOnly) {
                 this.lcDrawingChangeListener = this.canvas.on('drawingChange', () => {
                     if (this.socket) {
@@ -92,9 +81,10 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                         const canvasSnapshot = JSON.stringify(this.canvas.getSnapshot());
 
                         // Emit to the server, which will then bounce to the approprite users
-                        if(this.authUser) {
+                        // Emit to the server, which will then bounce to the approprite users
+                        if(this.user) {
                             this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-                                user: this.authUser,
+                                user: this.user,
                                 snapshot: canvasSnapshot
                             });
                         }
@@ -104,58 +94,35 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-
     ngOnChanges() {
         // Wait to get a socket
         if(this.socket) {
             this.socketInitialized = true;
 
             // Add the canvas update event
-            if(this.user) {
+            if (this.isReadOnly) {
                 this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
+
                     // check if this canvas has a user associated
-                    if(this.user && this.user._id === data.user._id) {
-                        // Get the snapshot, and set it to our canvas
-                        const snapshot = JSON.parse(data.snapshot);
-                        this.canvas.loadSnapshot(snapshot);
+                    if (this.user._id === data.user._id) {
+
+                        // Check if we had a pending request
+                        if (this.canvasUpdateEvent) {
+                            ric.cancelIdleCallback(this.canvasUpdateEvent);
+                        }
+
+                        // Wrap in a requestIdleCallback
+                        this.canvasUpdateEvent = ric.requestIdleCallback(() => {
+                            this.canvasUpdateEvent = false;
+                            // Get the snapshot, and set it to our canvas
+                            const snapshot = JSON.parse(data.snapshot);
+                            this.canvas.loadSnapshot(snapshot);
+                        });
                     }
                 });
             }
         }
     }
-
-    lineTool = function(lc) {  // take lc as constructor arg
-        var self = this;
-
-        console.log('little lc: ', lc);
-
-        return {
-            name: 'MyTool',
-            iconName: 'line',
-            strokeWidth: lc.opts.defaultStrokeWidth,
-            optionsStyle: 'stroke-width',
-
-            // begin: function(x, y, lc) {
-            //     self.currentShape = (<any>window).LC.createShape('Line', {
-            //         x1: x, y1: y, x2: x, y2: y,
-            //         color: lc.getColor('primary')
-            //     });
-            // },
-
-            // continue: function(x, y, lc) {
-            //     self.currentShape.x2 = x;
-            //     self.currentShape.y2 = y;
-            //     lc.setShapesInProgress([self.currentShape]);
-            // },
-
-            // end: function(x, y, lc) {
-            //     self.currentShape.x2 = x;
-            //     self.currentShape.y2 = y;
-            //     lc.setShapesInProgress([]);
-            //     lc.saveShape(self.currentShape);
-            // }
-        }
-    };
 
     // What happens when you select a tool
     activateTool(t) {

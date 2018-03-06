@@ -20,7 +20,9 @@
                     <app-stream-embed></app-stream-embed>
                 </div>
                 <div class="column is-half">
-                    <app-canvas [socket]="socket"></app-canvas>
+                    <app-canvas [socket]="socket"
+                      [user]="user">
+                    </app-canvas>
                 </div>
             </section>
 
@@ -28,7 +30,10 @@
             <section>
                 <ul class="lobby-canvases">
                     <li *ngFor="let user of getOtherUsersInLobby()">
-                        <app-canvas [socket]="socket" [user]="user.user"></app-canvas>
+                        <app-canvas [socket]="socket"
+                          [user]="user.user"
+                          [isReadOnly]="true">
+                        </app-canvas>
                     </li>
                 </ul>
             </section>
