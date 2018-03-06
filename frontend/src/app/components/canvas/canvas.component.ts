@@ -1,10 +1,8 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { AuthService } from '../../providers';
 
-// NOTE: if requestAnimationFrame doesn't work out...
-// Need to use: https://www.npmjs.com/package/request-idle-callback
-//declare var require: any;
-//const ric = require('request-idle-callback');
+declare var require: any;
+const ric = require('request-idle-callback');
 
 const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 
@@ -118,11 +116,11 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
             // Check if we had a pending request
             if (this.canvasUpdateEvent) {
-              cancelAnimationFrame(this.canvasUpdateEvent);
+              ric.cancelIdleCallback(this.canvasUpdateEvent);
             }
 
             // Wrap in a requestIdleCallback
-            this.canvasUpdateEvent = requestAnimationFrame(() => {
+            this.canvasUpdateEvent = ric.requestIdleCallback(() => {
               this.canvasUpdateEvent = false;
               // Get the snapshot, and set it to our canvas
               const snapshot = JSON.parse(data.snapshot);
