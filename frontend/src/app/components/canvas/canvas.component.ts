@@ -13,8 +13,12 @@ const CANVAS_UPDATE_EVENT_ID = 'CANVAS_UPDATE';
 })
 export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
+
   @Input() socket: any;
+  // User can either be our current user that was logged in (will be assumed on not isReadOnly)
+  // Or, a user to watch for changes to update
   @Input() user: any;
+  @Input() isReadOnly: boolean = false;
 
   authUser: any;
   canvasElementId: string;
@@ -24,7 +28,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
   activeTool: any;
   socketInitialized: boolean = false;
   lcDrawingChangeListener: any;
-  isReadOnly: boolean = false;
   canvasUpdateEvent: any;
 
   constructor(private authService: AuthService) {
@@ -33,16 +36,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    // Check if we have a user
-   if(this.user) {
-    // If so, this is a canvas meant for simply listening and rendering events
-    this.isReadOnly = true;
-   }
-
-   // Get the current logged in user
-   this.authService.getUser().subscribe((user) => {
-      this.authUser = user;
-   });
 
    // Initialize our canvas
    this.initializeLiterallyCanvas();
@@ -91,9 +84,9 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
             const canvasSnapshot = JSON.stringify(this.canvas.getSnapshot());
 
             // Emit to the server, which will then bounce to the approprite users
-            if(this.authUser) {
+            if(this.user) {
               this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-                user: this.authUser,
+                user: this.user,
                 snapshot: canvasSnapshot
               });
             }
@@ -109,8 +102,9 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
       this.socketInitialized = true;
 
       // Add the canvas update event
-      if (this.user) {
+      if (this.isReadOnly) {
         this.socket.on(CANVAS_UPDATE_EVENT_ID, (data) => {
+          
           // check if this canvas has a user associated
           if (this.user._id === data.user._id) {
 
