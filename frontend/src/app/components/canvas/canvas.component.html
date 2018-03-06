@@ -1,30 +1,60 @@
-<div class="app-canvas"
-  *ngIf="canvasElementId"
-  [ngClass]="{
-    'read-only': isReadOnly
-  }">
-  <input [(colorPicker)]="brushColor"
-  [style.background]="brushColor"
-  style="color: #FFF"
-  [value]="brushColor"
-  [cpPosition]="'left'"
-  (colorPickerChange)="brushColorChange($event)"
-  readonly/>
-
-   <!-- NEW CODE -->
-    <button class="button is-primary" (click)="decBrush()"> - </button>
-    <button class="button is-primary" (click)="incBrush()"> + </button>
-    <button class="button is-primary" (click)="undoButton()"> ← </button>
-    <button class="button is-primary" (click)="redoButton()"> → </button>
-    <p *ngIf="activeTool">
-      Brush Size: {{this.activeTool.tool.strokeWidth}}
-    </p>
-
-    <div [attr.id]="canvasElementId"
-      class="canvas-target">
+<div class="app-canvas" *ngIf="canvasElementId" [ngClass]="{'read-only': isReadOnly}">
+    <div class="top-buttons">
+        <div class="color-selectors">
+            <div class="field">
+                <label>Stroke</label>
+                <div class="control">
+                    <input [(colorPicker)]="brushColor"
+                    [style.background]="brushColor"
+                    style="color: #FFF"
+                    [value]="brushColor"
+                    [cpPosition]="'left'"
+                    class="input"
+                    (colorPickerChange)="brushColorChange($event)"
+                    readonly/>
+                </div>
+            </div>
+            <div class="field">
+                <label>Fill</label>
+                <div class="control">
+                    <input [(colorPicker)]="secondaryColor"
+                    [style.background]="secondaryColor"
+                    style="color: #FFF"
+                    [value]="secondaryColor"
+                    [cpPosition]="'left'"
+                    class="input"
+                    (colorPickerChange)="secondaryColorChange($event)"
+                    readonly/>
+                </div>
+            </div>
+            <div class="field">
+                <label>BG</label>
+                <div class="control">
+                    <input [(colorPicker)]="backgroundColor"
+                    [style.background]="backgroundColor"
+                    style="color: #FFF"
+                    [value]="backgroundColor"
+                    [cpPosition]="'left'"
+                    class="input"
+                    (colorPickerChange)="backgroundColorChange($event)"
+                    readonly/>
+                </div>
+            </div>
+        </div>
     </div>
+    <p *ngIf="activeTool">Brush Size: {{this.activeTool.tool.strokeWidth}}</p>
 
-    <div class="tools">
-      <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
+    <div [attr.id]="canvasElementId" class="canvas-target"></div>
+
+    <div class="tools-wrapper">
+        <div class="tools main-tools">
+            <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" placement="top" ngbTooltip="{{tool.name}}" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
+        </div>
+        <div class="tools">
+            <button class="button is-primary" (click)="decBrush()"> - </button>
+            <button class="button is-primary" (click)="incBrush()"> + </button>
+            <button class="button is-primary" (click)="undoButton()" placement="top" ngbTooltip="undo"> ← </button>
+            <button class="button is-primary" (click)="redoButton()" placement="top" ngbTooltip="redo"> → </button>
+        </div>
     </div>
 </div>
