@@ -14,7 +14,6 @@ export class FooterComponent {
     constructor(private authService: AuthService) {
         // Check if there is a user logged in and set boolean accordingly.
         this.authService.getToken().subscribe(token => {
-            console.log(token);
             if (token) {
                 this.userLoggedIn = true;
             } else {

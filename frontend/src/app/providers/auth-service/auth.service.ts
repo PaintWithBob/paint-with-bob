@@ -30,9 +30,11 @@ export class AuthService {
                 token: user.token,
                 user: user.user
             }).subscribe(response => {
-                return observer.next(response);
+                observer.next(response);
+                return observer.complete();
             }, () => {
-                return observer.error('Error storing token');
+                observer.error('Error storing token');
+                return observer.complete();
             });
         });
     }
@@ -44,12 +46,15 @@ export class AuthService {
                 return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(() => {
                     this.userLoggedIn.emit();
                     this.userRegistered.emit();
-                    return observer.next("Successfully created account and logged in");
+                    observer.next("Successfully created account and logged in");
+                    return observer.complete();
                 }, error => {
-                    return observer.error(error);
+                    observer.error(error);
+                    return observer.complete();
                 });
             }, error => {
-                return observer.error(error);
+                observer.error(error);
+                return observer.complete();
             });
         });
     }
@@ -62,12 +67,15 @@ export class AuthService {
                 return this.setLoggedInUser(response).subscribe(() => {
                     this.userLoggedIn.emit();
                     observer.next("Successfully logged in");
-                    return this.router.navigate(['/account']);
+                    this.router.navigate(['/account']);
+                    return observer.complete();
                 }, error => {
-                    return observer.error(error);
+                    observer.error(error);
+                    return observer.complete();
                 });
             }, error => {
-                return observer.error(error);
+                observer.error(error);
+                return observer.complete();
             });
         });
     }
@@ -78,9 +86,11 @@ export class AuthService {
             return this.localStorage.removeItem('brUser').subscribe(() => {
                 this.userLoggedOut.emit();
                 observer.next("Successfully logged out");
-                return this.router.navigate(['/login']);
+                this.router.navigate(['/login']);
+                return observer.complete();
             }, error => {
-                return observer.error(error);
+                observer.error(error);
+                return observer.complete();
             });
         });
     }
@@ -89,9 +99,15 @@ export class AuthService {
     getToken(): Observable<any> {
         return new Observable((observer) => {
             this.localStorage.getItem('brUser').subscribe((response) => {
-                return observer.next(response.token);
+                if(!response || !response.token) {
+                  observer.error('Token was not on brUser localStorage item');
+                  return observer.complete();
+                }
+                observer.next(response.token);
+                return observer.complete();
             }, () => {
-                return observer.error('Could not get token');
+                observer.error('Could not get token');
+                return observer.complete();
             });
         });
     }
@@ -100,9 +116,15 @@ export class AuthService {
     getUser(): Observable<any> {
         return new Observable((observer) => {
             this.localStorage.getItem('brUser').subscribe((response) => {
-                return observer.next(response.user);
+              if(!response || !response.user) {
+                observer.error('User was not on brUser localStorage item');
+                return observer.complete();
+              }
+                observer.next(response.user);
+                return observer.complete();
             }, () => {
-                return observer.error('Could not get token');
+                observer.error('Could not get token');
+                return observer.complete();
             });
         });
     }
