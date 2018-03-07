@@ -1,31 +1,32 @@
 <div id="home">
-  <section class="hero is-primary is-large">
-    <div class="hero-head">
-        <div class="hero-body">
-          <div class="container has-text-centered">
-            <h1 class="title">Paint With Bob</h1>
-            <h2 class="subtitle">Good stuff goes here</h2>
-              <a class="button is-primary is-inverted is-outlined">Register</a>
-              <a class="button is-primary is-inverted is-outlined">Login</a>
-          </div>
-
-        </div>
-    </div>
-  </section>
-
-  <section class="section">
+<div class="backGnd">
+  <div class="overlay"></div>
+  
     <div class="container has-text-centered">
-      <div class="columns">
-        <div class="column">
-          GIF of registering.
-        </div>
-        <div class="column">
-          Site information.
-        </div>
-        <div class="column">
-          GIF of using canvas.
-        </div>
+      <div class="breathingRoom">
+        <h1 class="title">Paint With Bob</h1>
+        <h2 class="subtitle">Some inspiring shit about why you should paint with Bob.</h2>
+        <a class="button is-primary is-inverted is-outlined" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Register</a>
+        <a class="button is-primary is-inverted is-outlined" routerLink="/login" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Login</a>
       </div>
     </div>
-  </section>
+</div>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <div class="columns">
+      <div class="column">
+        GIF of registering.
+      </div>
+      <div class="column">
+        Site information.
+      </div>
+      <div class="column">
+        GIF of using canvas.
+      </div>
+    </div>
+  </div>
+</section>
 </div>
