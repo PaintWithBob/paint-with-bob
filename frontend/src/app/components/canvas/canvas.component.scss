@@ -1,20 +1,39 @@
 .read-only {
-  pointer-events: none;
+    pointer-events: none;
 
-  & :not(.canvas-target) {
-    display: none;
-  }
+    & :not(.canvas-target) {
+        display: none;
+    }
 }
 
 .app-canvas {
     display: block;
     width: 500px;
-    height: 500px;
+    height: auto;
+}
+
+.canvas-target {
+    border: 1px solid #000;
 }
 
 .tools {
     margin-top: 10px;
     .tool {
         margin-right: 5px;
+    }
+}
+
+.color-selectors {
+    display: flex;
+}
+
+.color-selectors {
+    margin-bottom: 10px;
+    display: flex;
+    .field:not(:last-of-type) {
+        margin-right: 10px;
+    }
+    input {
+        max-width: 70px;
     }
 }

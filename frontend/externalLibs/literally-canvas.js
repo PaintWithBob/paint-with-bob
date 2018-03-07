@@ -3,29 +3,29 @@
       bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
       slice = [].slice,
       indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-    
+
     actions = require('./actions');
-    
+
     bindEvents = require('./bindEvents');
-    
+
     math = require('./math');
-    
+
     ref = require('./shapes'), createShape = ref.createShape, shapeToJSON = ref.shapeToJSON, JSONToShape = ref.JSONToShape;
-    
+
     renderShapeToContext = require('./canvasRenderer').renderShapeToContext;
-    
+
     renderShapeToSVG = require('./svgRenderer').renderShapeToSVG;
-    
+
     renderSnapshotToImage = require('./renderSnapshotToImage');
-    
+
     renderSnapshotToSVG = require('./renderSnapshotToSVG');
-    
+
     Pencil = require('../tools/Pencil');
-    
+
     util = require('./util');
-    
+
     INFINITE = 'infinite';
-    
+
     module.exports = LiterallyCanvas = (function() {
       function LiterallyCanvas(arg1, arg2) {
         this.setImageSize = bind(this.setImageSize, this);
@@ -84,7 +84,7 @@
         }
         this.respondToSizeChange = function() {};
       }
-    
+
       LiterallyCanvas.prototype.bindToElement = function(containerEl) {
         var ref1, repaintAll;
         if (this.containerEl) {
@@ -116,7 +116,7 @@
         }
         return repaintAll();
       };
-    
+
       LiterallyCanvas.prototype._teardown = function() {
         var ref1;
         if ((ref1 = this.tool) != null) {
@@ -129,14 +129,14 @@
         this.containerEl = null;
         return this.isBound = false;
       };
-    
+
       LiterallyCanvas.prototype.trigger = function(name, data) {
         this.canvas.dispatchEvent(new CustomEvent(name, {
           detail: data
         }));
         return null;
       };
-    
+
       LiterallyCanvas.prototype.on = function(name, fn) {
         var wrapper;
         wrapper = function(e) {
@@ -149,25 +149,25 @@
           };
         })(this);
       };
-    
+
       LiterallyCanvas.prototype.getRenderScale = function() {
         return this.scale * this.backingScale;
       };
-    
+
       LiterallyCanvas.prototype.clientCoordsToDrawingCoords = function(x, y) {
         return {
           x: (x * this.backingScale - this.position.x) / this.getRenderScale(),
           y: (y * this.backingScale - this.position.y) / this.getRenderScale()
         };
       };
-    
+
       LiterallyCanvas.prototype.drawingCoordsToClientCoords = function(x, y) {
         return {
           x: x * this.getRenderScale() + this.position.x,
           y: y * this.getRenderScale() + this.position.y
         };
       };
-    
+
       LiterallyCanvas.prototype.setImageSize = function(width, height) {
         this.width = width || INFINITE;
         this.height = height || INFINITE;
@@ -178,7 +178,7 @@
           height: this.height
         });
       };
-    
+
       LiterallyCanvas.prototype.setTool = function(tool) {
         var ref1;
         if (this.isBound) {
@@ -194,11 +194,11 @@
           return this.tool.didBecomeActive(this);
         }
       };
-    
+
       LiterallyCanvas.prototype.setShapesInProgress = function(newVal) {
         return this._shapesInProgress = newVal;
       };
-    
+
       LiterallyCanvas.prototype.pointerDown = function(x, y) {
         var p;
         p = this.clientCoordsToDrawingCoords(x, y);
@@ -219,7 +219,7 @@
           });
         }
       };
-    
+
       LiterallyCanvas.prototype.pointerMove = function(x, y) {
         return util.requestAnimationFrame((function(_this) {
           return function() {
@@ -254,7 +254,7 @@
           };
         })(this));
       };
-    
+
       LiterallyCanvas.prototype.pointerUp = function(x, y) {
         var p;
         p = this.clientCoordsToDrawingCoords(x, y);
@@ -277,7 +277,7 @@
           });
         }
       };
-    
+
       LiterallyCanvas.prototype.setColor = function(name, color) {
         this.colors[name] = color;
         if (!this.isBound) {
@@ -299,11 +299,11 @@
           return this.trigger("drawingChange");
         }
       };
-    
+
       LiterallyCanvas.prototype.getColor = function(name) {
         return this.colors[name];
       };
-    
+
       LiterallyCanvas.prototype.saveShape = function(shape, triggerShapeSaveEvent, previousShapeId) {
         if (triggerShapeSaveEvent == null) {
           triggerShapeSaveEvent = true;
@@ -323,11 +323,11 @@
         }
         return this.trigger('drawingChange');
       };
-    
+
       LiterallyCanvas.prototype.pan = function(x, y) {
         return this.setPan(this.position.x - x, this.position.y - y);
       };
-    
+
       LiterallyCanvas.prototype.keepPanInImageBounds = function() {
         var ref1, renderScale, x, y;
         renderScale = this.getRenderScale();
@@ -351,7 +351,7 @@
           y: y
         };
       };
-    
+
       LiterallyCanvas.prototype.setPan = function(x, y) {
         this.position = {
           x: x,
@@ -364,7 +364,7 @@
           y: this.position.y
         });
       };
-    
+
       LiterallyCanvas.prototype.zoom = function(factor) {
         var newScale;
         newScale = this.scale + factor;
@@ -373,7 +373,7 @@
         newScale = Math.round(newScale * 100) / 100;
         return this.setZoom(newScale);
       };
-    
+
       LiterallyCanvas.prototype.setZoom = function(scale) {
         var oldScale;
         oldScale = this.scale;
@@ -387,7 +387,7 @@
           newScale: this.scale
         });
       };
-    
+
       LiterallyCanvas.prototype.setWatermarkImage = function(newImage) {
         this.watermarkImage = newImage;
         util.addImageOnload(newImage, (function(_this) {
@@ -399,7 +399,7 @@
           return this.repaintLayer('background');
         }
       };
-    
+
       LiterallyCanvas.prototype.repaintAllLayers = function() {
         var i, key, len, ref1;
         ref1 = ['background', 'main'];
@@ -409,7 +409,7 @@
         }
         return null;
       };
-    
+
       LiterallyCanvas.prototype.repaintLayer = function(repaintLayerKey, dirty) {
         var retryCallback;
         if (dirty == null) {
@@ -476,7 +476,7 @@
           layerKey: repaintLayerKey
         });
       };
-    
+
       LiterallyCanvas.prototype._renderWatermark = function(ctx, worryAboutRetina, retryCallback) {
         if (worryAboutRetina == null) {
           worryAboutRetina = true;
@@ -494,7 +494,7 @@
         ctx.drawImage(this.watermarkImage, -this.watermarkImage.width / 2, -this.watermarkImage.height / 2);
         return ctx.restore();
       };
-    
+
       LiterallyCanvas.prototype.drawShapeInProgress = function(shape) {
         this.repaintLayer('main', false);
         return this.clipped(((function(_this) {
@@ -508,7 +508,7 @@
           };
         })(this)), this.ctx, this.bufferCtx);
       };
-    
+
       LiterallyCanvas.prototype.draw = function(shapes, ctx, retryCallback) {
         var drawShapes;
         if (!shapes.length) {
@@ -533,7 +533,7 @@
           };
         })(this)), ctx);
       };
-    
+
       LiterallyCanvas.prototype.clipped = function() {
         var contexts, ctx, fn, height, i, j, len, len1, results, width, x, y;
         fn = arguments[0], contexts = 2 <= arguments.length ? slice.call(arguments, 1) : [];
@@ -570,7 +570,7 @@
         }
         return results;
       };
-    
+
       LiterallyCanvas.prototype.transformed = function() {
         var contexts, ctx, fn, i, j, len, len1, results, scale;
         fn = arguments[0], contexts = 2 <= arguments.length ? slice.call(arguments, 1) : [];
@@ -589,7 +589,7 @@
         }
         return results;
       };
-    
+
       LiterallyCanvas.prototype.clear = function(triggerClearEvent) {
         var newShapes, oldShapes;
         if (triggerClearEvent == null) {
@@ -605,13 +605,13 @@
         }
         return this.trigger('drawingChange', {});
       };
-    
+
       LiterallyCanvas.prototype.execute = function(action) {
         this.undoStack.push(action);
         action["do"]();
         return this.redoStack = [];
       };
-    
+
       LiterallyCanvas.prototype.undo = function() {
         var action;
         if (!this.undoStack.length) {
@@ -625,7 +625,7 @@
         });
         return this.trigger('drawingChange', {});
       };
-    
+
       LiterallyCanvas.prototype.redo = function() {
         var action;
         if (!this.redoStack.length) {
@@ -639,15 +639,15 @@
         });
         return this.trigger('drawingChange', {});
       };
-    
+
       LiterallyCanvas.prototype.canUndo = function() {
         return !!this.undoStack.length;
       };
-    
+
       LiterallyCanvas.prototype.canRedo = function() {
         return !!this.redoStack.length;
       };
-    
+
       LiterallyCanvas.prototype.getPixel = function(x, y) {
         var p, pixel;
         p = this.drawingCoordsToClientCoords(x, y);
@@ -658,13 +658,13 @@
           return null;
         }
       };
-    
+
       LiterallyCanvas.prototype.getContentBounds = function() {
         return util.getBoundingRect((this.shapes.concat(this.backgroundShapes)).map(function(s) {
           return s.getBoundingRect();
         }), this.width === INFINITE ? 0 : this.width, this.height === INFINITE ? 0 : this.height);
       };
-    
+
       LiterallyCanvas.prototype.getDefaultImageRect = function(explicitSize, margin) {
         var s;
         if (explicitSize == null) {
@@ -692,7 +692,7 @@
           return results;
         }).call(this), explicitSize, margin);
       };
-    
+
       LiterallyCanvas.prototype.getImage = function(opts) {
         if (opts == null) {
           opts = {};
@@ -718,16 +718,16 @@
         }
         return renderSnapshotToImage(this.getSnapshot(), opts);
       };
-    
+
       LiterallyCanvas.prototype.canvasForExport = function() {
         this.repaintAllLayers();
         return util.combineCanvases(this.backgroundCanvas, this.canvas);
       };
-    
+
       LiterallyCanvas.prototype.canvasWithBackground = function(backgroundImageOrCanvas) {
         return util.combineCanvases(backgroundImageOrCanvas, this.canvasForExport());
       };
-    
+
       LiterallyCanvas.prototype.getSnapshot = function(keys) {
         var i, k, len, ref1, shape, snapshot;
         if (keys == null) {
@@ -776,19 +776,19 @@
         }
         return snapshot;
       };
-    
+
       LiterallyCanvas.prototype.getSnapshotJSON = function() {
         console.warn("lc.getSnapshotJSON() is deprecated. use JSON.stringify(lc.getSnapshot()) instead.");
         return JSON.stringify(this.getSnapshot());
       };
-    
+
       LiterallyCanvas.prototype.getSVGString = function(opts) {
         if (opts == null) {
           opts = {};
         }
         return renderSnapshotToSVG(this.getSnapshot(), opts);
       };
-    
+
       LiterallyCanvas.prototype.loadSnapshot = function(snapshot) {
         var i, j, k, len, len1, ref1, ref2, s, shape, shapeRepr;
         if (!snapshot) {
@@ -838,22 +838,22 @@
         this.trigger('snapshotLoad');
         return this.trigger('drawingChange', {});
       };
-    
+
       LiterallyCanvas.prototype.loadSnapshotJSON = function(str) {
         console.warn("lc.loadSnapshotJSON() is deprecated. use lc.loadSnapshot(JSON.parse(snapshot)) instead.");
         return this.loadSnapshot(JSON.parse(str));
       };
-    
+
       return LiterallyCanvas;
-    
+
     })();
-    
-    
+
+
     },{"../tools/Pencil":24,"./actions":3,"./bindEvents":4,"./canvasRenderer":5,"./math":10,"./renderSnapshotToImage":11,"./renderSnapshotToSVG":12,"./shapes":13,"./svgRenderer":14,"./util":15}],2:[function(require,module,exports){
     var TextRenderer, getLinesToRender, getNextLine, parseFontString;
-    
+
     require('./fontmetrics.js');
-    
+
     parseFontString = function(font) {
       var fontFamily, fontItems, fontSize, item, j, len, maybeSize, remainingFontString;
       fontItems = font.split(' ');
@@ -875,7 +875,7 @@
         fontFamily: fontFamily
       };
     };
-    
+
     getNextLine = function(ctx, text, forcedWidth) {
       var doesSubstringFit, endIndex, isEndOfString, isNonWord, isWhitespace, lastGoodIndex, lastOkayIndex, nextWordStartIndex, textToHere, wasInWord;
       if (!text.length) {
@@ -917,7 +917,7 @@
         }
       }
     };
-    
+
     getLinesToRender = function(ctx, text, forcedWidth) {
       var j, len, lines, nextLine, ref, ref1, remainingText, textLine, textSplitOnLines;
       textSplitOnLines = text.split(/\r\n|\r|\n/g);
@@ -936,7 +936,7 @@
       }
       return lines;
     };
-    
+
     TextRenderer = (function() {
       function TextRenderer(ctx, text1, font1, forcedWidth1, forcedHeight) {
         var fontFamily, fontSize, ref;
@@ -1011,7 +1011,7 @@
         };
         this.boundingBoxWidth = Math.ceil(this.metrics.width);
       }
-    
+
       TextRenderer.prototype.draw = function(ctx, x, y) {
         var i, j, len, line, ref, results;
         ctx.textBaseline = 'top';
@@ -1026,7 +1026,7 @@
         }
         return results;
       };
-    
+
       TextRenderer.prototype.getWidth = function(isEditing) {
         if (isEditing == null) {
           isEditing = false;
@@ -1041,49 +1041,49 @@
           }
         }
       };
-    
+
       TextRenderer.prototype.getHeight = function() {
         return this.forcedHeight || (this.metrics.leading * this.lines.length);
       };
-    
+
       return TextRenderer;
-    
+
     })();
-    
+
     module.exports = TextRenderer;
-    
-    
+
+
     },{"./fontmetrics.js":7}],3:[function(require,module,exports){
     var AddShapeAction, ClearAction;
-    
+
     ClearAction = (function() {
       function ClearAction(lc1, oldShapes, newShapes1) {
         this.lc = lc1;
         this.oldShapes = oldShapes;
         this.newShapes = newShapes1;
       }
-    
+
       ClearAction.prototype["do"] = function() {
         this.lc.shapes = this.newShapes;
         return this.lc.repaintLayer('main');
       };
-    
+
       ClearAction.prototype.undo = function() {
         this.lc.shapes = this.oldShapes;
         return this.lc.repaintLayer('main');
       };
-    
+
       return ClearAction;
-    
+
     })();
-    
+
     AddShapeAction = (function() {
       function AddShapeAction(lc1, shape1, previousShapeId) {
         this.lc = lc1;
         this.shape = shape1;
         this.previousShapeId = previousShapeId != null ? previousShapeId : null;
       }
-    
+
       AddShapeAction.prototype["do"] = function() {
         var found, i, len, newShapes, ref, shape;
         if (!this.lc.shapes.length || this.lc.shapes[this.lc.shapes.length - 1].id === this.previousShapeId || this.previousShapeId === null) {
@@ -1107,7 +1107,7 @@
         }
         return this.lc.repaintLayer('main');
       };
-    
+
       AddShapeAction.prototype.undo = function() {
         var i, len, newShapes, ref, shape;
         if (this.lc.shapes[this.lc.shapes.length - 1].id === this.shape.id) {
@@ -1125,20 +1125,20 @@
         }
         return this.lc.repaintLayer('main');
       };
-    
+
       return AddShapeAction;
-    
+
     })();
-    
+
     module.exports = {
       ClearAction: ClearAction,
       AddShapeAction: AddShapeAction
     };
-    
-    
+
+
     },{}],4:[function(require,module,exports){
     var bindEvents, buttonIsDown, coordsForTouchEvent, position;
-    
+
     coordsForTouchEvent = function(el, e) {
       var p, tx, ty;
       tx = e.changedTouches[0].clientX;
@@ -1146,7 +1146,7 @@
       p = el.getBoundingClientRect();
       return [tx - p.left, ty - p.top];
     };
-    
+
     position = function(el, e) {
       var p;
       p = el.getBoundingClientRect();
@@ -1155,7 +1155,7 @@
         top: e.clientY - p.top
       };
     };
-    
+
     buttonIsDown = function(e) {
       if (e.buttons != null) {
         return e.buttons === 1;
@@ -1163,7 +1163,7 @@
         return e.which > 0;
       }
     };
-    
+
     module.exports = bindEvents = function(lc, canvas, panWithKeyboard) {
       var listener, mouseMoveListener, mouseUpListener, touchEndListener, touchMoveListener, unsubs;
       if (panWithKeyboard == null) {
@@ -1268,24 +1268,24 @@
         return results;
       };
     };
-    
-    
+
+
     },{}],5:[function(require,module,exports){
     var _drawRawLinePath, defineCanvasRenderer, drawErasedLinePath, drawErasedLinePathLatest, drawLinePath, drawLinePathLatest, lineEndCapShapes, noop, renderShapeToCanvas, renderShapeToContext, renderers;
-    
+
     lineEndCapShapes = require('./lineEndCapShapes');
-    
+
     renderers = {};
-    
+
     defineCanvasRenderer = function(shapeName, drawFunc, drawLatestFunc) {
       return renderers[shapeName] = {
         drawFunc: drawFunc,
         drawLatestFunc: drawLatestFunc
       };
     };
-    
+
     noop = function() {};
-    
+
     renderShapeToContext = function(ctx, shape, opts) {
       var bufferCtx;
       if (opts == null) {
@@ -1316,11 +1316,11 @@
         throw "Can't render shape of type " + shape.className + " to canvas";
       }
     };
-    
+
     renderShapeToCanvas = function(canvas, shape, opts) {
       return renderShapeToContext(canvas.getContext('2d'), shape, opts);
     };
-    
+
     defineCanvasRenderer('Rectangle', function(ctx, shape) {
       var x, y;
       x = shape.x;
@@ -1335,7 +1335,7 @@
       ctx.strokeStyle = shape.strokeColor;
       return ctx.strokeRect(x, y, shape.width, shape.height);
     });
-    
+
     defineCanvasRenderer('Ellipse', function(ctx, shape) {
       var centerX, centerY, halfHeight, halfWidth;
       ctx.save();
@@ -1355,7 +1355,7 @@
       ctx.strokeStyle = shape.strokeColor;
       return ctx.stroke();
     });
-    
+
     defineCanvasRenderer('SelectionBox', (function() {
       var _drawHandle;
       _drawHandle = function(ctx, arg, handleSize) {
@@ -1385,7 +1385,7 @@
         return ctx.setLineDash([]);
       };
     })());
-    
+
     defineCanvasRenderer('Image', function(ctx, shape, retryCallback) {
       if (shape.image.width) {
         if (shape.scale === 1) {
@@ -1397,7 +1397,7 @@
         return shape.image.onload = retryCallback;
       }
     });
-    
+
     defineCanvasRenderer('Line', function(ctx, shape) {
       var arrowWidth, x1, x2, y1, y2;
       if (shape.x1 === shape.x2 && shape.y1 === shape.y2) {
@@ -1434,7 +1434,7 @@
         return lineEndCapShapes[shape.endCapShapes[1]].drawToCanvas(ctx, x2, y2, Math.atan2(y2 - y1, x2 - x1), arrowWidth, shape.color);
       }
     });
-    
+
     _drawRawLinePath = function(ctx, points, close, lineCap) {
       var i, len, point, ref;
       if (close == null) {
@@ -1468,12 +1468,12 @@
         return ctx.closePath();
       }
     };
-    
+
     drawLinePath = function(ctx, shape) {
       _drawRawLinePath(ctx, shape.smoothedPoints);
       return ctx.stroke();
     };
-    
+
     drawLinePathLatest = function(ctx, bufferCtx, shape) {
       var drawEnd, drawStart, segmentStart;
       if (shape.tail) {
@@ -1487,16 +1487,16 @@
         return bufferCtx.stroke();
       }
     };
-    
+
     defineCanvasRenderer('LinePath', drawLinePath, drawLinePathLatest);
-    
+
     drawErasedLinePath = function(ctx, shape) {
       ctx.save();
       ctx.globalCompositeOperation = "destination-out";
       drawLinePath(ctx, shape);
       return ctx.restore();
     };
-    
+
     drawErasedLinePathLatest = function(ctx, bufferCtx, shape) {
       ctx.save();
       ctx.globalCompositeOperation = "destination-out";
@@ -1506,9 +1506,9 @@
       ctx.restore();
       return bufferCtx.restore();
     };
-    
+
     defineCanvasRenderer('ErasedLinePath', drawErasedLinePath, drawErasedLinePathLatest);
-    
+
     defineCanvasRenderer('Text', function(ctx, shape) {
       if (!shape.renderer) {
         shape._makeRenderer(ctx);
@@ -1516,24 +1516,24 @@
       ctx.fillStyle = shape.color;
       return shape.renderer.draw(ctx, shape.x, shape.y);
     });
-    
+
     defineCanvasRenderer('Polygon', function(ctx, shape) {
       ctx.fillStyle = shape.fillColor;
       _drawRawLinePath(ctx, shape.points, shape.isClosed, 'butt');
       ctx.fill();
       return ctx.stroke();
     });
-    
+
     module.exports = {
       defineCanvasRenderer: defineCanvasRenderer,
       renderShapeToCanvas: renderShapeToCanvas,
       renderShapeToContext: renderShapeToContext
     };
-    
-    
+
+
     },{"./lineEndCapShapes":8}],6:[function(require,module,exports){
     'use strict';
-    
+
     module.exports = {
       imageURLPrefix: 'lib/img',
       primaryColor: 'hsla(0, 0%, 0%, 1)',
@@ -1554,39 +1554,39 @@
       onInit: function onInit() {},
       tools: [require('../tools/Pencil'), require('../tools/Eraser'), require('../tools/Line'), require('../tools/Rectangle'), require('../tools/Ellipse'), require('../tools/Text'), require('../tools/Polygon'), require('../tools/Pan'), require('../tools/Eyedropper')]
     };
-    
+
     },{"../tools/Ellipse":19,"../tools/Eraser":20,"../tools/Eyedropper":21,"../tools/Line":22,"../tools/Pan":23,"../tools/Pencil":24,"../tools/Polygon":25,"../tools/Rectangle":26,"../tools/Text":28}],7:[function(require,module,exports){
     "use strict";
-    
+
     /**
       This library rewrites the Canvas2D "measureText" function
       so that it returns a more complete metrics object.
       This library is licensed under the MIT (Expat) license,
       the text for which is included below.
-    
+
     ** -----------------------------------------------------------------------------
-    
+
       CHANGELOG:
-    
+
         2012-01-21 - Whitespace handling added by Joe Turner
                      (https://github.com/oampo)
-    
+
         2015-06-08 - Various hacks added by Steve Johnson
-    
+
     ** -----------------------------------------------------------------------------
-    
+
       Copyright (C) 2011 by Mike "Pomax" Kamermans
-    
+
       Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
       in the Software without restriction, including without limitation the rights
       to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
       copies of the Software, and to permit persons to whom the Software is
       furnished to do so, subject to the following conditions:
-    
+
       The above copyright notice and this permission notice shall be included in
       all copies or substantial portions of the Software.
-    
+
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
       IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
       FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -1598,52 +1598,52 @@
     (function () {
       var NAME = "FontMetrics Library";
       var VERSION = "1-2012.0121.1300";
-    
+
       // if there is no getComputedStyle, this library won't work.
       if (!document.defaultView.getComputedStyle) {
         throw "ERROR: 'document.defaultView.getComputedStyle' not found. This library only works in browsers that can report computed CSS values.";
       }
-    
+
       // store the old text metrics function on the Canvas2D prototype
       CanvasRenderingContext2D.prototype.measureTextWidth = CanvasRenderingContext2D.prototype.measureText;
-    
+
       /**
        *  shortcut function for getting computed CSS values
        */
       var getCSSValue = function getCSSValue(element, property) {
         return document.defaultView.getComputedStyle(element, null).getPropertyValue(property);
       };
-    
+
       // debug function
       var show = function show(canvas, ctx, xstart, w, h, metrics) {
         document.body.appendChild(canvas);
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-    
+
         ctx.beginPath();
         ctx.moveTo(xstart, 0);
         ctx.lineTo(xstart, h);
         ctx.closePath();
         ctx.stroke();
-    
+
         ctx.beginPath();
         ctx.moveTo(xstart + metrics.bounds.maxx, 0);
         ctx.lineTo(xstart + metrics.bounds.maxx, h);
         ctx.closePath();
         ctx.stroke();
-    
+
         ctx.beginPath();
         ctx.moveTo(0, h / 2 - metrics.ascent);
         ctx.lineTo(w, h / 2 - metrics.ascent);
         ctx.closePath();
         ctx.stroke();
-    
+
         ctx.beginPath();
         ctx.moveTo(0, h / 2 + metrics.descent);
         ctx.lineTo(w, h / 2 + metrics.descent);
         ctx.closePath();
         ctx.stroke();
       };
-    
+
       /**
        * The new text metrics function
        */
@@ -1651,7 +1651,7 @@
         var metrics = this.measureTextWidth(textstring),
             isSpace = !/\S/.test(textstring);
         metrics.fontsize = fontSize;
-    
+
         // for text lead values, we meaure a multiline text container.
         var leadDiv = document.createElement("div");
         leadDiv.style.position = "absolute";
@@ -1659,10 +1659,10 @@
         leadDiv.style.font = fontString;
         leadDiv.innerHTML = textstring + "<br/>" + textstring;
         document.body.appendChild(leadDiv);
-    
+
         // make some initial guess at the text leading (using the standard TeX ratio)
         metrics.leading = 1.2 * fontSize;
-    
+
         // then we try to get the real value from the browser
         var leadDivHeight = getCSSValue(leadDiv, "height");
         leadDivHeight = leadDivHeight.replace("px", "");
@@ -1670,7 +1670,7 @@
           metrics.leading = leadDivHeight / 2 | 0;
         }
         document.body.removeChild(leadDiv);
-    
+
         // if we're not dealing with white space, we can compute metrics
         if (!isSpace) {
           // Have characters, so measure the text
@@ -1682,11 +1682,11 @@
           canvas.style.font = fontString;
           var ctx = canvas.getContext("2d");
           ctx.font = fontString;
-    
+
           var w = canvas.width,
               h = canvas.height,
               baseline = h / 2;
-    
+
           // Set all canvas pixeldata values to 255, with all the content
           // data being 0. This lets us scan for data[i] != 255.
           ctx.fillStyle = "white";
@@ -1694,22 +1694,22 @@
           ctx.fillStyle = "black";
           ctx.fillText(textstring, padding / 2, baseline);
           var pixelData = ctx.getImageData(0, 0, w, h).data;
-    
+
           // canvas pixel data is w*4 by h*4, because R, G, B and A are separate,
           // consecutive values in the array, rather than stored as 32 bit ints.
           var i = 0,
               w4 = w * 4,
               len = pixelData.length;
-    
+
           // Finding the ascent uses a normal, forward scanline
           while (++i < len && pixelData[i] === 255) {}
           var ascent = i / w4 | 0;
-    
+
           // Finding the descent uses a reverse scanline
           i = len - 1;
           while (--i > 0 && pixelData[i] === 255) {}
           var descent = i / w4 | 0;
-    
+
           // find the min-x coordinate
           for (i = 0; i < len && pixelData[i] === 255;) {
             i += w4;
@@ -1718,7 +1718,7 @@
             }
           }
           var minx = i % w4 / 4 | 0;
-    
+
           // find the max-x coordinate
           var step = 1;
           for (i = len - 3; i >= 0 && pixelData[i] === 255;) {
@@ -1728,7 +1728,7 @@
             }
           }
           var maxx = i % w4 / 4 + 1 | 0;
-    
+
           // set font metrics
           metrics.ascent = baseline - ascent;
           metrics.descent = descent - baseline;
@@ -1738,7 +1738,7 @@
             maxy: descent - ascent };
           metrics.height = 1 + (descent - ascent);
         }
-    
+
         // if we ARE dealing with whitespace, most values will just be zero.
         else {
             // Only whitespace, so we can't measure the text
@@ -1753,7 +1753,7 @@
         return metrics;
       };
     })();
-    
+
     },{}],8:[function(require,module,exports){
     module.exports = {
       arrow: (function() {
@@ -1803,38 +1803,38 @@
         };
       })()
     };
-    
-    
+
+
     },{}],9:[function(require,module,exports){
     var _, localize, strings;
-    
+
     strings = {};
-    
+
     localize = function(localStrings) {
       return strings = localStrings;
     };
-    
+
     _ = function(string) {
       var translation;
       translation = strings[string];
       return translation || string;
     };
-    
+
     module.exports = {
       localize: localize,
       _: _
     };
-    
-    
+
+
     },{}],10:[function(require,module,exports){
     var Point, _slope, math, normals, unit, util;
-    
+
     Point = require('./shapes').Point;
-    
+
     util = require('./util');
-    
+
     math = {};
-    
+
     math.toPoly = function(line) {
       var i, index, len, n, point, polyLeft, polyRight;
       polyLeft = [];
@@ -1849,7 +1849,7 @@
       }
       return polyLeft.concat(polyRight);
     };
-    
+
     _slope = function(line, index) {
       var point;
       if (line.length < 3) {
@@ -1867,14 +1867,14 @@
       }
       return point;
     };
-    
+
     math.diff = function(a, b) {
       return {
         x: b.x - a.x,
         y: b.y - a.y
       };
     };
-    
+
     unit = function(vector) {
       var length;
       length = math.len(vector);
@@ -1883,7 +1883,7 @@
         y: vector.y / length
       };
     };
-    
+
     normals = function(p, slope) {
       slope = unit(slope);
       slope.x = slope.x * p.size / 2;
@@ -1900,30 +1900,30 @@
         }
       ];
     };
-    
+
     math.len = function(vector) {
       return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
     };
-    
+
     math.scalePositionScalar = function(val, viewportSize, oldScale, newScale) {
       var newSize, oldSize;
       oldSize = viewportSize * oldScale;
       newSize = viewportSize * newScale;
       return val + (oldSize - newSize) / 2;
     };
-    
+
     module.exports = math;
-    
-    
+
+
     },{"./shapes":13,"./util":15}],11:[function(require,module,exports){
     var INFINITE, JSONToShape, renderWatermark, util;
-    
+
     util = require('./util');
-    
+
     JSONToShape = require('./shapes').JSONToShape;
-    
+
     INFINITE = 'infinite';
-    
+
     renderWatermark = function(ctx, image, scale) {
       if (!image.width) {
         return;
@@ -1934,7 +1934,7 @@
       ctx.drawImage(image, -image.width / 2, -image.height / 2);
       return ctx.restore();
     };
-    
+
     module.exports = function(snapshot, opts) {
       var allShapes, backgroundShapes, colors, imageSize, s, shapes, watermarkCanvas, watermarkCtx;
       if (opts == null) {
@@ -2012,17 +2012,17 @@
       }
       return util.combineCanvases(watermarkCanvas, util.renderShapes(backgroundShapes, opts.rect, opts.scale), util.renderShapes(shapes, opts.rect, opts.scale));
     };
-    
-    
+
+
     },{"./shapes":13,"./util":15}],12:[function(require,module,exports){
     var INFINITE, JSONToShape, util;
-    
+
     util = require('./util');
-    
+
     JSONToShape = require('./shapes').JSONToShape;
-    
+
     INFINITE = 'infinite';
-    
+
     module.exports = function(snapshot, opts) {
       var allShapes, backgroundShapes, colors, ctx, dummyCanvas, imageSize, s, shapes;
       if (opts == null) {
@@ -2087,23 +2087,23 @@
       }
       return LC.renderShapesToSVG(backgroundShapes.concat(shapes), opts.rect, colors.background);
     };
-    
-    
+
+
     },{"./shapes":13,"./util":15}],13:[function(require,module,exports){
     var JSONToShape, LinePath, TextRenderer, _createLinePathFromData, _doAllPointsShareStyle, _dual, _mid, _refine, bspline, createShape, defineCanvasRenderer, defineSVGRenderer, defineShape, lineEndCapShapes, linePathFuncs, ref, ref1, renderShapeToContext, renderShapeToSVG, shapeToJSON, shapes, util;
-    
+
     util = require('./util');
-    
+
     TextRenderer = require('./TextRenderer');
-    
+
     lineEndCapShapes = require('./lineEndCapShapes');
-    
+
     ref = require('./canvasRenderer'), defineCanvasRenderer = ref.defineCanvasRenderer, renderShapeToContext = ref.renderShapeToContext;
-    
+
     ref1 = require('./svgRenderer'), defineSVGRenderer = ref1.defineSVGRenderer, renderShapeToSVG = ref1.renderShapeToSVG;
-    
+
     shapes = {};
-    
+
     defineShape = function(name, props) {
       var Shape, drawFunc, drawLatestFunc, k, legacyDrawFunc, legacyDrawLatestFunc, legacySVGFunc, svgFunc;
       Shape = function(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) {
@@ -2160,14 +2160,14 @@
       shapes[name] = Shape;
       return Shape;
     };
-    
+
     createShape = function(name, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) {
       var s;
       s = new shapes[name](a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
       s.id = util.getGUID();
       return s;
     };
-    
+
     JSONToShape = function(arg) {
       var className, data, id, shape;
       className = arg.className, data = arg.data, id = arg.id;
@@ -2187,7 +2187,7 @@
         return null;
       }
     };
-    
+
     shapeToJSON = function(shape) {
       return {
         className: shape.className,
@@ -2195,14 +2195,14 @@
         id: shape.id
       };
     };
-    
+
     bspline = function(points, order) {
       if (!order) {
         return points;
       }
       return bspline(_dual(_dual(_refine(points))), order - 1);
     };
-    
+
     _refine = function(points) {
       var index, len, point, q, refined;
       points = [points[0]].concat(points).concat(util.last(points));
@@ -2218,7 +2218,7 @@
       }
       return refined;
     };
-    
+
     _dual = function(points) {
       var dualed, index, len, point, q;
       dualed = [];
@@ -2232,7 +2232,7 @@
       }
       return dualed;
     };
-    
+
     _mid = function(a, b) {
       return createShape('Point', {
         x: a.x + ((b.x - a.x) / 2),
@@ -2241,7 +2241,7 @@
         color: a.color
       });
     };
-    
+
     defineShape('Image', {
       constructor: function(args) {
         if (args == null) {
@@ -2300,7 +2300,7 @@
         return this.y = upperLeft.y;
       }
     });
-    
+
     defineShape('Rectangle', {
       constructor: function(args) {
         if (args == null) {
@@ -2351,7 +2351,7 @@
         return this.y = upperLeft.y;
       }
     });
-    
+
     defineShape('Ellipse', {
       constructor: function(args) {
         if (args == null) {
@@ -2402,7 +2402,7 @@
         return this.y = upperLeft.y;
       }
     });
-    
+
     defineShape('Line', {
       constructor: function(args) {
         if (args == null) {
@@ -2465,7 +2465,7 @@
         });
       }
     });
-    
+
     _doAllPointsShareStyle = function(points) {
       var color, len, point, q, size;
       if (!points.length) {
@@ -2484,7 +2484,7 @@
       }
       return true;
     };
-    
+
     _createLinePathFromData = function(shapeName, data) {
       var pointData, points, smoothedPoints, x, y;
       points = null;
@@ -2553,7 +2553,7 @@
         smooth: data.smooth
       });
     };
-    
+
     linePathFuncs = {
       constructor: function(args) {
         var len, point, points, q, results;
@@ -2683,9 +2683,9 @@
         });
       }
     };
-    
+
     LinePath = defineShape('LinePath', linePathFuncs);
-    
+
     defineShape('ErasedLinePath', {
       constructor: linePathFuncs.constructor,
       toJSON: linePathFuncs.toJSON,
@@ -2695,7 +2695,7 @@
         return _createLinePathFromData('ErasedLinePath', data);
       }
     });
-    
+
     defineShape('Point', {
       constructor: function(args) {
         if (args == null) {
@@ -2740,7 +2740,7 @@
         return this.y = upperLeft.y;
       }
     });
-    
+
     defineShape('Polygon', {
       constructor: function(args) {
         var len, point, q, ref2, results;
@@ -2828,7 +2828,7 @@
         });
       }
     });
-    
+
     defineShape('Text', {
       constructor: function(args) {
         if (args == null) {
@@ -2933,7 +2933,7 @@
         return this.y = upperLeft.y;
       }
     });
-    
+
     defineShape('SelectionBox', {
       constructor: function(args) {
         if (args == null) {
@@ -3004,26 +3004,26 @@
         };
       }
     });
-    
+
     module.exports = {
       defineShape: defineShape,
       createShape: createShape,
       JSONToShape: JSONToShape,
       shapeToJSON: shapeToJSON
     };
-    
-    
+
+
     },{"./TextRenderer":2,"./canvasRenderer":5,"./lineEndCapShapes":8,"./svgRenderer":14,"./util":15}],14:[function(require,module,exports){
     var defineSVGRenderer, lineEndCapShapes, renderShapeToSVG, renderers;
-    
+
     lineEndCapShapes = require('./lineEndCapShapes');
-    
+
     renderers = {};
-    
+
     defineSVGRenderer = function(shapeName, shapeToSVGFunc) {
       return renderers[shapeName] = shapeToSVGFunc;
     };
-    
+
     renderShapeToSVG = function(shape, opts) {
       if (opts == null) {
         opts = {};
@@ -3040,7 +3040,7 @@
         throw "Can't render shape of type " + shape.className + " to SVG";
       }
     };
-    
+
     defineSVGRenderer('Rectangle', function(shape) {
       var height, width, x, x1, x2, y, y1, y2;
       x1 = shape.x;
@@ -3057,11 +3057,11 @@
       }
       return "<rect x='" + x + "' y='" + y + "' width='" + width + "' height='" + height + "' stroke='" + shape.strokeColor + "' fill='" + shape.fillColor + "' stroke-width='" + shape.strokeWidth + "' />";
     });
-    
+
     defineSVGRenderer('SelectionBox', function(shape) {
       return "";
     });
-    
+
     defineSVGRenderer('Ellipse', function(shape) {
       var centerX, centerY, halfHeight, halfWidth;
       halfWidth = Math.floor(shape.width / 2);
@@ -3070,11 +3070,11 @@
       centerY = shape.y + halfHeight;
       return "<ellipse cx='" + centerX + "' cy='" + centerY + "' rx='" + (Math.abs(halfWidth)) + "' ry='" + (Math.abs(halfHeight)) + "' stroke='" + shape.strokeColor + "' fill='" + shape.fillColor + "' stroke-width='" + shape.strokeWidth + "' />";
     });
-    
+
     defineSVGRenderer('Image', function(shape) {
       return "<image x='" + shape.x + "' y='" + shape.y + "' width='" + (shape.image.naturalWidth * shape.scale) + "' height='" + (shape.image.naturalHeight * shape.scale) + "' xlink:href='" + shape.image.src + "' />";
     });
-    
+
     defineSVGRenderer('Line', function(shape) {
       var arrowWidth, capString, dashString, x1, x2, y1, y2;
       dashString = shape.dash ? "stroke-dasharray='" + (shape.dash.join(', ')) + "'" : '';
@@ -3098,7 +3098,7 @@
       }
       return "<g> <line x1='" + x1 + "' y1='" + y1 + "' x2='" + x2 + "' y2='" + y2 + "' " + dashString + " stroke-linecap='" + shape.capStyle + "' stroke='" + shape.color + " 'stroke-width='" + shape.strokeWidth + "' /> " + capString + " </g>";
     });
-    
+
     defineSVGRenderer('LinePath', function(shape) {
       return "<polyline fill='none' points='" + (shape.smoothedPoints.map(function(p) {
         var offset;
@@ -3106,11 +3106,11 @@
         return (p.x + offset) + "," + (p.y + offset);
       }).join(' ')) + "' stroke='" + shape.points[0].color + "' stroke-linecap='round' stroke-width='" + shape.points[0].size + "' />";
     });
-    
+
     defineSVGRenderer('ErasedLinePath', function(shape) {
       return "";
     });
-    
+
     defineSVGRenderer('Polygon', function(shape) {
       if (shape.isClosed) {
         return "<polygon fill='" + shape.fillColor + "' points='" + (shape.points.map(function(p) {
@@ -3130,7 +3130,7 @@
         }).join(' ')) + "' stroke='" + shape.strokeColor + "' stroke-width='" + shape.strokeWidth + "' />";
       }
     });
-    
+
     defineSVGRenderer('Text', function(shape) {
       var heightString, textSplitOnLines, widthString;
       widthString = shape.forcedWidth ? "width='" + shape.forcedWidth + "px'" : "";
@@ -3147,23 +3147,23 @@
         };
       })(this)).join('')) + " </text>";
     });
-    
+
     module.exports = {
       defineSVGRenderer: defineSVGRenderer,
       renderShapeToSVG: renderShapeToSVG
     };
-    
-    
+
+
     },{"./lineEndCapShapes":8}],15:[function(require,module,exports){
     var renderShapeToContext, renderShapeToSVG, slice, util,
       slice1 = [].slice;
-    
+
     slice = Array.prototype.slice;
-    
+
     renderShapeToContext = require('./canvasRenderer').renderShapeToContext;
-    
+
     renderShapeToSVG = require('./svgRenderer').renderShapeToSVG;
-    
+
     util = {
       addImageOnload: function(img, fn) {
         var oldOnload;
@@ -3368,13 +3368,13 @@
         return clearTimeout(f);
       }
     };
-    
+
     module.exports = util;
-    
-    
+
+
     },{"./canvasRenderer":5,"./svgRenderer":14}],16:[function(require,module,exports){
     'use strict';
-    
+
     (function () {
       function CustomEvent(event, params) {
         params = params || { bubbles: false, cancelable: false, detail: undefined };
@@ -3382,15 +3382,15 @@
         evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return evt;
       };
-    
+
       CustomEvent.prototype = window.CustomEvent.prototype;
-    
+
       window.CustomEvent = CustomEvent;
     })();
-    
+
     },{}],17:[function(require,module,exports){
     "use strict";
-    
+
     var hasWarned = false;
     if (!CanvasRenderingContext2D.prototype.setLineDash) {
       CanvasRenderingContext2D.prototype.setLineDash = function () {
@@ -3402,32 +3402,32 @@
       };
     }
     module.exports = null;
-    
+
     },{}],18:[function(require,module,exports){
     var LiterallyCanvasModel, baseTools, canvasRenderer, conversion, defaultImageURLPrefix, defaultOptions, defaultTools, init, initWithoutGUI, localize, registerJQueryPlugin, renderSnapshotToImage, renderSnapshotToSVG, setDefaultImageURLPrefix, shapes, svgRenderer, tools, util;
-    
+
     require('./ie_customevent');
-    
+
     require('./ie_setLineDash');
-    
+
     LiterallyCanvasModel = require('./core/LiterallyCanvas');
-    
+
     defaultOptions = require('./core/defaultOptions');
-    
+
     canvasRenderer = require('./core/canvasRenderer');
-    
+
     svgRenderer = require('./core/svgRenderer');
-    
+
     shapes = require('./core/shapes');
-    
+
     util = require('./core/util');
-    
+
     renderSnapshotToImage = require('./core/renderSnapshotToImage');
-    
+
     renderSnapshotToSVG = require('./core/renderSnapshotToSVG');
-    
+
     localize = require('./core/localization').localize;
-    
+
     conversion = {
       snapshotToShapes: function(snapshot) {
         var i, len, ref, results, shape;
@@ -3443,9 +3443,9 @@
         return conversion.snapshotToShapes(JSON.parse(json));
       }
     };
-    
+
     baseTools = require('./tools/base');
-    
+
     tools = {
       Pencil: require('./tools/Pencil'),
       Eraser: require('./tools/Eraser'),
@@ -3460,16 +3460,16 @@
       Tool: baseTools.Tool,
       ToolWithStroke: baseTools.ToolWithStroke
     };
-    
+
     defaultTools = defaultOptions.tools;
-    
+
     defaultImageURLPrefix = defaultOptions.imageURLPrefix;
-    
+
     setDefaultImageURLPrefix = function(newDefault) {
       defaultImageURLPrefix = newDefault;
       return defaultOptions.imageURLPrefix = newDefault;
     };
-    
+
     init = function(el, opts) {
       var child, i, len, opt, ref;
       if (opts == null) {
@@ -3487,7 +3487,7 @@
       }
       return initWithoutGUI(el, opts);
     };
-    
+
     initWithoutGUI = function(el, opts) {
       var drawingViewElement, lc, originalClassName;
       originalClassName = el.className;
@@ -3514,7 +3514,7 @@
       }
       return lc;
     };
-    
+
     registerJQueryPlugin = function(_$) {
       return _$.fn.literallycanvas = function(opts) {
         if (opts == null) {
@@ -3528,7 +3528,7 @@
         return this;
       };
     };
-    
+
     if (typeof window !== 'undefined') {
       window.LC = {
         init: init
@@ -3537,7 +3537,7 @@
         registerJQueryPlugin(window.$);
       }
     }
-    
+
     module.exports = {
       init: init,
       registerJQueryPlugin: registerJQueryPlugin,
@@ -3562,28 +3562,28 @@
       renderSnapshotToSVG: renderSnapshotToSVG,
       localize: localize
     };
-    
-    
+
+
     },{"./core/LiterallyCanvas":1,"./core/canvasRenderer":5,"./core/defaultOptions":6,"./core/localization":9,"./core/renderSnapshotToImage":11,"./core/renderSnapshotToSVG":12,"./core/shapes":13,"./core/svgRenderer":14,"./core/util":15,"./ie_customevent":16,"./ie_setLineDash":17,"./tools/Ellipse":19,"./tools/Eraser":20,"./tools/Eyedropper":21,"./tools/Line":22,"./tools/Pan":23,"./tools/Pencil":24,"./tools/Polygon":25,"./tools/Rectangle":26,"./tools/SelectShape":27,"./tools/Text":28,"./tools/base":29}],19:[function(require,module,exports){
     var Ellipse, ToolWithStroke, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     ToolWithStroke = require('./base').ToolWithStroke;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Ellipse = (function(superClass) {
       extend(Ellipse, superClass);
-    
+
       function Ellipse() {
         return Ellipse.__super__.constructor.apply(this, arguments);
       }
-    
+
       Ellipse.prototype.name = 'Ellipse';
-    
+
       Ellipse.prototype.iconName = 'ellipse';
-    
+
       Ellipse.prototype.begin = function(x, y, lc) {
         return this.currentShape = createShape('Ellipse', {
           x: x,
@@ -3593,42 +3593,42 @@
           fillColor: lc.getColor('secondary')
         });
       };
-    
+
       Ellipse.prototype["continue"] = function(x, y, lc) {
         this.currentShape.width = x - this.currentShape.x;
         this.currentShape.height = y - this.currentShape.y;
         return lc.drawShapeInProgress(this.currentShape);
       };
-    
+
       Ellipse.prototype.end = function(x, y, lc) {
         return lc.saveShape(this.currentShape);
       };
-    
+
       return Ellipse;
-    
+
     })(ToolWithStroke);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],20:[function(require,module,exports){
     var Eraser, Pencil, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     Pencil = require('./Pencil');
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Eraser = (function(superClass) {
       extend(Eraser, superClass);
-    
+
       function Eraser() {
         return Eraser.__super__.constructor.apply(this, arguments);
       }
-    
+
       Eraser.prototype.name = 'Eraser';
-    
+
       Eraser.prototype.iconName = 'eraser';
-    
+
       Eraser.prototype.makePoint = function(x, y, lc) {
         return createShape('Point', {
           x: x,
@@ -3637,23 +3637,23 @@
           color: '#000'
         });
       };
-    
+
       Eraser.prototype.makeShape = function() {
         return createShape('ErasedLinePath');
       };
-    
+
       return Eraser;
-    
+
     })(Pencil);
-    
-    
+
+
     },{"../core/shapes":13,"./Pencil":24}],21:[function(require,module,exports){
     var Eyedropper, Tool, getPixel,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     Tool = require('./base').Tool;
-    
+
     getPixel = function(ctx, arg) {
       var pixel, x, y;
       x = arg.x, y = arg.y;
@@ -3664,21 +3664,21 @@
         return null;
       }
     };
-    
+
     module.exports = Eyedropper = (function(superClass) {
       extend(Eyedropper, superClass);
-    
+
       Eyedropper.prototype.name = 'Eyedropper';
-    
+
       Eyedropper.prototype.iconName = 'eyedropper';
-    
+
       Eyedropper.prototype.optionsStyle = 'stroke-or-fill';
-    
+
       function Eyedropper(lc) {
         Eyedropper.__super__.constructor.call(this, lc);
         this.strokeOrFill = 'stroke';
       }
-    
+
       Eyedropper.prototype.readColor = function(x, y, lc) {
         var canvas, color, newColor, offset;
         offset = lc.getDefaultImageRect();
@@ -3694,42 +3694,42 @@
           return lc.setColor('secondary', newColor);
         }
       };
-    
+
       Eyedropper.prototype.begin = function(x, y, lc) {
         return this.readColor(x, y, lc);
       };
-    
+
       Eyedropper.prototype["continue"] = function(x, y, lc) {
         return this.readColor(x, y, lc);
       };
-    
+
       return Eyedropper;
-    
+
     })(Tool);
-    
-    
+
+
     },{"./base":29}],22:[function(require,module,exports){
     var Line, ToolWithStroke, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     ToolWithStroke = require('./base').ToolWithStroke;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Line = (function(superClass) {
       extend(Line, superClass);
-    
+
       function Line() {
         return Line.__super__.constructor.apply(this, arguments);
       }
-    
+
       Line.prototype.name = 'Line';
-    
+
       Line.prototype.iconName = 'line';
-    
+
       Line.prototype.optionsStyle = 'line-options-and-stroke-width';
-    
+
       Line.prototype.begin = function(x, y, lc) {
         return this.currentShape = createShape('Line', {
           x1: x,
@@ -3749,44 +3749,44 @@
           color: lc.getColor('primary')
         });
       };
-    
+
       Line.prototype["continue"] = function(x, y, lc) {
         this.currentShape.x2 = x;
         this.currentShape.y2 = y;
         return lc.drawShapeInProgress(this.currentShape);
       };
-    
+
       Line.prototype.end = function(x, y, lc) {
         return lc.saveShape(this.currentShape);
       };
-    
+
       return Line;
-    
+
     })(ToolWithStroke);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],23:[function(require,module,exports){
     var Pan, Tool, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     Tool = require('./base').Tool;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Pan = (function(superClass) {
       extend(Pan, superClass);
-    
+
       function Pan() {
         return Pan.__super__.constructor.apply(this, arguments);
       }
-    
+
       Pan.prototype.name = 'Pan';
-    
+
       Pan.prototype.iconName = 'pan';
-    
+
       Pan.prototype.usesSimpleAPI = false;
-    
+
       Pan.prototype.didBecomeActive = function(lc) {
         var unsubscribeFuncs;
         unsubscribeFuncs = [];
@@ -3824,45 +3824,45 @@
           };
         })(this)));
       };
-    
+
       Pan.prototype.willBecomeInactive = function(lc) {
         return this.unsubscribe();
       };
-    
+
       return Pan;
-    
+
     })(Tool);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],24:[function(require,module,exports){
     var Pencil, ToolWithStroke, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     ToolWithStroke = require('./base').ToolWithStroke;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Pencil = (function(superClass) {
       extend(Pencil, superClass);
-    
+
       function Pencil() {
         return Pencil.__super__.constructor.apply(this, arguments);
       }
-    
+
       Pencil.prototype.name = 'Pencil';
-    
+
       Pencil.prototype.iconName = 'pencil';
-    
+
       Pencil.prototype.eventTimeThreshold = 10;
-    
+
       Pencil.prototype.begin = function(x, y, lc) {
         this.color = lc.getColor('primary');
         this.currentShape = this.makeShape();
         this.currentShape.addPoint(this.makePoint(x, y, lc));
         return this.lastEventTime = Date.now();
       };
-    
+
       Pencil.prototype["continue"] = function(x, y, lc) {
         var timeDiff;
         timeDiff = Date.now() - this.lastEventTime;
@@ -3872,12 +3872,12 @@
           return lc.drawShapeInProgress(this.currentShape);
         }
       };
-    
+
       Pencil.prototype.end = function(x, y, lc) {
         lc.saveShape(this.currentShape);
         return this.currentShape = void 0;
       };
-    
+
       Pencil.prototype.makePoint = function(x, y, lc) {
         return createShape('Point', {
           x: x,
@@ -3886,38 +3886,38 @@
           color: this.color
         });
       };
-    
+
       Pencil.prototype.makeShape = function() {
         return createShape('LinePath');
       };
-    
+
       return Pencil;
-    
+
     })(ToolWithStroke);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],25:[function(require,module,exports){
     var Polygon, ToolWithStroke, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     ToolWithStroke = require('./base').ToolWithStroke;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Polygon = (function(superClass) {
       extend(Polygon, superClass);
-    
+
       function Polygon() {
         return Polygon.__super__.constructor.apply(this, arguments);
       }
-    
+
       Polygon.prototype.name = 'Polygon';
-    
+
       Polygon.prototype.iconName = 'polygon';
-    
+
       Polygon.prototype.usesSimpleAPI = false;
-    
+
       Polygon.prototype.didBecomeActive = function(lc) {
         var onDown, onMove, onUp, polygonCancel, polygonFinishClosed, polygonFinishOpen, polygonUnsubscribeFuncs;
         Polygon.__super__.didBecomeActive.call(this, lc);
@@ -4011,7 +4011,7 @@
         polygonUnsubscribeFuncs.push(lc.on('lc-polygon-finishclosed', polygonFinishClosed));
         return polygonUnsubscribeFuncs.push(lc.on('lc-polygon-cancel', polygonCancel));
       };
-    
+
       Polygon.prototype.willBecomeInactive = function(lc) {
         Polygon.__super__.willBecomeInactive.call(this, lc);
         if (this.points || this.maybePoint) {
@@ -4019,11 +4019,11 @@
         }
         return this.polygonUnsubscribe();
       };
-    
+
       Polygon.prototype._getArePointsClose = function(a, b) {
         return (Math.abs(a.x - b.x) + Math.abs(a.y - b.y)) < 10;
       };
-    
+
       Polygon.prototype._getWillClose = function() {
         if (!(this.points && this.points.length > 1)) {
           return false;
@@ -4033,7 +4033,7 @@
         }
         return this._getArePointsClose(this.points[0], this.maybePoint);
       };
-    
+
       Polygon.prototype._getWillFinish = function() {
         if (!(this.points && this.points.length > 1)) {
           return false;
@@ -4043,7 +4043,7 @@
         }
         return this._getArePointsClose(this.points[0], this.maybePoint) || this._getArePointsClose(this.points[this.points.length - 1], this.maybePoint);
       };
-    
+
       Polygon.prototype._cancel = function(lc) {
         lc.trigger('lc-polygon-stopped');
         this.maybePoint = null;
@@ -4051,7 +4051,7 @@
         lc.setShapesInProgress([]);
         return lc.repaintLayer('main');
       };
-    
+
       Polygon.prototype._close = function(lc) {
         lc.trigger('lc-polygon-stopped');
         lc.setShapesInProgress([]);
@@ -4061,7 +4061,7 @@
         this.maybePoint = null;
         return this.points = null;
       };
-    
+
       Polygon.prototype._getShapes = function(lc, isInProgress) {
         var shape;
         if (isInProgress == null) {
@@ -4074,7 +4074,7 @@
           return [];
         }
       };
-    
+
       Polygon.prototype._getShape = function(lc, isInProgress) {
         var points;
         if (isInProgress == null) {
@@ -4104,34 +4104,34 @@
           return null;
         }
       };
-    
+
       Polygon.prototype.optionsStyle = 'polygon-and-stroke-width';
-    
+
       return Polygon;
-    
+
     })(ToolWithStroke);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],26:[function(require,module,exports){
     var Rectangle, ToolWithStroke, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     ToolWithStroke = require('./base').ToolWithStroke;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = Rectangle = (function(superClass) {
       extend(Rectangle, superClass);
-    
+
       function Rectangle() {
         return Rectangle.__super__.constructor.apply(this, arguments);
       }
-    
+
       Rectangle.prototype.name = 'Rectangle';
-    
+
       Rectangle.prototype.iconName = 'rectangle';
-    
+
       Rectangle.prototype.begin = function(x, y, lc) {
         return this.currentShape = createShape('Rectangle', {
           x: x,
@@ -4141,44 +4141,44 @@
           fillColor: lc.getColor('secondary')
         });
       };
-    
+
       Rectangle.prototype["continue"] = function(x, y, lc) {
         this.currentShape.width = x - this.currentShape.x;
         this.currentShape.height = y - this.currentShape.y;
         return lc.drawShapeInProgress(this.currentShape);
       };
-    
+
       Rectangle.prototype.end = function(x, y, lc) {
         return lc.saveShape(this.currentShape);
       };
-    
+
       return Rectangle;
-    
+
     })(ToolWithStroke);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],27:[function(require,module,exports){
     var SelectShape, Tool, createShape,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     Tool = require('./base').Tool;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     module.exports = SelectShape = (function(superClass) {
       extend(SelectShape, superClass);
-    
+
       SelectShape.prototype.name = 'SelectShape';
-    
+
       SelectShape.prototype.usesSimpleAPI = false;
-    
+
       function SelectShape(lc) {
         this.selectCanvas = document.createElement('canvas');
         this.selectCanvas.style['background-color'] = 'transparent';
         this.selectCtx = this.selectCanvas.getContext('2d');
       }
-    
+
       SelectShape.prototype.didBecomeActive = function(lc) {
         var onDown, onDrag, onUp, selectShapeUnsubscribeFuncs;
         selectShapeUnsubscribeFuncs = [];
@@ -4259,12 +4259,12 @@
         selectShapeUnsubscribeFuncs.push(lc.on('lc-pointerup', onUp));
         return this._drawSelectCanvas(lc);
       };
-    
+
       SelectShape.prototype.willBecomeInactive = function(lc) {
         this._selectShapeUnsubscribe();
         return lc.setShapesInProgress([]);
       };
-    
+
       SelectShape.prototype._drawSelectCanvas = function(lc) {
         var shapes;
         this.selectCanvas.width = lc.canvas.width;
@@ -4281,11 +4281,11 @@
         })(this));
         return lc.draw(shapes, this.selectCtx);
       };
-    
+
       SelectShape.prototype._intToHex = function(i) {
         return ("000000" + (i.toString(16))).slice(-6);
       };
-    
+
       SelectShape.prototype._getPixel = function(x, y, lc, ctx) {
         var p, pixel;
         p = lc.drawingCoordsToClientCoords(x, y);
@@ -4296,31 +4296,31 @@
           return null;
         }
       };
-    
+
       SelectShape.prototype._componentToHex = function(c) {
         var hex;
         hex = c.toString(16);
         return ("0" + hex).slice(-2);
       };
-    
+
       SelectShape.prototype._rgbToHex = function(r, g, b) {
         return "" + (this._componentToHex(r)) + (this._componentToHex(g)) + (this._componentToHex(b));
       };
-    
+
       return SelectShape;
-    
+
     })(Tool);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],28:[function(require,module,exports){
     var Text, Tool, createShape, getIsPointInBox,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     Tool = require('./base').Tool;
-    
+
     createShape = require('../core/shapes').createShape;
-    
+
     getIsPointInBox = function(point, box) {
       if (point.x < box.x) {
         return false;
@@ -4336,14 +4336,14 @@
       }
       return true;
     };
-    
+
     module.exports = Text = (function(superClass) {
       extend(Text, superClass);
-    
+
       Text.prototype.name = 'Text';
-    
+
       Text.prototype.iconName = 'text';
-    
+
       function Text() {
         this.text = '';
         this.font = 'bold 18px sans-serif';
@@ -4353,7 +4353,7 @@
         this.dragAction = null;
         this.didDrag = false;
       }
-    
+
       Text.prototype.didBecomeActive = function(lc) {
         var switchAway, unsubscribeFuncs, updateInputEl;
         unsubscribeFuncs = [];
@@ -4412,7 +4412,7 @@
           };
         })(this)));
       };
-    
+
       Text.prototype.willBecomeInactive = function(lc) {
         if (this.currentShape) {
           this._ensureNotEditing(lc);
@@ -4420,24 +4420,24 @@
         }
         return this.unsubscribe();
       };
-    
+
       Text.prototype.setText = function(text) {
         return this.text = text;
       };
-    
+
       Text.prototype._ensureNotEditing = function(lc) {
         if (this.currentShapeState === 'editing') {
           return this._exitEditingState(lc);
         }
       };
-    
+
       Text.prototype._clearCurrentShape = function(lc) {
         this.currentShape = null;
         this.initialShapeBoundingRect = null;
         this.currentShapeState = null;
         return lc.setShapesInProgress([]);
       };
-    
+
       Text.prototype.commit = function(lc) {
         if (this.currentShape.text) {
           lc.saveShape(this.currentShape);
@@ -4445,7 +4445,7 @@
         this._clearCurrentShape(lc);
         return lc.repaintLayer('main');
       };
-    
+
       Text.prototype._getSelectionShape = function(ctx, backgroundColor) {
         if (backgroundColor == null) {
           backgroundColor = null;
@@ -4456,7 +4456,7 @@
           backgroundColor: backgroundColor
         });
       };
-    
+
       Text.prototype._setShapesInProgress = function(lc) {
         switch (this.currentShapeState) {
           case 'selected':
@@ -4467,7 +4467,7 @@
             return lc.setShapesInProgress([this.currentShape]);
         }
       };
-    
+
       Text.prototype.begin = function(x, y, lc) {
         var br, point, selectionBox, selectionShape;
         this.dragAction = 'none';
@@ -4524,7 +4524,7 @@
         this._setShapesInProgress(lc);
         return lc.repaintLayer('main');
       };
-    
+
       Text.prototype["continue"] = function(x, y, lc) {
         var br, brBottom, brRight;
         if (this.dragAction === 'none') {
@@ -4563,7 +4563,7 @@
         lc.repaintLayer('main');
         return this._updateInputEl(lc);
       };
-    
+
       Text.prototype.end = function(x, y, lc) {
         if (!this.currentShape) {
           return;
@@ -4578,7 +4578,7 @@
         lc.repaintLayer('main');
         return this._updateInputEl(lc);
       };
-    
+
       Text.prototype._enterEditingState = function(lc) {
         var onChange;
         this.currentShapeState = 'editing';
@@ -4626,7 +4626,7 @@
         this.inputEl.focus();
         return this._setShapesInProgress(lc);
       };
-    
+
       Text.prototype._exitEditingState = function(lc) {
         this.currentShapeState = 'selected';
         lc.containerEl.removeChild(this.inputEl);
@@ -4634,7 +4634,7 @@
         this._setShapesInProgress(lc);
         return lc.repaintLayer('main');
       };
-    
+
       Text.prototype._updateInputEl = function(lc, withMargin) {
         var br, transformString;
         if (withMargin == null) {
@@ -4665,55 +4665,55 @@
         this.inputEl.style.msTransform = transformString;
         return this.inputEl.style.OTransform = transformString;
       };
-    
+
       Text.prototype.optionsStyle = 'font';
-    
+
       return Text;
-    
+
     })(Tool);
-    
-    
+
+
     },{"../core/shapes":13,"./base":29}],29:[function(require,module,exports){
     var Tool, ToolWithStroke, tools,
       extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
       hasProp = {}.hasOwnProperty;
-    
+
     tools = {};
-    
+
     tools.Tool = Tool = (function() {
       function Tool() {}
-    
+
       Tool.prototype.name = null;
-    
+
       Tool.prototype.iconName = null;
-    
+
       Tool.prototype.usesSimpleAPI = true;
-    
+
       Tool.prototype.begin = function(x, y, lc) {};
-    
+
       Tool.prototype["continue"] = function(x, y, lc) {};
-    
+
       Tool.prototype.end = function(x, y, lc) {};
-    
+
       Tool.prototype.optionsStyle = null;
-    
+
       Tool.prototype.didBecomeActive = function(lc) {};
-    
+
       Tool.prototype.willBecomeInactive = function(lc) {};
-    
+
       return Tool;
-    
+
     })();
-    
+
     tools.ToolWithStroke = ToolWithStroke = (function(superClass) {
       extend(ToolWithStroke, superClass);
-    
+
       function ToolWithStroke(lc) {
         this.strokeWidth = lc.opts.defaultStrokeWidth;
       }
-    
+
       ToolWithStroke.prototype.optionsStyle = 'stroke-width';
-    
+
       ToolWithStroke.prototype.didBecomeActive = function(lc) {
         var unsubscribeFuncs;
         unsubscribeFuncs = [];
@@ -4735,17 +4735,17 @@
           };
         })(this)));
       };
-    
+
       ToolWithStroke.prototype.willBecomeInactive = function(lc) {
         return this.unsubscribe();
       };
-    
+
       return ToolWithStroke;
-    
+
     })(Tool);
-    
+
     module.exports = tools;
-    
-    
+
+
     },{}]},{},[18])(18)
     });
