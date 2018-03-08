@@ -31,9 +31,9 @@ echo " "
 
 echo "Restarting Paint with bob services..."
 
-sudo /bin/systemctl restart ../paintWithBobFrontendStaging.service
-sudo /bin/systemctl restart ../paintWithBobBackendStaging.service
-sudo /bin/systemctl restart ../paintWithBobStreamStaging.service
+sudo /bin/systemctl restart paintWithBobFrontendStaging
+sudo /bin/systemctl restart paintWithBobBackendStaging
+sudo /bin/systemctl restart paintWithBobStreamStaging
 
 echo " "
 
