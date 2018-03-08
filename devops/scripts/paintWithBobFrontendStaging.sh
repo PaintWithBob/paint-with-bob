@@ -9,4 +9,6 @@ rm package-lock.json
 
 npm install
 
-ng build --environment=stage 
+# https://github.com/angular/angular-cli/wiki/build
+
+ng build --environment=stage
