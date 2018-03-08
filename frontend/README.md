@@ -1,5 +1,7 @@
 # PaintWithBob
 
+https://coryrylan.com/blog/analyzing-bundle-size-with-the-angular-cli-and-webpack
+
 Bob Ross senior project for live paint streaming.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.1.
 
