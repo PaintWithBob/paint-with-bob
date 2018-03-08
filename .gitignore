@@ -3,7 +3,8 @@
 
 **/.DS_Store
 
-systemctlServices/restartAll.log
+
+devops/**/*.log
 
 # Logs
 logs
@@ -63,3 +64,4 @@ typings/
 
 # dotenv environment variables file
 .env
+**/.env

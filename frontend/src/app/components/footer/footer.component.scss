@@ -1,3 +1,5 @@
+//@import "../../../assets/stylesheets/variables";
+
 .footer {
     padding: 2rem 0 1rem;
     .container {
@@ -6,4 +8,14 @@
             margin-bottom: 10px;
         }
     }
+}
+
+//Josh TODO: Change from manually choosing colors
+
+.link{
+  color: #FFFFFF
+}
+
+.link:hover{
+  color: #3273DD
 }
