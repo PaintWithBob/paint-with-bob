@@ -3,7 +3,8 @@
 
 **/.DS_Store
 
-systemctlServices/restartAll.log
+
+devops/**/*.log
 
 # Logs
 logs
