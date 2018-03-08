@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule} from '@angular/forms';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
@@ -22,9 +22,10 @@ import { CanvasComponent } from './components/canvas/canvas.component';
 import { StreamEmbedComponent } from './components/stream-embed/stream-embed.component';
 import { LobbyPopupComponent } from './components/lobby-popup/lobby-popup.component';
 import { CreateLobbyPopupComponent } from './components/create-lobby-popup/create-lobby-popup.component';
+import { EditAccountPopupComponent } from './components/edit-account-popup/edit-account-popup.component';
 
 // Providers
-import { AuthService, LobbyService } from './providers';
+import { AuthService, LobbyService, UserService } from './providers';
 
 // 3P Modules
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -57,12 +58,13 @@ const appRoutes: Routes = [
     LoginPageComponent,
     RegisterPageComponent,
     LobbyPopupComponent,
-    CreateLobbyPopupComponent
+    CreateLobbyPopupComponent,
+    EditAccountPopupComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     AsyncLocalStorageModule,
     ColorPickerModule,
     ClipboardModule,
@@ -73,7 +75,7 @@ const appRoutes: Routes = [
     ),
     NgbModule.forRoot()
   ],
-  providers: [ AuthService, LobbyService ],
+  providers: [ AuthService, LobbyService, UserService ],
   bootstrap: [ AppComponent ],
   entryComponents: [
     PageNotFoundComponent,
@@ -82,7 +84,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     LobbyPopupComponent,
-    CreateLobbyPopupComponent
+    CreateLobbyPopupComponent,
+    EditAccountPopupComponent
   ]
 })
 export class AppModule { }
