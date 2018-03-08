@@ -14,6 +14,7 @@ import { HomePage } from './pages/home/home';
 import { LobbyPageComponent } from './pages/lobby-page/lobby-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { TermsOfServiceComponent } from './pages/terms-of-service/terms-of-service.component';
 
 // Components
 import { HeaderComponent } from './components/header/header.component';
@@ -33,12 +34,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 
 
+
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
   { path: 'lobby/:roomId', component: LobbyPageComponent, data: { title: 'Lobby Page' } },
   { path: 'account', component: AccountPage, data: { title: 'Account Page' } },
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
+  { path: 'terms-of-service', component: TermsOfServiceComponent, data: { title: 'Terms of Service Page' } },
   { path: '', component: HomePage, data: { title: 'Home Page' } },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -57,7 +60,8 @@ const appRoutes: Routes = [
     LoginPageComponent,
     RegisterPageComponent,
     LobbyPopupComponent,
-    CreateLobbyPopupComponent
+    CreateLobbyPopupComponent,
+    TermsOfServiceComponent
   ],
   imports: [
     BrowserModule,
