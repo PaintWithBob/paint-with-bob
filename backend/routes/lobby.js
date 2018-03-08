@@ -74,14 +74,15 @@ const createLobbyTask = async (req, res, token) => {
 /* POST create a new lobby. */
 router.post('/create', function(req, res, next) {
   // Check the required fields
-  if (!req.body ||
-      !req.body.token) {
+  // check header or url parameters or post parameters for token
+  var token = req.headers['authorization'] || req.body.token || req.query.token;
+  if (!token) {
     res.status(400).send('It seems like our fields are missing. It looks like we will have to just paint some new ones.');
     return;
   }
 
   // Kick off our async task
-  createLobbyTask(req, res, req.body.token);
+  createLobbyTask(req, res, token);
 });
 
 // Lobby Joining and creation for guests
