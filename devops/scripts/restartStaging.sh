@@ -31,7 +31,9 @@ echo " "
 
 echo "Restarting Paint with bob services..."
 
-sudo /bin/systemctl restart paintWithBobFrontendStaging
+# sudo /bin/systemctl restart paintWithBobFrontendStaging
+# Simply run the build script, dont run a systemd service
+bash paintWithBobFrontendStaging.sh
 sudo /bin/systemctl restart paintWithBobBackendStaging
 sudo /bin/systemctl restart paintWithBobStreamStaging
 
