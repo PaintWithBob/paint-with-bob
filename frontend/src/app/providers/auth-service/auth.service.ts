@@ -1,8 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Router } from '@angular/router';
-import { Http } from '@angular/http';
 import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -16,7 +17,7 @@ export class AuthService {
     constructor(
         protected localStorage: AsyncLocalStorage,
         private router: Router,
-        private http: Http
+        private http: HttpClient
     ) {
         this.userLoggedOut = new EventEmitter();
         this.userLoggedIn = new EventEmitter();
@@ -43,7 +44,7 @@ export class AuthService {
     register(form: any): Observable<any> {
         return Observable.create(observer => {
             return this.http.post(`${environment.apiUrl}/users/join`, form).subscribe((response: any) => {
-                return this.setLoggedInUser(JSON.parse(response._body).token).subscribe(() => {
+                return this.setLoggedInUser(response).subscribe(() => {
                     this.userLoggedIn.emit();
                     this.userRegistered.emit();
                     observer.next("Successfully created account and logged in");
@@ -63,7 +64,7 @@ export class AuthService {
     login(credentials: any): Observable<any> {
         return Observable.create(observer => {
             return this.http.post(`${environment.apiUrl}/users/login`, credentials)
-            .map(response => response.json()).subscribe((response: any) => {
+            .subscribe((response: any) => {
                 return this.setLoggedInUser(response).subscribe(() => {
                     this.userLoggedIn.emit();
                     observer.next("Successfully logged in");

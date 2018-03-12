@@ -1,12 +1,20 @@
 <div id="account">
     <section class="section">
         <div class="container">
-            <h1 class="title">Account Page</h1>
-            <h2 class="subtitle">Amazing Account Stuff Here</h2>
-            <div class="user-details" *ngIf="token">
-                <p style="word-wrap: break-word;"><strong>Token:</strong> {{token}}</p>
+            <div class="columns">
+                <div class="column">
+                    <h1 class="title">Account Page</h1>
+                    <h2 class="subtitle">Amazing Account Stuff Here</h2>
+                </div>
+                <div class="column has-text-right">
+                    <div class="button is-primary" (click)="editInfo()">Edit Info</div>
+                    <div class="button is-primary" (click)="createLobby()">Create Lobby</div>
+                </div>
             </div>
-            <div class="button is-primary" (click)="createLobby()">Create Lobby</div>
+            <div class="user-details" *ngIf="token && user">
+                <p><strong>Username:</strong> {{user.username}}</p>
+                <p><strong>Email:</strong> {{user.email}}</p>
+            </div>
             <div class="help is-danger" *ngIf="createLobbyError">{{createLobbyError}}</div>
         </div>
     </section>

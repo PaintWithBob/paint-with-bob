@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth-service/auth.service';
 import * as io from "socket.io-client";
@@ -13,7 +13,7 @@ export class LobbyService {
     socket: any = io(environment.apiUrl);
 
     constructor(
-        private http: Http,
+        private http: HttpClient,
         private authService: AuthService
     ) { }
 
@@ -24,11 +24,14 @@ export class LobbyService {
 
     // Creates lobby with user token.
     createLobby(form: any): Observable<{}> {
+        let httpOptions = { headers: new HttpHeaders() };
         return Observable.create(observer => {
             return this.authService.getToken().subscribe(token => {
-                form.token = token;
-                return this.http.post(`${environment.apiUrl}/lobby/create`, form)
-                .map(response => response.json()).subscribe(response => {
+                httpOptions.headers = new HttpHeaders({
+                    'Authorization': token
+                });
+                return this.http.post(`${environment.apiUrl}/lobby/create`, form, httpOptions)
+                .subscribe(response => {
                     observer.next(response);
                     return observer.complete();
                 }, error => {

@@ -68,7 +68,7 @@ else
 
   # Run in background to stop it from catching and removing CTRL C catch
   # And wait for it to finish, or for ctrl c
-  bash -c "\"$vlc\" -LZ './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:$1/stream.ogg}' --sout-keep" \
+  bash -c "\"$vlc\" --random --loop './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:$1/stream.ogg}' --sout-keep" \
   & wait
 
   # Inform of exit
