@@ -1,0 +1,29 @@
+<div class="modal-wrapper">
+    <div class="modal-header">
+        <h4 class="modal-title">Edit Account Information</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form (submit)="submit(editAccountForm)" #editAccountForm="ngForm">
+        <div class="modal-body">
+            <div class="field">
+                <label class="label">Username</label>
+                <div class="control">
+                    <input class="input" type="text" name="username" [(ngModel)]="user.username" #username="ngModel" required>
+                </div>
+                <div class="help is-danger" *ngIf="editAccountForm.submitted && username.hasError('required')">Please enter a username.</div>
+            </div>
+            <div class="field">
+                <label class="label">Email Address</label>
+                <div class="control">
+                    <input class="input" type="text" name="email" [(ngModel)]="user.email" #email="ngModel" required>
+                </div>
+                <div class="help is-danger" *ngIf="editAccountForm.submitted && email.hasError('required')">Please enter an email.</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="button is-primary">Save</button>
+        </div>
+    </form>
+</div>

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService, LobbyService } from '../../providers';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/create-lobby-popup.component';
+import { EditAccountPopupComponent } from '../../components/edit-account-popup/edit-account-popup.component';
+import { forkJoin } from "rxjs/observable/forkJoin";
 
 @Component({
 	selector: 'page-account',
@@ -11,6 +13,7 @@ import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/c
 export class AccountPage implements OnInit {
 
     token: any;
+    user: any;
     createLobbyError: any;
 
 	constructor(
@@ -21,11 +24,18 @@ export class AccountPage implements OnInit {
     ) { }
 
 	ngOnInit() {
-		this.authService.getToken().subscribe(token => {
-			this.token = token
-		}, error => {
-			console.error(error);
-		});
+        forkJoin([
+            this.authService.getUser(),
+            this.authService.getToken()
+        ]).subscribe((responses) => {
+            // Success
+            this.user = responses[0];
+            this.token = responses[1];
+            console.log(responses);
+        }, (error) => {
+            // Error
+            console.error(error);
+        });
     }
 
     createLobby() {
@@ -34,6 +44,18 @@ export class AccountPage implements OnInit {
         modalRef.result.then((result) => {
             if(result && !result.success) {
                 this.createLobbyError = 'Error creating lobby';
+            }
+        }, (reason) => {
+
+        });
+    }
+
+    editInfo() {
+        const modalRef = this.modal.open(EditAccountPopupComponent, { windowClass: 'create-lobby' });
+        modalRef.componentInstance.user = this.user;
+        modalRef.result.then((result) => {
+            if(result && !result.success) {
+                this.createLobbyError = 'Error editing user';
             }
         }, (reason) => {
 

@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "bundle-report": "webpack-bundle-analyzer dist/stats.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -54,6 +55,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.4.2"
+    "typescript": "~2.4.2",
+    "webpack-bundle-analyzer": "^2.11.1"
   }
 }
