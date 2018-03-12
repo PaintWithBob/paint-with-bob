@@ -11,7 +11,8 @@ Type=simple
 User=torch2424
 WorkingDirectory=/home/torch2424
 ExecStart=/bin/bash --login -c 'source $HOME/.bashrc; cd /home/torch2424/paint-with-bob/devops/scripts && bash paintWithBobFrontendStaging.sh'
-Restart=always
+# NOTE: Don't restart the process, since we simply build
+Restart=no
 
 [Install]
 WantedBy=multi-user.target
