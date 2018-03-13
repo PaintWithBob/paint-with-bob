@@ -62,4 +62,25 @@ export class AccountPage implements OnInit {
         });
     }
 
+
+		//experimental code TODO: Add relevant info so it doesn't crash everything
+		deleteUser(){
+				const modalRef = this.modal.open(DeleteAccountPopupComponent, {windowClass: 'create-lobby'});
+				modalRef.componentInstance.user = this.user;
+				//is this setting the modal's user to current one in use?
+
+
+				//think this is josh's error management code. Will change if proven wrong.
+				modalRef.result.then((result) => {
+            if(result && !result.success) {
+                this.createLobbyError = 'Error deleting user';
+            }
+        }, (reason) => {
+
+        });
+
+		}
+
+
+
 }

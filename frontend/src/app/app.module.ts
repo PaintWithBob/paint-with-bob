@@ -33,6 +33,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
+import { DeleteComponent } from './delete/delete.component';
 
 
 // The main app routes that will be used for navigation.
@@ -62,7 +63,8 @@ const appRoutes: Routes = [
     LobbyPopupComponent,
     CreateLobbyPopupComponent,
     EditAccountPopupComponent,
-    TermsOfServiceComponent
+    TermsOfServiceComponent,
+    DeleteComponent
   ],
   imports: [
     BrowserModule,
