@@ -1,17 +1,23 @@
 <div id="lobby" *ngIf="okToJoin">
     <main class="section">
         <div class="container">
-            <h1 class="title">{{roomName ? roomName : 'Lobby'}}</h1>
-            <h2 class="subtitle">Hell yeah, Chelsea was here and made it work!</h2>
-            <div class="share-url">
-                <label>Share URL:</label>
-                <input type="text" class="input" [(ngModel)]="shareUrl" readonly />
-                <button class="button" ngxClipboard [cbContent]="shareUrl">Copy!</button>
-            </div>
-            <div *ngIf="isPrivate">Private Room</div>
-            <h4>Number of users: {{numberOfUsers}}</h4>
-            <div class="users">
-                <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
+            <div class="top-bar">
+              <h1 class="title">{{roomName ? roomName : 'Lobby'}}</h1>
+
+              <div class = "random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
+                <h2 class="subtitle" >{{testString}}</h2>
+              </div>
+
+              <div class="share-url">
+                  <label>Share URL:</label>
+                  <input type="text" class="input" [(ngModel)]="shareUrl" readonly />
+                  <button class="button" ngxClipboard [cbContent]="shareUrl">Copy!</button>
+              </div>
+              <div *ngIf="isPrivate">Private Room</div>
+              <h4>Number of users: {{numberOfUsers}}</h4>
+              <div class="users">
+                  <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
+              </div>
             </div>
 
             <!-- Main Painting area -->
