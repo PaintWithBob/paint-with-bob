@@ -259,6 +259,7 @@ router.put('/:userId', (req, res, next) => {
             if (!data) {
                 return callback({status: 400, message: 'Uh Oh, We had a happy little accident.'});
             }
+            // Check for proper email format.
             if (req.body.email && !req.body.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
                 return callback({status: 400, message: 'Send an actual email and try again. Don\'t worry, we\'ll wait for you.'});
             }
@@ -282,7 +283,14 @@ router.put('/:userId', (req, res, next) => {
             if(tokenUser._id !== req.params.userId) {
                 return callback({status: 400, message: "User not authorized to update resource."});
             }
-            return callback();
+            return callback(null, tokenUser);
+        }, (tokenUser, callback) => {
+            return User.findOne({ email: req.body.email }, (error, user) => {
+                if(user && (user.id != req.params.userId)) {
+                    return callback({status: 409, message: 'Email address is already taken. Please choose another one.'})
+                }
+                return callback();
+            });
         }, (callback) => {
             return User.findOneAndUpdate({ _id: req.params.userId }, data, { new: true })
             .select('-hash -__v').exec((error, updatedUser) => {
