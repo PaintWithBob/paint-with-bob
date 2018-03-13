@@ -9,6 +9,8 @@ import { forkJoin } from "rxjs/observable/forkJoin";
 import * as io from 'socket.io-client';
 import 'rxjs/add/operator/filter';
 
+
+
 export interface button {
     newRoom: boolean;
     text: string;
@@ -28,6 +30,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     socket: any;
     okToJoin: boolean;
     numberOfUsers: number = 0;
+    testString: string = "...";
     users: any[];
     user: any;
     token: any;
@@ -41,6 +44,29 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         private modalService: NgbModal,
         private location: Location
     ) { }
+
+    randQuoteEnter(){
+      this.testString = "..."
+    }
+
+    randQuote(){
+
+      var quote = Math.floor(Math.random() * 4); //0-9
+      switch(quote) {
+            case 0:
+                this.testString = "We're all here to relax and make new friends.";
+                break;
+            case 1:
+                this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
+                break;
+            case 2:
+                this.testString = "Don't worry, nobody is here to judge you.";
+                break;
+            default:
+                this.testString = "Your painting is looking rather lovely right now.";
+        }
+
+    }
 
     ngOnInit() {
 
@@ -127,6 +153,9 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         this.roomName = data.room.roomName;
         this.isPrivate = data.room.isPrivate;
     }
+
+    //trying to change string
+
 
     // Function called in ngOnInit
     private setEventHandlersOnSocket() {

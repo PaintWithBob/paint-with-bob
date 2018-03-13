@@ -20,12 +20,12 @@
 #
 # https://stackoverflow.com/questions/12771909/bash-using-trap-ctrlc
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 3 ]; then
   # Echo Usage if not working
   echo " "
   echo "Paint with Bob Video Service USAGE"
   echo " "
-  echo "./index.sh [Port number]"
+  echo "./index.sh [Stream Port number] [Interface Port Number] [Interface password]"
 else
 
   # Allow for CTRL+C to exit
@@ -68,7 +68,10 @@ else
 
   # Run in background to stop it from catching and removing CTRL C catch
   # And wait for it to finish, or for ctrl c
-  bash -c "\"$vlc\" --random --loop './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:$1/stream.ogg}' --sout-keep" \
+
+  # And use an http interface to control: https://wiki.videolan.org/Documentation:Modules/http_intf/#VLC_2.0.0_and_later
+  # --extraintf=http --http-port port --http-password password
+  bash -c "\"$vlc\" --random --loop './videos/' --sout '#transcode{vcodec=theo,vb=800,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100}:http{mux=ogg,dst=:$1/stream.ogg}' --sout-keep --extraintf=http --http-port $2 --http-password $3" \
   & wait
 
   # Inform of exit

@@ -11,4 +11,9 @@ cd ../../videoservice
 
 echo "Vlc has been killed."
 
-bash index.sh 6969
+# Source our env file
+source .env
+
+echo "Using the VLC Web interface password: $VLC_PASSWORD"
+
+bash index.sh 6969 6968
