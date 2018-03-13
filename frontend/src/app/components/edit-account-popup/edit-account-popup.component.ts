@@ -11,27 +11,37 @@ import { UserService } from '../../providers/user-service/user.service';
 export class EditAccountPopupComponent implements OnInit {
 
     @Input() user;
+    form: any;
+    formError: any;
 
     constructor(
         private activeModal: NgbActiveModal,
         private userService: UserService
     ) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        if(this.user) {
+            const user = Object.assign({}, this.user);
+            this.form = {
+                username: user.username,
+                email: user.email
+            }
+        }
+    }
 
     close() {
         this.activeModal.close();
     }
 
     submit(form: NgForm) {
+        this.formError = null;
         if(form.valid) {
-            console.log(this.user);
-            // TODO: Test This
-            // this.userService.editAccountInfo(this.user.id, this.user).subscribe(response => {
-            //     console.log(response);
-            // }, error => {
-            //     console.error(error);
-            // });
+            this.userService.editAccountInfo(this.user._id, this.form).subscribe(response => {
+                this.activeModal.close({success: true, data: response});
+            }, error => {
+                console.error(error);
+                this.formError = error.error;
+            });
         }
     }
 
