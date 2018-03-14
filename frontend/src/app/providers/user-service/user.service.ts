@@ -19,6 +19,27 @@ export class UserService {
         private authService: AuthService
     ) { }
 
+    getUser(): Observable<any> {
+        let httpOptions = { headers: new HttpHeaders() };
+        return Observable.create(observer => {
+            return this.authService.getToken().subscribe(token => {
+                httpOptions.headers = new HttpHeaders({
+                    'Authorization': token
+                });
+                return this.http.get(`${environment.apiUrl}/users/myUser`, httpOptions).subscribe(response => {
+                    observer.next(response);
+                    return observer.complete();
+                }, error => {
+                    observer.error(error);
+                    return observer.complete();
+                });
+            }, error => {
+                observer.error(error);
+                return observer.complete();
+            });
+        });
+    }
+
     // Edit account information
     editAccountInfo(userId: any, data: any): Observable<{}> {
         let httpOptions = { headers: new HttpHeaders() };
@@ -27,7 +48,8 @@ export class UserService {
                 httpOptions.headers = new HttpHeaders({
                     'Authorization': token
                 });
-                return this.http.put(`${environment.apiUrl}/${userId}`, data, httpOptions).subscribe(response => {
+                console.log('Data being sent: ', data, userId);
+                return this.http.put(`${environment.apiUrl}/users/${userId}`, data, httpOptions).subscribe(response => {
                     observer.next(response);
                     return observer.complete();
                 }, error => {

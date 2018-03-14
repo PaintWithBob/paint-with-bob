@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, LobbyService } from '../../providers';
+import { AuthService, UserService, LobbyService } from '../../providers';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/create-lobby-popup.component';
 import { EditAccountPopupComponent } from '../../components/edit-account-popup/edit-account-popup.component';
@@ -18,22 +18,21 @@ export class AccountPage implements OnInit {
 
 	constructor(
         private authService: AuthService,
+        private userService: UserService,
         private lobbyService: LobbyService,
         private router: Router,
         private modal: NgbModal
     ) { }
 
 	ngOnInit() {
-        forkJoin([
-            this.authService.getUser(),
-            this.authService.getToken()
-        ]).subscribe((responses) => {
-            // Success
-            this.user = responses[0];
-            this.token = responses[1];
-            console.log(responses);
-        }, (error) => {
-            // Error
+        this.authService.getToken().subscribe(token => {
+            this.token = token;
+            this.userService.getUser().subscribe(user => {
+                this.user = user;
+            }, error => {
+                console.error(error);
+            });
+        }, error => {
             console.error(error);
         });
     }
@@ -56,6 +55,9 @@ export class AccountPage implements OnInit {
         modalRef.result.then((result) => {
             if(result && !result.success) {
                 this.createLobbyError = 'Error editing user';
+            } else {
+                console.log('Result: ', result);
+                this.user = result.data;
             }
         }, (reason) => {
 
