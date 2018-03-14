@@ -15,6 +15,7 @@ export class AccountPage implements OnInit {
     token: any;
     user: any;
     createLobbyError: any;
+    accountUpdateSuccess: any;
 
 	constructor(
         private authService: AuthService,
@@ -56,8 +57,11 @@ export class AccountPage implements OnInit {
             if(result && !result.success) {
                 this.createLobbyError = 'Error editing user';
             } else {
-                console.log('Result: ', result);
                 this.user = result.data;
+                this.accountUpdateSuccess = "Successfully updated account.";
+                setTimeout(() => {
+                    this.accountUpdateSuccess = null;
+                }, 5000);
             }
         }, (reason) => {
 
