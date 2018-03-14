@@ -5,10 +5,21 @@ const ffmpeg = require('fluent-ffmpeg');
 const NodeMediaServer = require('node-media-server');
 
 // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
-// const ffmpegCommand = ffmpeg('../videos/season21Episode1.mp4')
-//   .inputOptions(' -re -c copy')
-//   .format('flv')
-//   .save('rtmp://localhost/live/STREAM_NAME')
+setTimeout(() => {
+  const ffmpegCommand = ffmpeg('../videos/season21Episode1.mp4')
+    .inputOptions('-re')
+    .videoCodec('libx264')
+    .audioCodec('copy')
+    .format('flv')
+    // setup event handlers
+    .on('end', () => {
+      console.log('done processing input stream');
+    })
+    .on('error', (err) => {
+      console.log('an error happened: ' + err.message);
+    })
+    .save('rtmp://localhost/live/STREAM_NAME');
+}, 1000);
 
 // Start our live stream serve
 const nodeMediaServerConfig = {

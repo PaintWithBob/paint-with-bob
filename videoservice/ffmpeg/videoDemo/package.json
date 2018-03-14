@@ -23,6 +23,7 @@
     "preact-cli": "^2.0.0"
   },
   "dependencies": {
+    "flv.js": "^1.4.2",
     "preact": "^8.2.1",
     "preact-compat": "^3.17.0"
   }
