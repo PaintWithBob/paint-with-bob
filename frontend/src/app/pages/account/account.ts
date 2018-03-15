@@ -4,6 +4,7 @@ import { AuthService, UserService, LobbyService } from '../../providers';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/create-lobby-popup.component';
 import { EditAccountPopupComponent } from '../../components/edit-account-popup/edit-account-popup.component';
+import { DeleteAccountPopupComponent } from '../../components/delete-account-popup/delete-account-popup.component';
 import { forkJoin } from "rxjs/observable/forkJoin";
 
 @Component({
@@ -15,6 +16,10 @@ export class AccountPage implements OnInit {
     token: any;
     user: any;
     createLobbyError: any;
+    editInfoError: any;
+    deleteUserSuccess: any;
+    deleteUserError: any;
+    accountUpdateSuccess: any;
 
 	constructor(
         private authService: AuthService,
@@ -54,14 +59,36 @@ export class AccountPage implements OnInit {
         modalRef.componentInstance.user = this.user;
         modalRef.result.then((result) => {
             if(result && !result.success) {
-                this.createLobbyError = 'Error editing user';
+                this.editInfoError = 'Error editing user';
             } else {
-                console.log('Result: ', result);
                 this.user = result.data;
+                this.accountUpdateSuccess = "Successfully updated account.";
+                setTimeout(() => {
+                    this.accountUpdateSuccess = null;
+                }, 5000);
             }
         }, (reason) => {
 
         });
     }
+
+
+    //experimental code TODO: Add relevant info so it doesn't crash everything
+    deleteUser() {
+        const modalRef = this.modal.open(DeleteAccountPopupComponent, {windowClass: 'delete-account'});
+        modalRef.componentInstance.userId = this.user._id;
+        modalRef.result.then((result) => {
+            if(result && result.success) {
+                this.authService.logout().subscribe(() => {});
+            } else {
+                this.deleteUserError = 'Error deleting user';
+            }
+        }, (reason) => {
+
+        });
+
+    }
+
+
 
 }

@@ -87,7 +87,7 @@ export class AuthService {
             return this.localStorage.removeItem('brUser').subscribe(() => {
                 this.userLoggedOut.emit();
                 observer.next("Successfully logged out");
-                this.router.navigate(['/login']);
+                this.router.navigate(['/']);
                 return observer.complete();
             }, error => {
                 observer.error(error);

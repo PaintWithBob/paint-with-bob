@@ -307,4 +307,50 @@ router.put('/:userId', (req, res, next) => {
 
 });
 
+router.delete('/:userId', (req, res, next) => {
+    // Check header or url parameters or post parameters for token
+    var token = req.headers['authorization'] || req.body.token || req.query.token;
+    async.waterfall([
+        (callback) => {
+            if(!req.params.userId) {
+                return callback({status: 400, message: 'No user ID found.'});
+            }
+            if(!token) {
+                return callback({status: 400, message: 'User not authorized to update resource.'});
+            }
+            return callback();
+        }, (callback) => {
+            // Validate the token.
+            return TokenService.validateToken(token).then(tokenUser => {
+                if(!tokenUser) {
+                    return callback({status: 400, message: 'Invalid token.'});
+                }
+                return callback(null, tokenUser);
+            }, error => {
+                return callback(error);
+            });
+        }, (tokenUser, callback) => {
+            // Check if token ID matches ID of requested resource.
+            if(tokenUser._id !== req.params.userId) {
+                return callback({status: 400, message: "User not authorized to update resource."});
+            }
+            return callback();
+        }, (callback) => {
+            return User.findOne({_id: req.params.userId}, (error, user) => {
+                if(error) return callback({status: 400, message: 'No user found with matching ID.', error: error});
+                if(!user) return callback({status: 400, message: 'No user found with matching ID'});
+                return callback(null, user);
+            });
+        }, (user, callback) => {
+            return User.remove({_id: user.id}, (error) => {
+                if(error) return callback({status: 400, message: 'Error deleting user.'});
+                return callback();
+            });
+        }
+    ], error => {
+        if(error) return res.status(error.status).send(error.message);
+        return res.status(200).json({message: 'Successfully deleted user.'});
+    })
+});
+
 module.exports = router;
