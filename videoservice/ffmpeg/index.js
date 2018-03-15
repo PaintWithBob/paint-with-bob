@@ -1,24 +1,60 @@
 // Our dependencies
+const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
+const gradient = require('gradient-string');
 const argv = require('minimist')(process.argv.slice(2));
 const ffmpeg = require('fluent-ffmpeg');
 const NodeMediaServer = require('node-media-server');
 
-// ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
-setTimeout(() => {
-  const ffmpegCommand = ffmpeg('../videos/season21Episode1.mp4')
+console.log(gradient('blue', 'green', 'red', 'cyan', 'purple', 'pink')(`
+Paint With Bob Video Service
+Paint With Bob Video Service
+Paint With Bob Video Service
+Paint With Bob Video Service
+Paint With Bob Video Service
+`));
+
+// Get all of the mp4 files in the video directory
+// Get all test roms for the directory
+// TODO: Grab this from CLI
+const videoFilePaths = fs.readdirSync('../videos');
+const videos = videoFilePaths.filter((file) => {
+    return path.extname(file).toLowerCase() === '.mp4';
+});
+
+// Define our event handlers for ffmpeg
+const ffmpegStartNewVideo = () => {
+  // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
+  const ffmpegCommand = ffmpeg(`../videos/${videos[Math.floor(Math.random() * videos.length)]}`)
+    .seekInput('27:30.000') // TODO: Remove this tesing code
     .inputOptions('-re')
     .videoCodec('libx264')
     .audioCodec('copy')
     .format('flv')
     // setup event handlers
     .on('end', () => {
-      console.log('done processing input stream');
+      ffmpegOnEnd();
     })
-    .on('error', (err) => {
-      console.log('an error happened: ' + err.message);
+    .on('error', (error) => {
+      ffmpegOnError(error)
     })
     .save('rtmp://localhost/live/STREAM_NAME');
+};
+
+const ffmpegOnEnd = () => {
+  console.log('[PAINT WITH BOB]: done processing input stream');
+  ffmpegStartNewVideo();
+};
+
+const ffmpegOnError = (error) => {
+  console.log('an error happened: ' + error.message);
+  process.exit(1);
+};
+
+// Timeout to ensure the server starts running before trying to stream to it
+setTimeout(() => {
+  ffmpegStartNewVideo();
 }, 1000);
 
 // Start our live stream serve
