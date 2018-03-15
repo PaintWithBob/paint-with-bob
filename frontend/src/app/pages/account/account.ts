@@ -16,8 +16,9 @@ export class AccountPage implements OnInit {
     token: any;
     user: any;
     createLobbyError: any;
-		editInfoError: any;
-		deleteUserError: any;
+    editInfoError: any;
+    deleteUserSuccess: any;
+    deleteUserError: any;
     accountUpdateSuccess: any;
 
 	constructor(
@@ -72,22 +73,21 @@ export class AccountPage implements OnInit {
     }
 
 
-		//experimental code TODO: Add relevant info so it doesn't crash everything
-		deleteUser() {
-				const modalRef = this.modal.open(DeleteAccountPopupComponent, {windowClass: 'delete-account'});
-				modalRef.componentInstance.userId = this.user.id;
-				//is this setting the modal's user to current one in use?
-
-				//think this is josh's error management code. Will change if proven wrong.
-				modalRef.result.then((result) => {
-            if(result && !result.success) {
+    //experimental code TODO: Add relevant info so it doesn't crash everything
+    deleteUser() {
+        const modalRef = this.modal.open(DeleteAccountPopupComponent, {windowClass: 'delete-account'});
+        modalRef.componentInstance.userId = this.user._id;
+        modalRef.result.then((result) => {
+            if(result && result.success) {
+                this.authService.logout().subscribe(() => {});
+            } else {
                 this.deleteUserError = 'Error deleting user';
             }
         }, (reason) => {
 
         });
 
-		}
+    }
 
 
 

@@ -1,27 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../providers';
 
 @Component({
-  selector: 'delete-account-popup',
-  templateUrl: './delete-account-popup.component.html',
-  styleUrls: ['./delete-account-popup.component.scss']
+    selector: 'delete-account-popup',
+    templateUrl: './delete-account-popup.component.html',
+    styleUrls: ['./delete-account-popup.component.scss']
 })
 export class DeleteAccountPopupComponent implements OnInit {
 
-  constructor(private activeModal: NgbActiveModal
+    @Input() userId;
 
-  ) {}
+    constructor(
+        private activeModal: NgbActiveModal,
+        private userService: UserService
+    ) {}
 
-  ngOnInit() {
-  }
+    ngOnInit() {}
 
-  close() {
-      this.activeModal.close();
-  }
+    close() {
+        this.activeModal.close();
+    }
 
-  nukeAccount() {
-    console.log("ACCOUNT SHOULD NOW BE NUKED");
-
-  }
+    nukeAccount() {
+        this.userService.deleteAccount(this.userId).subscribe(response => {
+            this.activeModal.close({success: true, data: response});
+        }, error => {
+            console.error(error);
+            this.activeModal.close({success: false, error: error});
+        });
+    }
 
 }
