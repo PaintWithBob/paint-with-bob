@@ -27,7 +27,7 @@ const videos = videoFilePaths.filter((file) => {
 const ffmpegStartNewVideo = () => {
   // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
   const ffmpegCommand = ffmpeg(`../videos/${videos[Math.floor(Math.random() * videos.length)]}`)
-    .seekInput('27:30.000') // TODO: Remove this tesing code
+    // .seekInput('27:20.000') Seek input for debugging
     .inputOptions('-re')
     .videoCodec('libx264')
     .audioCodec('copy')
