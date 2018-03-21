@@ -4,6 +4,6 @@
 # Source our env file
 source .env
 
-cd ../../videoservice
+cd ../../videoservice/lib
 
-node index.js droppy/files
+node index.js ../droppy/files
