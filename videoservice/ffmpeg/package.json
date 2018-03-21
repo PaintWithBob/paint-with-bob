@@ -19,6 +19,7 @@
   "homepage": "https://github.com/PaintWithBob/paint-with-bob#readme",
   "dependencies": {
     "chalk": "^2.3.2",
+    "figlet": "^1.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "gradient-string": "^1.0.0",
     "minimist": "^1.2.0",

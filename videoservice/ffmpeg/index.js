@@ -3,22 +3,67 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const gradient = require('gradient-string');
-const argv = require('minimist')(process.argv.slice(2));
+const figlet = require('figlet');
 const ffmpeg = require('fluent-ffmpeg');
 const NodeMediaServer = require('node-media-server');
 
-console.log(gradient('blue', 'green', 'red', 'cyan', 'purple', 'pink')(`
-Paint With Bob Video Service
-Paint With Bob Video Service
-Paint With Bob Video Service
-Paint With Bob Video Service
-Paint With Bob Video Service
-`));
+// Set up our minimist CLI
+const argv = require('minimist')(process.argv.slice(2), {
+  string: ['port', 'secret', 'name'],
+  boolean: ['help'],
+  alias: {
+    h: 'help',
+    p: 'port',
+    s: 'secret',
+    n: 'name'
+  },
+});
+
+// Function to print our usage
+/**
+* Function to print the CLI Usage
+*/
+const printUsage = () => {
+  console.log(`
+
+    See Node Media Server ( https://www.npmjs.com/package/node-media-server )
+    For Urls and tools to use the video service
+
+    Usage:
+      node index.js [Video Directory] [OPTIONS]
+      Options:
+        -h, --help    Print usage information
+        -n, --name    Name of the stream (protocol://localhost/live/NAME)
+        -p, --port    Port to receive http connections (http://localhost:PORT/live/NAME)
+  `);
+  process.exit();
+}
+
+// Print the header
+console.log('');
+const fonts = figlet.fontsSync();
+
+const paintWithBobHeader = figlet.textSync("Paint With Bob Video", {
+  font: fonts[Math.floor(fonts.length * Math.random())]
+});
+
+console.log(gradient('blue', 'green', 'red', 'cyan', 'purple', 'pink')(paintWithBobHeader));
+console.log('');
+
+// Check our CLI Input
+if (argv.help || argv._.length != 1) {
+  printUsage();
+}
+
+// Get our variables from the CLI
+const VIDEO_DIRECTORY = argv._[0];
+const STREAM_NAME = argv.name || 'STREAM_NAME';
+const PORT = argv.port || '8000';
 
 // Get all of the mp4 files in the video directory
 // Get all test roms for the directory
 // TODO: Grab this from CLI
-const videoFilePaths = fs.readdirSync('../videos');
+const videoFilePaths = fs.readdirSync(VIDEO_DIRECTORY);
 const videos = videoFilePaths.filter((file) => {
     return path.extname(file).toLowerCase() === '.mp4';
 });
@@ -26,7 +71,7 @@ const videos = videoFilePaths.filter((file) => {
 // Define our event handlers for ffmpeg
 const ffmpegStartNewVideo = () => {
   // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
-  const ffmpegCommand = ffmpeg(`../videos/${videos[Math.floor(Math.random() * videos.length)]}`)
+  const ffmpegCommand = ffmpeg(`${VIDEO_DIRECTORY}${videos[Math.floor(Math.random() * videos.length)]}`)
     // .seekInput('27:20.000') Seek input for debugging
     .inputOptions('-re')
     .videoCodec('libx264')
@@ -39,7 +84,7 @@ const ffmpegStartNewVideo = () => {
     .on('error', (error) => {
       ffmpegOnError(error)
     })
-    .save('rtmp://localhost/live/STREAM_NAME');
+    .save(`rtmp://localhost/live/${STREAM_NAME}`);
 };
 
 const ffmpegOnEnd = () => {
@@ -67,7 +112,7 @@ const nodeMediaServerConfig = {
     ping_timeout: 30
   },
   http: {
-    port: 8000,
+    port: PORT,
     allow_origin: '*'
   }
 };
