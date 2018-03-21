@@ -63,4 +63,26 @@ export class UserService {
         });
     }
 
+    // Edit account information
+    deleteAccount(userId: any): Observable<{}> {
+        let httpOptions = { headers: new HttpHeaders() };
+        return Observable.create(observer => {
+            return this.authService.getToken().subscribe(token => {
+                httpOptions.headers = new HttpHeaders({
+                    'Authorization': token
+                });
+                return this.http.delete(`${environment.apiUrl}/users/${userId}`, httpOptions).subscribe(response => {
+                    observer.next(response);
+                    return observer.complete();
+                }, error => {
+                    observer.error(error);
+                    return observer.complete();
+                });
+            }, error => {
+                observer.error(error);
+                return observer.complete();
+            });
+        });
+    }
+
 }

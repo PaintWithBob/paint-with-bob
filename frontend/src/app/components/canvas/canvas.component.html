@@ -42,19 +42,27 @@
             </div>
         </div>
     </div>
-    <p *ngIf="activeTool">Brush Size: {{this.activeTool.tool.strokeWidth}}</p>
 
     <div [attr.id]="canvasElementId" class="canvas-target"></div>
+
 
     <div class="tools-wrapper">
         <div class="tools main-tools">
             <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" placement="top" ngbTooltip="{{tool.name}}" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
         </div>
+
         <div class="tools">
-            <button class="button is-primary" (click)="decBrush()"> - </button>
-            <button class="button is-primary" (click)="incBrush()"> + </button>
+            <button class="button is-primary" (click)="decBrush()" placement="top" ngbTooltip="decrement"> - </button>
+            <button class="button is-primary" (click)="incBrush()" placement="top" ngbTooltip="increment"> + </button>
             <button class="button is-primary" (click)="undoButton()" placement="top" ngbTooltip="undo"> ← </button>
             <button class="button is-primary" (click)="redoButton()" placement="top" ngbTooltip="redo"> → </button>
         </div>
+        <p *ngIf="activeTool">Brush Size: {{this.activeTool.tool.strokeWidth}}</p>
     </div>
+
+
+
+
+
+
 </div>

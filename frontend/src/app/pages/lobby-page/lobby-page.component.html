@@ -4,7 +4,7 @@
             <div class="top-bar">
               <h1 class="title">{{roomName ? roomName : 'Lobby'}}</h1>
 
-              <div class = "random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
+              <div class ="random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
                 <h2 class="subtitle" >{{testString}}</h2>
               </div>
 
@@ -22,6 +22,7 @@
 
             <!-- Main Painting area -->
             <section class="columns">
+              <div class="level-item">
                 <div class="column is-half">
                     <app-stream-embed></app-stream-embed>
                 </div>
@@ -30,6 +31,7 @@
                       [user]="user">
                     </app-canvas>
                 </div>
+              </div>
             </section>
 
             <!-- Friends Canvases -->
