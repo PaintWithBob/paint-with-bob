@@ -6,6 +6,9 @@
 
 devops/**/*.log
 
+videoservice/droppy/**/*
+!videoservice/droppy/files/README.md
+
 # Logs
 logs
 *.log
