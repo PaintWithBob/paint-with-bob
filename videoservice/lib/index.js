@@ -57,7 +57,7 @@ if (argv.help || argv._.length != 1) {
 
 // Get our variables from the CLI
 const VIDEO_DIRECTORY = argv._[0];
-const STREAM_NAME = argv.name || 'STREAM_NAME';
+const STREAM_NAME = argv.name || 'paintwithbob-1';
 const PORT = argv.port || '8000';
 
 // Get all of the mp4 files in the video directory

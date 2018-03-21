@@ -13,7 +13,7 @@ export default class App extends Component {
         var videoElement = document.getElementById('videoElement');
         var flvPlayer = flvjs.createPlayer({
             type: 'flv',
-            url: 'http://localhost:8000/live/STREAM_NAME.flv',
+            url: 'http://localhost:8000/live/paintwithbob-1.flv',
 						isLive: true
         });
         flvPlayer.attachMediaElement(videoElement);

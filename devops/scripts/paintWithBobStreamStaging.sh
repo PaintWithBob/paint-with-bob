@@ -6,4 +6,4 @@ source .env
 
 cd ../../videoservice/lib
 
-node index.js ../droppy/files
+node index.js ../droppy/files -p 6969
