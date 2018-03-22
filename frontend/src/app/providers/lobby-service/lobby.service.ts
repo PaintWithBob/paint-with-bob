@@ -45,4 +45,20 @@ export class LobbyService {
         });
     }
 
+    // Joins a lobby with given ID.
+    joinLobby(lobbyId: any): Observable<any> {
+        return new Observable(observer => {
+            observer.next(`Lobby join: ${lobbyId}`);
+            return observer.complete();
+        });
+    }
+
+    // Joins a random lobby.
+    joinRandomLobby(): Observable<any> {
+        return new Observable(observer => {
+            observer.next(`Random Lobby Join`);
+            return observer.complete();
+        });
+    }
+
 }

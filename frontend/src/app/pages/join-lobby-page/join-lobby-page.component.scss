@@ -1,0 +1,55 @@
+#join-lobby-page {
+    .section {
+        background: url('/assets/images/lake-bg.png');
+        background-size: cover;
+        position: relative;
+        height: 500px;
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(#000, 0.4);
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            transform: translateY(-50%);
+            h2 {
+                margin-bottom: 40px;
+                text-align: center;
+                color: #fff;
+            }
+            h4 {
+                font-size: 20px;
+                color: #fff;
+                margin-bottom: 10px;
+            }
+            @media (min-width: 769px) {
+                width: auto;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%) translateY(-50%);
+                min-width: 640px;
+                .columns .column {
+                    padding-top: 40px;
+                    padding-bottom: 40px;
+                    &:first-of-type {
+                        border-right: 1px solid #fff;
+                        padding-right: 40px;
+                    }
+                    &:last-of-type {
+                        padding-left: 40px;
+                    }
+                    h4.left-header {
+                        text-align: right;
+                    }
+                }
+            }
+        }
+    }
+}

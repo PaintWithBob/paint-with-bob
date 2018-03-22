@@ -1,0 +1,35 @@
+<div id="join-lobby-page">
+    <section class="section has-text-centered-mobile">
+        <div class="overlay"></div>
+        <div class="container">
+            <h2>Starting Painting Now!</h2>
+            <div class="columns">
+                <div class="column">
+                    <h4 class="left-header">Join lobby by ID</h4>
+                    <form (submit)="joinLobby(joinLobbyForm)" #joinLobbyForm="ngForm" novalidate>
+                        <div class="field has-addons">
+                            <label class="label is-small sr-only">Lobby ID</label>
+                            <div class="control has-icons-left" [ngClass]="{'ready': !lobbyId.hasError('required')}">
+                                <input class="input" type="text" name="lobbyId" placeholder="Lobby ID" [(ngModel)]="form.lobbyId" #lobbyId="ngModel" required>
+                                <span class="icon is-small is-left">
+                                    <fa name="key"></fa>
+                                </span>
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-primary">Join Lobby</button>
+                            </div>
+                            <div class="help is-danger" *ngIf="joinLobbyForm.submitted && lobbyId.hasError('required')">Please enter a lobby ID.</div>
+                        </div>
+                        <div class="field" *ngIf="formError">
+                            <div class="help is-danger">{{formError}}</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="column">
+                    <h4>Join a random lobby.</h4>
+                    <button class="button is-primary">Join Lobby</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
