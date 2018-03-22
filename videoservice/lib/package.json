@@ -1,0 +1,28 @@
+{
+  "name": "paint-with-bob-stream",
+  "version": "0.0.1",
+  "description": "Livestream server to continually stream to a server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demo": "cd videoDemo && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaintWithBob/paint-with-bob.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/PaintWithBob/paint-with-bob/issues"
+  },
+  "homepage": "https://github.com/PaintWithBob/paint-with-bob#readme",
+  "dependencies": {
+    "chalk": "^2.3.2",
+    "figlet": "^1.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "gradient-string": "^1.0.0",
+    "minimist": "^1.2.0",
+    "node-media-server": "^1.2.1"
+  }
+}
