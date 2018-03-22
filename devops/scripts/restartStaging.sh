@@ -36,6 +36,7 @@ echo "Restarting Paint with bob services..."
 bash paintWithBobFrontendStaging.sh
 sudo /bin/systemctl restart paintWithBobBackendStaging
 sudo /bin/systemctl restart paintWithBobStreamStaging
+sudo /bin/systemctl restart paintWithBobVideoDroppy
 
 echo " "
 
