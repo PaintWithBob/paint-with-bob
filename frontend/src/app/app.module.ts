@@ -12,6 +12,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found';
 import { AccountPage } from './pages/account/account';
 import { HomePage } from './pages/home/home';
 import { LobbyPageComponent } from './pages/lobby-page/lobby-page.component';
+import { JoinLobbyPageComponent } from './pages/join-lobby-page/join-lobby-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { TermsOfServiceComponent } from './pages/terms-of-service/terms-of-service.component';
@@ -43,6 +44,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginPageComponent, data: { title: 'Login Page' } },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register Page' } },
   { path: 'terms-of-service', component: TermsOfServiceComponent, data: { title: 'Terms of Service Page' } },
+  { path: 'lobby', component: JoinLobbyPageComponent, data: { title: 'Join Lobby' } },
   { path: '', component: HomePage, data: { title: 'Home Page' } },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -64,7 +66,8 @@ const appRoutes: Routes = [
     CreateLobbyPopupComponent,
     EditAccountPopupComponent,
     TermsOfServiceComponent,
-    DeleteAccountPopupComponent
+    DeleteAccountPopupComponent,
+    JoinLobbyPageComponent
   ],
   imports: [
     BrowserModule,

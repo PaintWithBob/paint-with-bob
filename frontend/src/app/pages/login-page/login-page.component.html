@@ -1,31 +1,43 @@
 <section class="section">
-  <div class="container">
-    <form (submit)="submit(loginForm)" #loginForm="ngForm" novalidate>
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control">
-          <input class="input" type="text" name="email" [(ngModel)]="form.email" #email="ngModel" email required>
-        </div>
-        <div class="help is-danger" *ngIf="loginForm.submitted && email.hasError('required')">Please enter your email. Try to remember the one that you told us.</div>
-        <div class="help is-danger" *ngIf="loginForm.submitted && email.hasError('email') && !email.hasError('required')">I'm sorry, but this email isn't valid.</div>
-      </div>
+    <div class="container">
+        <form (submit)="submit(loginForm)" #loginForm="ngForm" novalidate>
+            <div class="field">
+                <label class="label" for="email">Email</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !email.hasError('required') && !email.hasError('email')}">
+                    <input class="input" type="text" name="email" id="email" [(ngModel)]="form.email" #email="ngModel" email required>
+                    <span class="icon is-small is-left">
+                        <fa name="envelope"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!email.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="loginForm.submitted && email.hasError('required')">Please enter your email. Try to remember the one that you told us.</div>
+                <div class="help is-danger" *ngIf="loginForm.submitted && email.hasError('email') && !email.hasError('required')">I'm sorry, but this email isn't valid.</div>
+            </div>
 
-      <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" type="password" name="password" [(ngModel)]="form.password" #password="ngModel" required>
-        </div>
-        <div class="help is-danger" *ngIf="loginForm.submitted && password.hasError('required')">Please enter your password. It can be hard to remember, but don't worry, we'll wait for you.</div>
-      </div>
-      <div class="field" *ngIf="formError">
-        <div class="help is-danger">{{formError}}</div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-primary">Submit</button>
-        </div>
-      </div>
+            <div class="field">
+                <label class="label" for="password">Password</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !password.hasError('required')}">
+                    <input class="input" type="password" name="password" id="password" [(ngModel)]="form.password" #password="ngModel" required>
+                    <span class="icon is-small is-left">
+                        <fa name="lock"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!password.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="loginForm.submitted && password.hasError('required')">Please enter your password. It can be hard to remember, but don't worry, we'll wait for you.</div>
+            </div>
+            <div class="field" *ngIf="formError">
+                <div class="help is-danger">{{formError}}</div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" class="button is-primary">Submit</button>
+                </div>
+            </div>
 
-    </form>
-  </div>
+        </form>
+    </div>
 </section>

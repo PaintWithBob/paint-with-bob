@@ -37,9 +37,7 @@ export class AccountPage implements OnInit {
             }, error => {
                 console.error(error);
             });
-        }, error => {
-            console.error(error);
-        });
+        }, error => { });
     }
 
     createLobby() {
@@ -60,7 +58,7 @@ export class AccountPage implements OnInit {
         modalRef.result.then((result) => {
             if(result && !result.success) {
                 this.editInfoError = 'Error editing user';
-            } else {
+            } else if(result && result.data) {
                 this.user = result.data;
                 this.accountUpdateSuccess = "Successfully updated account.";
                 setTimeout(() => {
@@ -80,7 +78,7 @@ export class AccountPage implements OnInit {
         modalRef.result.then((result) => {
             if(result && result.success) {
                 this.authService.logout().subscribe(() => {});
-            } else {
+            } else if(result && result.error) {
                 this.deleteUserError = 'Error deleting user';
             }
         }, (reason) => {

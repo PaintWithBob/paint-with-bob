@@ -48,7 +48,6 @@ export class UserService {
                 httpOptions.headers = new HttpHeaders({
                     'Authorization': token
                 });
-                console.log('Data being sent: ', data, userId);
                 return this.http.put(`${environment.apiUrl}/users/${userId}`, data, httpOptions).subscribe(response => {
                     observer.next(response);
                     return observer.complete();

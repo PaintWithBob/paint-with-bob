@@ -1,51 +1,77 @@
 <section class="section">
-  <div class="container">
-    <form (ngSubmit)="submit(signUpForm)" #signUpForm="ngForm" novalidate>
+    <div class="container">
+        <form (ngSubmit)="submit(signUpForm)" #signUpForm="ngForm" novalidate>
 
-      <div class="field">
-        <label class="label">Username</label>
-        <div class="control">
-          <input class="input" type="text" name="username" [(ngModel)]="form.username" #username="ngModel" required>
-        </div>
-        <div class="help is-danger" *ngIf="signUpForm.submitted && username.hasError('required')">Please create a username. Try to choose something that makes you happy.</div>
-      </div>
+            <div class="field">
+                <label class="label" for="username">Username</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !username.hasError('required')}">
+                    <input class="input" type="text" name="username" id="username" [(ngModel)]="form.username" #username="ngModel" required>
+                    <span class="icon is-small is-left">
+                        <fa name="user"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!username.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && username.hasError('required')">Please create a username. Try to choose something that makes you happy.</div>
+            </div>
 
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control">
-          <input class="input" type="text" name="email" [(ngModel)]="form.email" #email="ngModel" email required>
-        </div>
-        <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('required')">Please enter your email. Our happy little database needs a way to help you log in.</div>
-        <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('email') && !email.hasError('required')">I'm not sure that this is a valid email. Take a deep breath, look it over, and try again.</div>
-      </div>
+            <div class="field">
+                <label class="label" for="email">Email</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !email.hasError('required') && !email.hasError('email')}">
+                    <input class="input" type="text" name="email" id="email" [(ngModel)]="form.email" #email="ngModel" email required>
+                    <span class="icon is-small is-left">
+                        <fa name="envelope"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!email.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('required')">Please enter your email. Our happy little database needs a way to help you log in.</div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && email.hasError('email') && !email.hasError('required')">I'm not sure that this is a valid email. Take a deep breath, look it over, and try again.</div>
+            </div>
 
-      <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" type="password" name="password" [(ngModel)]="form.password" #password="ngModel" required>
-        </div>
-        <div class="help is-danger" *ngIf="signUpForm.submitted && password.hasError('required')">Please enter your password. Let's get crazy here. Don't want bad people to find it.</div>
-      </div>
+            <div class="field">
+                <label class="label" for="password">Password</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !password.hasError('required') && !password.hasError('minlength')}">
+                    <input class="input" type="password" name="password" id="password" [(ngModel)]="form.password" #password="ngModel" minlength="5" required>
+                    <span class="icon is-small is-left">
+                        <fa name="lock"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!password.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && password.hasError('required')">Please enter your password. Let's get crazy here. Don't want bad people to find it.</div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && password.hasError('minlength')">Please enter a valid password at least 5 characters long.</div>
+            </div>
 
-      <div class="field">
-        <label class="label">Confirm Password</label>
-        <div class="control">
-          <input class="input" type="password" name="confPass" [(ngModel)]="form.confPass" #confPass="ngModel" required>
-        </div>
-        <div class="help is-danger" *ngIf="signUpForm.submitted && confPass.hasError('required')">Please confirm your password. Try to remember the password you typed, and recreate what made it special.</div>
-      </div>
-      <div class="field" *ngIf="formError">
-        <div class="help is-danger">{{formError}}</div>
-      </div>
-      <div class="field" *ngIf="registerSuccess">
-        <div class="help is-success">{{registerSuccess}}</div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-primary">Submit</button>
-        </div>
-      </div>
+            <div class="field">
+                <label class="label" for="confPass">Confirm Password</label>
+                <div class="control has-icons-left has-icons-right" [ngClass]="{'ready': !confPass.hasError('required') && !password.hasError('minlength')}">
+                    <input class="input" type="password" name="confPass" id="confPass" [(ngModel)]="form.confPass" #confPass="ngModel" minlength="5" required>
+                    <span class="icon is-small is-left">
+                        <fa name="lock"></fa>
+                    </span>
+                    <span class="icon is-small is-right" *ngIf="!confPass.pristine">
+                        <fa name="check"></fa>
+                    </span>
+                </div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && confPass.hasError('required')">Please confirm your password. Try to remember the password you typed, and recreate what made it special.</div>
+                <div class="help is-danger" *ngIf="signUpForm.submitted && confPass.hasError('minlength')">Please enter a valid password at least 5 characters long.</div>
+            </div>
+            <div class="field" *ngIf="formError">
+                <div class="help is-danger">{{formError}}</div>
+            </div>
+            <div class="field" *ngIf="registerSuccess">
+                <div class="help is-success">{{registerSuccess}}</div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" class="button is-primary">Submit</button>
+                </div>
+            </div>
 
-    </form>
-  </div>
+        </form>
+    </div>
 </section>
