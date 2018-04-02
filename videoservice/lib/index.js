@@ -56,13 +56,15 @@ if (argv.help || argv._.length != 1) {
 }
 
 // Get our variables from the CLI
-const VIDEO_DIRECTORY = argv._[0];
+let VIDEO_DIRECTORY = argv._[0];
+if(VIDEO_DIRECTORY.charAt(VIDEO_DIRECTORY.length - 1) !== "/") {
+  VIDEO_DIRECTORY = VIDEO_DIRECTORY + "/"
+}
 const STREAM_NAME = argv.name || 'paintwithbob-1';
 const PORT = argv.port || '8000';
 
 // Get all of the mp4 files in the video directory
 // Get all test roms for the directory
-// TODO: Grab this from CLI
 const videoFilePaths = fs.readdirSync(VIDEO_DIRECTORY);
 const videos = videoFilePaths.filter((file) => {
     return path.extname(file).toLowerCase() === '.mp4';
