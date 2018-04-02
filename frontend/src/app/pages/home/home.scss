@@ -1,31 +1,30 @@
 .backGnd{
-  overflow: hidden;
-  position: relative;
-  background-image: url("/assets/images/background.jpg");
+    overflow: hidden;
+    position: relative;
+    background-image: url("/assets/images/home-bg2.jpg"); // https://pixabay.com/en/mountains-landscape-colourful-1927046/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(#000, 0.40);
+    }
+    .container {
+        display: table;
+        width: 100%;
+        height: 100%;
+        .breathingRoom {
+            display: table-cell;
+            vertical-align: middle;
+        }
+    }
+}
 
-   /* Center and scale the image nicely */
-   background-position: center;
-   background-repeat: no-repeat;
-   background-size: cover;
-}
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(#000, 0.15);
-}
-.breathingRoom {
-  padding: 10% 0;
-}
 .title, .subtitle {
-  color: #FFFFFF;
-}
-
-
-@media only screen and (max-width: 500px) {
-  .title {
-    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
-  }
+    color: #FFFFFF;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { LobbyService } from '../../providers';
 
 @Component({
     selector: 'join-lobby-page',
@@ -14,7 +15,8 @@ export class JoinLobbyPageComponent implements OnInit {
     formError: any;
 
     constructor(
-        private router: Router
+        private router: Router,
+        private lobbyService: LobbyService
     ) { }
 
     ngOnInit() {
@@ -25,6 +27,14 @@ export class JoinLobbyPageComponent implements OnInit {
         if(form.valid) {
             this.router.navigate(['/lobby/', this.form.lobbyId]);
         }
+    }
+
+    joinRandomLobby() {
+        this.lobbyService.joinRandomLobby().subscribe(response => {
+            this.router.navigate(['/lobby/', response.roomId]);
+        }, error => {
+            console.error(error);
+        });
     }
 
 }
