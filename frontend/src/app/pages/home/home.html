@@ -3,11 +3,11 @@
         <div class="overlay"></div>
         <div class="container has-text-centered">
             <div class="breathingRoom">
-                <h1 class="title">Paint With Bob</h1>
+                <h1 class="h2 title">Paint With Bob</h1>
                 <h2 class="subtitle">Experience the Joy of Painting with Friends or Strangers!</h2>
                 <a class="button is-primary is-inverted is-outlined" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Register</a>
                 <a class="button is-primary is-inverted is-outlined" routerLink="/login" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Login</a>
-                <a class="button is-primary is-inverted is-outlined" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Paint Now</a>
+                <a class="button is-primary is-inverted is-outlined" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Paint Now</a>
             </div>
         </div>
     </div>

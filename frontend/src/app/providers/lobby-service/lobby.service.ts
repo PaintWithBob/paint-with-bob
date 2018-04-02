@@ -56,8 +56,13 @@ export class LobbyService {
     // Joins a random lobby.
     joinRandomLobby(): Observable<any> {
         return new Observable(observer => {
-            observer.next(`Random Lobby Join`);
-            return observer.complete();
+            return this.http.get(`${environment.apiUrl}/lobby/guest`).subscribe(response => {
+                observer.next(response);
+                return observer.complete();
+            }, error => {
+                observer.error(error);
+                return observer.complete();
+            })
         });
     }
 
