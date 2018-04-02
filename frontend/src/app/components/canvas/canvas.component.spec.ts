@@ -1,16 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { CanvasComponent } from './canvas.component';
 
-describe('CanvasComponent', () => {
+fdescribe('CanvasComponent', () => {
   let component: CanvasComponent;
   let fixture: ComponentFixture<CanvasComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CanvasComponent ]
-    })
-    .compileComponents();
+    configureComponentTestBed(TestBed, CanvasComponent);
   }));
 
   beforeEach(() => {

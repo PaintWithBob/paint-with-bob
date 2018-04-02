@@ -28,5 +28,9 @@ getTestBed().initTestEnvironment(
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+
+// Add a base href for components that need it
+document.write('<base href="' + document.location + '" />');
+
 // Finally, start Karma to run the tests.
 __karma__.start();
