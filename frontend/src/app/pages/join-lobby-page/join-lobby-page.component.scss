@@ -1,16 +1,17 @@
 #join-lobby-page {
     .section {
-        background: url('/assets/images/lake-bg.png');
+        background: url('/assets/images/winter-bg.jpg');
         background-size: cover;
         position: relative;
-        height: 500px;
+        height: 620px;
+        background-position: top center;
         .overlay {
             position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(#000, 0.4);
+            background: rgba(#000, 0.6);
         }
         .container {
             position: absolute;

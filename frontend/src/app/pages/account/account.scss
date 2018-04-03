@@ -1,0 +1,13 @@
+#account {
+    .section {
+        &:first-of-type {
+            padding-bottom: 0;
+        }
+        .btns-wrapper {
+            margin-bottom: 10px;
+            .button {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

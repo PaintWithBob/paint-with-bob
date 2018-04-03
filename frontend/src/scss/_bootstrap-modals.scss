@@ -114,6 +114,7 @@ $modal-transition:                  transform .3s ease-out;
     background-clip: padding-box;
     // Remove focus outline from opened modal
     outline: 0;
+    width: auto;
 }
 
 // Modal background
