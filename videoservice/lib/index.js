@@ -56,13 +56,15 @@ if (argv.help || argv._.length != 1) {
 }
 
 // Get our variables from the CLI
-const VIDEO_DIRECTORY = argv._[0];
+let VIDEO_DIRECTORY = argv._[0];
+if(VIDEO_DIRECTORY.charAt(VIDEO_DIRECTORY.length - 1) !== "/") {
+  VIDEO_DIRECTORY = VIDEO_DIRECTORY + "/"
+}
 const STREAM_NAME = argv.name || 'paintwithbob-1';
 const PORT = argv.port || '8000';
 
 // Get all of the mp4 files in the video directory
 // Get all test roms for the directory
-// TODO: Grab this from CLI
 const videoFilePaths = fs.readdirSync(VIDEO_DIRECTORY);
 const videos = videoFilePaths.filter((file) => {
     return path.extname(file).toLowerCase() === '.mp4';
@@ -71,7 +73,9 @@ const videos = videoFilePaths.filter((file) => {
 // Define our event handlers for ffmpeg
 const ffmpegStartNewVideo = () => {
   // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
-  const ffmpegCommand = ffmpeg(`${VIDEO_DIRECTORY}${videos[Math.floor(Math.random() * videos.length)]}`)
+  const videoPath = `${VIDEO_DIRECTORY}${videos[Math.floor(Math.random() * videos.length)]}`;
+  console.log(`Playing the video at: ${videoPath}`);
+  const ffmpegCommand = ffmpeg(videoPath)
     // .seekInput('27:20.000') Seek input for debugging
     .inputOptions('-re')
     .videoCodec('libx264')

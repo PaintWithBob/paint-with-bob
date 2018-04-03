@@ -165,6 +165,10 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
         this.canvas.redo();
     }
 
+    clearButton(){
+        this.canvas.clear();
+    }
+
     ngOnDestroy() {
         if (this.lcDrawingChangeListener) {
             this.lcDrawingChangeListener();
