@@ -4,7 +4,7 @@ import { configureComponentTestBed } from '../../../test-utils';
 
 import { CanvasComponent } from './canvas.component';
 
-fdescribe('CanvasComponent', () => {
+describe('CanvasComponent', () => {
   let component: CanvasComponent;
   let fixture: ComponentFixture<CanvasComponent>;
 
