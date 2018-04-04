@@ -1,12 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
 
+import { configureServiceTestBed } from '../../../test-utils';
+
 import { LobbyService } from './lobby.service';
 
 describe('LobbyService', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [LobbyService]
-    });
+    configureServiceTestBed(TestBed, LobbyService);
   });
 
   it('should be created', inject([LobbyService], (service: LobbyService) => {

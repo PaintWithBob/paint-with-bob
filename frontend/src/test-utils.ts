@@ -37,6 +37,7 @@ export function configureComponentTestBed(TestBed, Component) {
     providers: [
       AuthService,
       UserService,
+      LobbyService,
       NgbActiveModal
     ],
     imports: [
@@ -94,8 +95,16 @@ export function configurePageComponentTestBed(TestBed, Component) {
 
 export function configureServiceTestBed(TestBed, Service) {
   TestBed.configureTestingModule({
-    providers: [Service],
+    providers: [
+      AuthService,
+      Service
+    ],
     imports: [
+      HttpClientModule,
+      RouterModule.forRoot(
+        [],
+        { enableTracing: false } // <-- debugging purposes only
+      ),
       AsyncLocalStorageModule
     ]
   });
