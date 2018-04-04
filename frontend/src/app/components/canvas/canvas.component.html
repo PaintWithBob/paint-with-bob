@@ -56,6 +56,7 @@
             <button class="button is-primary" (click)="incBrush()" placement="top" ngbTooltip="increment"> + </button>
             <button class="button is-primary" (click)="undoButton()" placement="top" ngbTooltip="undo"> ← </button>
             <button class="button is-primary" (click)="redoButton()" placement="top" ngbTooltip="redo"> → </button>
+            <button class="button is-primary" (click)="clearButton()" placement="top" ngbTooltip="clear"> X </button>
         </div>
         <p *ngIf="activeTool">Brush Size: {{this.activeTool.tool.strokeWidth}}</p>
     </div>

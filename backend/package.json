@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "npx mocha -R spec test/spec.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -20,5 +21,9 @@
     "secure-password": "^3.0.0",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.5",
+    "supertest": "^3.0.0"
   }
 }

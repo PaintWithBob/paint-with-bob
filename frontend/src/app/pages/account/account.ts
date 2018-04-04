@@ -8,7 +8,8 @@ import { DeleteAccountPopupComponent } from '../../components/delete-account-pop
 import { forkJoin } from "rxjs/observable/forkJoin";
 
 @Component({
-	selector: 'page-account',
+    selector: 'page-account',
+    styleUrls: ['account.scss'],
 	templateUrl: 'account.html',
 })
 export class AccountPage implements OnInit {

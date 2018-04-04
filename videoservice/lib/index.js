@@ -73,7 +73,9 @@ const videos = videoFilePaths.filter((file) => {
 // Define our event handlers for ffmpeg
 const ffmpegStartNewVideo = () => {
   // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
-  const ffmpegCommand = ffmpeg(`${VIDEO_DIRECTORY}${videos[Math.floor(Math.random() * videos.length)]}`)
+  const videoPath = `${VIDEO_DIRECTORY}${videos[Math.floor(Math.random() * videos.length)]}`;
+  console.log(`Playing the video at: ${videoPath}`);
+  const ffmpegCommand = ffmpeg(videoPath)
     // .seekInput('27:20.000') Seek input for debugging
     .inputOptions('-re')
     .videoCodec('libx264')
