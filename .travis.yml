@@ -5,7 +5,6 @@ sudo: false
 node_js:
   - "node"
 before_install:
-  - cd PaintWithBob/paint-with-bob
   - cd paint-with-bob
 script:
   - cd frontend && npm install && npm test
