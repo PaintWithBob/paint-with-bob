@@ -4,7 +4,7 @@ import { configureComponentTestBed } from '../../../test-utils';
 
 import { DeleteAccountPopupComponent } from './delete-account-popup.component';
 
-fdescribe('DeleteAccountPopupComponent', () => {
+describe('DeleteAccountPopupComponent', () => {
   let component: DeleteAccountPopupComponent;
   let fixture: ComponentFixture<DeleteAccountPopupComponent>;
 

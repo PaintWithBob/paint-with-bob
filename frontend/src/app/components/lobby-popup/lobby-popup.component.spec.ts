@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { LobbyPopupComponent } from './lobby-popup.component';
 
 describe('LobbyPopupComponent', () => {
@@ -7,10 +9,7 @@ describe('LobbyPopupComponent', () => {
   let fixture: ComponentFixture<LobbyPopupComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LobbyPopupComponent ]
-    })
-    .compileComponents();
+    configureComponentTestBed(TestBed, LobbyPopupComponent);
   }));
 
   beforeEach(() => {

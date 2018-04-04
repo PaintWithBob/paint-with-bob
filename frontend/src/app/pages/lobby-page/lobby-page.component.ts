@@ -45,36 +45,15 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         private location: Location
     ) { }
 
-    randQuoteEnter(){
-      this.testString = "..."
-    }
-
-    randQuote(){
-
-      var quote = Math.floor(Math.random() * 4); //0-9
-      switch(quote) {
-            case 0:
-                this.testString = "We're all here to relax and make new friends.";
-                break;
-            case 1:
-                this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
-                break;
-            case 2:
-                this.testString = "Don't worry, nobody is here to judge you.";
-                break;
-            default:
-                this.testString = "Your painting is looking rather lovely right now.";
-        }
-
-    }
-
     ngOnInit() {
 
         this.shareUrl = window.location.href;
 
         // Disconnect from the socket when you leave the room.
         this.router.events.filter(event => event instanceof NavigationStart).subscribe((event:any) => {
-            this.socket.disconnect();
+            if(this.socket) {
+              this.socket.disconnect();
+            }
         });
 
         // Subscribe to router event and assign room id.
@@ -112,7 +91,32 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+      if(this.socket) {
         this.socket.disconnect();
+      }
+    }
+
+    randQuoteEnter(){
+      this.testString = "..."
+    }
+
+    randQuote(){
+
+      var quote = Math.floor(Math.random() * 4); //0-9
+      switch(quote) {
+            case 0:
+                this.testString = "We're all here to relax and make new friends.";
+                break;
+            case 1:
+                this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
+                break;
+            case 2:
+                this.testString = "Don't worry, nobody is here to judge you.";
+                break;
+            default:
+                this.testString = "Your painting is looking rather lovely right now.";
+        }
+
     }
 
     // Opens modal and sets the input elements
