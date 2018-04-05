@@ -1,6 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+// https://medium.com/@rogeriopvl/automating-karma-and-headless-chrome-with-puppetteer-51ce8f6a78b0
+
+process.env.CHROME_BIN = require('puppeteer').executablePath()
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -27,7 +31,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     singleRun: false,
     /** https://github.com/jasmine/jasmine/issues/1327 **/
     /** * maximum number of tries a browser will attempt in the case of a disconnection */

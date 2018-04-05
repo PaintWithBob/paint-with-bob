@@ -5,5 +5,5 @@ sudo: false
 node_js:
   - "node"
 script:
-  - ls && cd frontend && npm install && npm test
-  - ls && cd backend && npm install && npm test
+  - cd frontend && npm install && npm test
+  - cd backend && npm install && npm test
