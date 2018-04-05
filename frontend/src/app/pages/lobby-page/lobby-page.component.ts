@@ -217,10 +217,13 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     // Function to return all other users in the room
     private getOtherUsersInLobby() {
 
+      console.log("first trigger");
+      //probably test to see if other users should be empty. Should skip this.
       if(!this.user || !this.users || this.users.length <= 1) {
         return [];
       }
-
+      
+      //probably where the error is happening, testing hypothesis
       const otherUsers = this.users.filter((user) => {
         if(user.user._id !== this.user._id) {
           return true;
@@ -228,6 +231,8 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         return false;
       });
 
+      console.log("third trigger");
+      console.log(otherUsers);
       return otherUsers;
     }
 
