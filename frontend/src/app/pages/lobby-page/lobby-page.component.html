@@ -1,8 +1,8 @@
 <div id="lobby" *ngIf="okToJoin">
     <main class="section">
-        <div class="container">
+        <div class="container is-fluid">
             <div class="top-bar">
-              <h1 class="title">{{roomName ? roomName : 'Lobby'}}</h1>
+              <h1 class="title has-text-centered">{{roomName ? roomName : 'Lobby'}}</h1>
 
               <div class ="random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
                 <h2 class="subtitle" >{{testString}}</h2>
