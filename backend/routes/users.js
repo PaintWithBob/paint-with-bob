@@ -179,7 +179,7 @@ router.post('/login', function(req, res) {
         const vp = await verifyPasswd(user);
         if(!vp){
             throw {
-                status: 500,
+                status: 401,
                 message: "Sometimes in life, your password doesn\'t verify. That\'s ok. Sometimes you need the darkness along with the light, to make you appreciate the good times."
             }
         }
