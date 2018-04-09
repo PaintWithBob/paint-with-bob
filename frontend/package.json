@@ -7,7 +7,7 @@
     "start": "ng serve",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
     "build": "ng build",
-    "test": "npx ng test",
+    "test": "npx ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
