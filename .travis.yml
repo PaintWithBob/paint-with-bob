@@ -13,4 +13,5 @@ node_js:
   - "node"
 script:
   - cd frontend && npm install && npm test
+  - cd ..
   - cd backend && npm install && npm test
