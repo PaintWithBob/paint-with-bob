@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "npx mocha -R spec test/spec.js"
+    "test": "npx mocha -R spec test/spec.js --exit"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

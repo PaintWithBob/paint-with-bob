@@ -3,6 +3,8 @@ notifications:
   email: false
 language: node_js
 dist: trusty
+services:
+  - mongodb
 addons:
   chrome: stable
 before_install:
