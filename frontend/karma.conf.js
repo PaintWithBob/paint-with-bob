@@ -3,8 +3,6 @@
 
 // https://developers.google.com/web/updates/2017/06/headless-karma-mocha-chai#running_it_all_on_travis_ci
 
-process.env.CHROME_BIN = require('puppeteer').executablePath()
-
 module.exports = function (config) {
   config.set({
     basePath: '',
