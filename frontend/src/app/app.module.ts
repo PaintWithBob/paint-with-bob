@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule} from '@angular/forms';
-import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -25,16 +24,17 @@ import { StreamEmbedComponent } from './components/stream-embed/stream-embed.com
 import { LobbyPopupComponent } from './components/lobby-popup/lobby-popup.component';
 import { CreateLobbyPopupComponent } from './components/create-lobby-popup/create-lobby-popup.component';
 import { EditAccountPopupComponent } from './components/edit-account-popup/edit-account-popup.component';
+import { DeleteAccountPopupComponent } from './components/delete-account-popup/delete-account-popup.component';
 
 // Providers
 import { AuthService, LobbyService, UserService } from './providers';
 
 // 3P Modules
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
-import { DeleteAccountPopupComponent } from './components/delete-account-popup/delete-account-popup.component';
 
 
 // The main app routes that will be used for navigation.

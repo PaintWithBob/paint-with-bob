@@ -75,7 +75,9 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         // Disconnect from the socket when you leave the room.
         this.router.events.filter(event => event instanceof NavigationStart).subscribe((event:any) => {
-            this.socket.disconnect();
+            if(this.socket) {
+              this.socket.disconnect();
+            }
         });
 
         // Subscribe to router event and assign room id.
@@ -113,7 +115,9 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+      if(this.socket) {
         this.socket.disconnect();
+      }
     }
 
     // Opens modal and sets the input elements
