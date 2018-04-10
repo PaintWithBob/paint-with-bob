@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configurePageComponentTestBed } from '../../../test-utils';
+
 import { TermsOfServiceComponent } from './terms-of-service.component';
 
 describe('TermsOfServiceComponent', () => {
@@ -7,11 +9,9 @@ describe('TermsOfServiceComponent', () => {
   let fixture: ComponentFixture<TermsOfServiceComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ TermsOfServiceComponent ]
-    })
-    .compileComponents();
+    configurePageComponentTestBed(TestBed, TermsOfServiceComponent);
   }));
+
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TermsOfServiceComponent);

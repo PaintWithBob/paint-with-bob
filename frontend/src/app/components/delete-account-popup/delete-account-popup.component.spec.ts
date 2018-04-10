@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { DeleteAccountPopupComponent } from './delete-account-popup.component';
 
 describe('DeleteAccountPopupComponent', () => {
@@ -7,10 +9,7 @@ describe('DeleteAccountPopupComponent', () => {
   let fixture: ComponentFixture<DeleteAccountPopupComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DeleteAccountPopupComponent ]
-    })
-    .compileComponents();
+    configureComponentTestBed(TestBed, DeleteAccountPopupComponent);
   }));
 
   beforeEach(() => {

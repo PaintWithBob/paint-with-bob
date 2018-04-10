@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { EditAccountPopupComponent } from './edit-account-popup.component';
 
 describe('EditAccountPopupComponent', () => {
@@ -7,10 +9,7 @@ describe('EditAccountPopupComponent', () => {
   let fixture: ComponentFixture<EditAccountPopupComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ EditAccountPopupComponent ]
-    })
-    .compileComponents();
+    configureComponentTestBed(TestBed, EditAccountPopupComponent);
   }));
 
   beforeEach(() => {

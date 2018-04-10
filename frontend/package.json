@@ -7,7 +7,7 @@
     "start": "ng serve",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
     "build": "ng build",
-    "test": "ng test",
+    "test": "npx ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -44,7 +44,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^6.0.101",
     "codelyzer": "~3.2.0",
-    "jasmine-core": "~2.6.2",
+    "jasmine-core": "^2.5.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",
