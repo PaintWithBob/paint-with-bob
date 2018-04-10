@@ -33,6 +33,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     testString: string = "...";
     users: any[];
     user: any;
+    otherUsers: any[];
     token: any;
     closeResult: any;
     shareUrl: any;
@@ -46,24 +47,24 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     ) { }
 
     randQuoteEnter(){
-      this.testString = "..."
+        this.testString = "..."
     }
 
     randQuote(){
 
-      var quote = Math.floor(Math.random() * 4); //0-9
-      switch(quote) {
+        var quote = Math.floor(Math.random() * 4); //0-9
+        switch(quote) {
             case 0:
-                this.testString = "We're all here to relax and make new friends.";
-                break;
+            this.testString = "We're all here to relax and make new friends.";
+            break;
             case 1:
-                this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
-                break;
+            this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
+            break;
             case 2:
-                this.testString = "Don't worry, nobody is here to judge you.";
-                break;
+            this.testString = "Don't worry, nobody is here to judge you.";
+            break;
             default:
-                this.testString = "Your painting is looking rather lovely right now.";
+            this.testString = "Your painting is looking rather lovely right now.";
         }
 
     }
@@ -84,29 +85,29 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
             this.roomId = params['roomId'];
 
             forkJoin([
-              this.authService.getUser(),
-              this.authService.getToken()
+                this.authService.getUser(),
+                this.authService.getToken()
             ]).subscribe((responses) => {
-              // Success
+                // Success
 
-              this.user = responses[0];
-              this.token = responses[1];
+                this.user = responses[0];
+                this.token = responses[1];
 
-              // Finally, connect to our socket
-              // Connect to correct socket namespace. (emits connection event)
-              this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`, {
-                query: {
-                  token: this.token
-                }
-              });
-              this.setEventHandlersOnSocket();
+                // Finally, connect to our socket
+                // Connect to correct socket namespace. (emits connection event)
+                this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`, {
+                    query: {
+                        token: this.token
+                    }
+                });
+                this.setEventHandlersOnSocket();
             }, () => {
-              // Error
+                // Error
 
-              // Finally, connect to our socket
-              // Connect to correct socket namespace. (emits connection event)
-              this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`);
-              this.setEventHandlersOnSocket();
+                // Finally, connect to our socket
+                // Connect to correct socket namespace. (emits connection event)
+                this.socket = io(`${environment.apiUrl}/lobby/room/${this.roomId}`);
+                this.setEventHandlersOnSocket();
             });
         });
     }
@@ -139,13 +140,13 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         // If we are a guest, and we have no user, find ourselves
         if(!this.user) {
-          data.room.usersInRoom.some((user) => {
-            if(user.socketId === this.socket.id) {
-              this.user = user.user;
-              return true;
-            }
-            return false;
-          });
+            data.room.usersInRoom.some((user) => {
+                if(user.socketId === this.socket.id) {
+                    this.user = user.user;
+                    return true;
+                }
+                return false;
+            });
         }
 
         this.numberOfUsers = data.room.usersInRoom.length;
@@ -160,48 +161,52 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     // Function called in ngOnInit
     private setEventHandlersOnSocket() {
 
-      this.socket.on('connect', () => {
-          this.okToJoin = true;
-      });
+        this.socket.on('connect', () => {
+            this.okToJoin = true;
+        });
 
-      // Runs when the room status is updated (users enters, user leaves, etc.)
-      this.socket.on('ROOM_UPDATE', data => {
-          console.log('Room updated: ', data);
-          if(data.reason === 'USER_JOINED') {
-              this.roomUpdate(data);
-          } else if(data.reason === 'USER_LEFT') {
-              this.roomUpdate(data);
-          }
-      });
+        // Runs when the room status is updated (users enters, user leaves, etc.)
+        this.socket.on('ROOM_UPDATE', data => {
+            console.log('Room updated: ', data);
+            setTimeout(() => {
+                if(data.reason === 'USER_JOINED') {
+                    this.roomUpdate(data);
+                    this.otherUsers = null;
+                } else if(data.reason === 'USER_LEFT') {
+                    this.roomUpdate(data);
+                    this.otherUsers = null;
+                }
+            });
+        });
 
-      // Listen for user getting kicked.
-      this.socket.on('KICK', data => {
-          if(data.reason === 'ROOM_FULL') {
-              console.log('KICK - ROOM_FULL: ', data);
-              this.roomUpdate(data);
-              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-          } else if(data.reason === 'ADMIN_KICK') {
-              console.log('KICK - ADMIN_KICK: ', data);
-              this.roomUpdate(data);
-              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-          } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
-              console.log("Room doesn't exist bro");
-              this.roomUpdate(data);
-          }
-      });
+        // Listen for user getting kicked.
+        this.socket.on('KICK', data => {
+            if(data.reason === 'ROOM_FULL') {
+                console.log('KICK - ROOM_FULL: ', data);
+                this.roomUpdate(data);
+                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+            } else if(data.reason === 'ADMIN_KICK') {
+                console.log('KICK - ADMIN_KICK: ', data);
+                this.roomUpdate(data);
+                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+            } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
+                console.log("Room doesn't exist bro");
+                this.roomUpdate(data);
+            }
+        });
 
-      // Track any errors that occur with connection and redirect user out of room.
-      this.socket.on('error', (error) => {
-          if(error === 'Invalid namespace') {
-              console.log("Invalid room");
-              this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
-          } else if (typeof console !== "undefined" && console !== null) {
-              console.error("Socket.io reported a generic error");
-              // Show a popup telling user that room does not exist
-              // For now, redirect back to homepage.
-              this.router.navigate(['../']);
-          }
-      });
+        // Track any errors that occur with connection and redirect user out of room.
+        this.socket.on('error', (error) => {
+            if(error === 'Invalid namespace') {
+                console.log("Invalid room");
+                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+            } else if (typeof console !== "undefined" && console !== null) {
+                console.error("Socket.io reported a generic error");
+                // Show a popup telling user that room does not exist
+                // For now, redirect back to homepage.
+                this.router.navigate(['../']);
+            }
+        });
     }
 
     private getDismissReason(reason: any): string {
@@ -216,19 +221,23 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
     // Function to return all other users in the room
     private getOtherUsersInLobby() {
+        if(this.otherUsers) {
+            return this.otherUsers;
+        } else {
+            if(!this.user || !this.users || this.users.length <= 1) {
+                this.otherUsers = [];
+                return this.otherUsers;
+            }
 
-      if(!this.user || !this.users || this.users.length <= 1) {
-        return [];
-      }
-
-      const otherUsers = this.users.filter((user) => {
-        if(user.user._id !== this.user._id) {
-          return true;
+            const otherUsers = this.users.filter((user) => {
+                if(user.user._id !== this.user._id) {
+                    return true;
+                }
+                return false;
+            });
+            this.otherUsers = otherUsers;
+            return this.otherUsers;
         }
-        return false;
-      });
-
-      return otherUsers;
     }
 
 }

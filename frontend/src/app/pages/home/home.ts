@@ -22,7 +22,7 @@ export class HomePage {
           } else {
               this.userLoggedIn = false;
           }
-      });
+      }, () => {});
       // Subscribe to login event to change boolean when user logs in.
       this.authService.userLoggedIn.subscribe(() => {
           this.userLoggedIn = true;
