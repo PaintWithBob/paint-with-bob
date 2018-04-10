@@ -7,6 +7,12 @@
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and shit
 
+//this fixes modals. "In cases like this, it is ok. Kinda" -Aaronthedev
+.modal-open .modal{
+  display: block !important;
+}
+
+
 @mixin clearfix {
     &:after {
         content: "";
