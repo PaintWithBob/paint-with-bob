@@ -24,5 +24,8 @@
     "gradient-string": "^1.0.0",
     "minimist": "^1.2.0",
     "node-media-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.5"
   }
 }
