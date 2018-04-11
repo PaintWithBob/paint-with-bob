@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000',
-  streamUrl: 'http://localhost:8000/live/paintwithbob-1.flv'
+  streamUrl: 'https://stream.paintwithbob.com/live/paintwithbob-1.flv'
 };

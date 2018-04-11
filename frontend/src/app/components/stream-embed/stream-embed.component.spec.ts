@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { StreamEmbedComponent } from './stream-embed.component';
 
 describe('StreamEmbedComponent', () => {
@@ -7,10 +9,7 @@ describe('StreamEmbedComponent', () => {
   let fixture: ComponentFixture<StreamEmbedComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ StreamEmbedComponent ]
-    })
-    .compileComponents();
+    configureComponentTestBed(TestBed, StreamEmbedComponent);
   }));
 
   beforeEach(() => {

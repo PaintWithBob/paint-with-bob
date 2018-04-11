@@ -17,7 +17,10 @@ export class EditAccountPopupComponent implements OnInit {
     constructor(
         private activeModal: NgbActiveModal,
         private userService: UserService
-    ) { }
+    ) {
+      this.form = {};
+      this.formError = {};
+    }
 
     ngOnInit() {
         if(this.user) {

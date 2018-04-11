@@ -1,47 +1,46 @@
 <div id="lobby" *ngIf="okToJoin">
     <main class="section">
         <div class="container is-fluid">
-            <div class="top-bar">
-              <h1 class="title has-text-centered">{{roomName ? roomName : 'Lobby'}}</h1>
+            <section class="top-bar">
+                <div class="top-bar-inner columns">
+                    <div class="column left">
+                        <h1 class="title">{{roomName ? roomName : 'Lobby'}}</h1>
+                        <div class="share-url">
+                            <button class="button" ngxClipboard [cbContent]="shareUrl">Copy Share URL</button>
+                        </div>
+                    </div>
+                    <div class="column right has-text-right-tablet">
+                        <div *ngIf="isPrivate">Private Room</div>
+                        <h4>Number of users: {{numberOfUsers}}</h4>
+                        <div class="users">
+                            <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
+                        </div>
+                    </div>
 
-              <div class ="random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
-                <h2 class="subtitle" >{{testString}}</h2>
-              </div>
-
-              <div class="share-url">
-                  <label>Share URL:</label>
-                  <input type="text" class="input" [(ngModel)]="shareUrl" readonly />
-                  <button class="button" ngxClipboard [cbContent]="shareUrl">Copy!</button>
-              </div>
-              <div *ngIf="isPrivate">Private Room</div>
-              <h4>Number of users: {{numberOfUsers}}</h4>
-              <div class="users">
-                  <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
-              </div>
-            </div>
+                    <!-- <div class ="random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
+                        <h2 class="subtitle" >{{testString}}</h2>
+                    </div> -->
+                </div>
+            </section>
 
             <!-- Main Painting area -->
-            <section class="columns">
-              <div class="level-item">
-                <div class="column is-half">
+            <section class="columns main-painting-area">
+                <div class="column is-two-fifths">
                     <app-stream-embed></app-stream-embed>
                 </div>
-                <div class="column is-half">
-                    <app-canvas [socket]="socket"
-                      [user]="user">
-                    </app-canvas>
+                <div class="column is-three-fifths">
+                    <app-canvas [socket]="socket" [user]="user"></app-canvas>
                 </div>
-              </div>
             </section>
 
             <!-- Friends Canvases -->
-            <section>
-                <ul class="lobby-canvases">
-                    <li *ngFor="let user of getOtherUsersInLobby()">
-                        <app-canvas [socket]="socket"
-                          [user]="user.user"
-                          [isReadOnly]="true">
-                        </app-canvas>
+            <section class="other-canvases">
+                <ul class="lobby-canvases columns">
+                    <li *ngFor="let user of getOtherUsersInLobby()" class="column">
+                        <div class="other-user-info">
+                            {{user.user.username}}
+                        </div>
+                        <app-canvas [socket]="socket" [user]="user.user" [isReadOnly]="true"></app-canvas>
                     </li>
                 </ul>
             </section>

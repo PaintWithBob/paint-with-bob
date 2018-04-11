@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configurePageComponentTestBed } from '../../../test-utils';
+
 import { JoinLobbyPageComponent } from './join-lobby-page.component';
 
 describe('JoinLobbyPageComponent', () => {
@@ -7,10 +9,7 @@ describe('JoinLobbyPageComponent', () => {
   let fixture: ComponentFixture<JoinLobbyPageComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ JoinLobbyPageComponent ]
-    })
-    .compileComponents();
+    configurePageComponentTestBed(TestBed, JoinLobbyPageComponent);
   }));
 
   beforeEach(() => {
