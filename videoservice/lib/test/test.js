@@ -13,7 +13,7 @@ describe('Paint With Bob Video Service', () => {
     this.timeout(SERVER_TIMEOUT + 500);
 
     // Initialize and start our stream
-    paintWithBobVideoServer.initialize('../droppy/files');
+    paintWithBobVideoServer.initialize('../droppy/files', 'paint-with-bob-test', 8069);
     paintWithBobVideoServer.startStream();
 
     // Timeout, close the server, and simply pass the test

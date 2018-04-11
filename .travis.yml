@@ -20,6 +20,7 @@ before_script:
   - "sudo apt-get install -y ffmpeg"
 script:
   # This is nasty because: https://github.com/travis-ci/travis-ci/issues/1066
+  # Put the cd back to root to hack our way to fail fast
   - cd videoservice/lib && npm install && npm test && cd ../..
   - cd backend && npm install && npm test && cd ..
   - cd frontend && npm install && npm test && cd ..
