@@ -84,7 +84,7 @@ const startStream = () => {
     // Our node media server
     const nodeMediaServerConfig = {
       rtmp: {
-        port: 9000,
+        port: 1935,
         chunk_size: 60000,
         gop_cache: true,
         ping: 60,
