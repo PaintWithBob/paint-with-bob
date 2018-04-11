@@ -13,7 +13,12 @@ before_install:
 sudo: required
 node_js:
   - "node"
+before_script:
+  - "sudo aptitude -y -q install ffmpeg"
 script:
+  - cd videoservice/lib && npm install && npm test
+  - cd ../..
+  - cd backend && npm install && npm test
+  - cd ..
   - cd frontend && npm install && npm test
   - cd ..
-  - cd backend && npm install && npm test
