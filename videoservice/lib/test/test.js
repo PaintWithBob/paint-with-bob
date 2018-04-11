@@ -20,11 +20,7 @@ describe('Paint With Bob Video Service', () => {
     // Timeout, close the server, and simply pass the test
     // If no errors occured, we should be good! :)
     setTimeout(() => {
-      try {
-        paintWithBobVideoServer.stopStream();
-      } catch(err) {
-        // Doing nothing here, because travis for some reason errors here
-      }
+      paintWithBobVideoServer.stopStream();
       assert.equal(true, true);
       done();
     }, SERVER_TIMEOUT);

@@ -106,12 +106,12 @@ const startStream = () => {
 }
 
 const stopStream = () => {
-  if(FFMPEG) {
-    FFMPEG.kill('SIGTERM');
-  }
-
   if(NODE_MEDIA_SERVER) {
     NODE_MEDIA_SERVER.stop();
+  }
+
+  if(FFMPEG) {
+    FFMPEG.kill('SIGTERM');
   }
 
   FFMPEG = false;
