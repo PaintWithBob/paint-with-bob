@@ -1,27 +1,47 @@
-.read-only {
-    pointer-events: none;
-
-    & :not(.canvas-target) {
-        display: none;
+.app-canvas {
+    display: block;
+    width: auto;
+    height: auto;
+    &.read-only {
+        pointer-events: none;
+        width: auto;
+        .tools-wrapper {
+            display: none;
+        }
+        .color-selectors {
+            display: none;
+        }
+        .canvas-target {
+            height: 400px;
+        }
+    }
+    .canvas-target {
+        border: 1px solid #000;
+        max-width: 500px;
+        max-height: 500px;
     }
 }
 
-.app-canvas {
-    display: block;
-    width: 500px;
-    height: auto;
-}
-
-.canvas-target {
-    border: 1px solid #000;
-    min-height: 500px;
-    min-width: 500px;
+.canvas-inner {
+    font-size: 0;
+    > div {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 16px;
+        &.tools-wrapper {
+            width: 100px;
+            margin-top: 75px;
+        }
+        &.rest-of-container {
+            width: calc(100% - 100px);
+        }
+    }
 }
 
 .tools {
-  display: flex;
-  width: 100px;
-  flex-wrap: wrap;
+    display: flex;
+    width: 100px;
+    flex-wrap: wrap;
     .tool {
         margin-bottom: 5px;
         margin-left: 5px;
@@ -31,27 +51,21 @@
 }
 
 .color-selectors {
-    margin-right: 5px;
-    display: block;
-    .field:not(:last-of-type) {
-        margin-right: 10px;
-    }
+    margin-bottom: 0;
     input {
         max-width: 70px;
     }
-}
-
-.flexbox-container {
-  display: flex;
-}
-
-.rest-of-container {
-  flex: 2;
+    .field {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-right: 0;
+        display: inline-block;
+    }
 }
 
 button {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 5px;
-  margin-left: 5px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    margin-left: 5px;
 }

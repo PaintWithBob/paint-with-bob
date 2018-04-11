@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configurePageComponentTestBed } from '../../../test-utils';
+
 import { RegisterPageComponent } from './register-page.component';
 
 describe('RegisterPageComponent', () => {
@@ -7,10 +9,7 @@ describe('RegisterPageComponent', () => {
   let fixture: ComponentFixture<RegisterPageComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RegisterPageComponent ]
-    })
-    .compileComponents();
+    configurePageComponentTestBed(TestBed, RegisterPageComponent);
   }));
 
   beforeEach(() => {
