@@ -14,7 +14,7 @@ sudo: required
 node_js:
   - "node"
 before_script:
-  - "sudo aptitude -y -q install ffmpeg"
+  - "sudo apt-get install -y ffmpeg"
 script:
   # This is nasty because: https://github.com/travis-ci/travis-ci/issues/1066
   - cd videoservice/lib && npm install && npm test && cd ../.. && cd backend && npm install && npm test && cd .. && cd frontend && npm install && npm test && cd ..
