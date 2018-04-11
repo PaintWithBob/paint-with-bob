@@ -107,7 +107,13 @@ const startStream = () => {
 
 const stopStream = () => {
   if(FFMPEG) {
-    FFMPEG.kill();
+    // Kill will throw an error, so let's catch it, and just mosey on our way
+    // https://github.com/fluent-ffmpeg/node-fluent-ffmpeg
+    try {
+      FFMPEG.kill();
+    } catch(err) {
+      // Do Nothing with the error
+    }
   }
 
   if(NODE_MEDIA_SERVER) {
