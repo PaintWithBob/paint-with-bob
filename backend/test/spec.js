@@ -90,7 +90,7 @@ describe('loading express', function () {
      });
 
 
-     //testing creating a lobby
+     //TODO: testing creating a lobby
      /*
      it('create lobby', function testPath(done)){
 
