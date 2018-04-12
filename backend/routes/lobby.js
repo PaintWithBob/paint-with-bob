@@ -39,7 +39,6 @@ const createLobbyTask = async (req, res, token) => {
         // Define room ID
         // Using JSONParse/stringify for deep clone
         // https://medium.com/@tkssharma/objects-in-javascript-object-assign-deep-copy-64106c9aefab
-        //rooms[roomId] = Object.assign({}, roomObjectSchema);
         rooms[roomId] = JSON.parse(JSON.stringify(roomObjectSchema));
 
         // Set room name
