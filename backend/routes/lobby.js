@@ -94,7 +94,6 @@ router.get('/guest', function(req, res, next) {
     // If a non-private room is found, send that to the user
     const foundRoom = Object.keys(rooms).some((roomId) => {
         if(!rooms[roomId].isPrivate && rooms[roomId].usersInRoom.length < 4) {
-            console.log('Found a room for a guest!')
             res.status(200).json({
                 roomId: roomId
             });
@@ -105,7 +104,6 @@ router.get('/guest', function(req, res, next) {
 
     // Check if we did not find a room
     if (!foundRoom) {
-        console.log('making a room for a guest!')
         // Kick off our async task
         createLobbyTask(req, res);
     }
