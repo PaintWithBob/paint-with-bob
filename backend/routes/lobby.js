@@ -90,6 +90,9 @@ router.get('/guest', function(req, res, next) {
     // Search all rooms for a non-private room
     // If a non-private room is found, send that to the user
     const foundRoom = Object.keys(rooms).some((roomId) => {
+
+        console.log(rooms[roomId]);
+        //console.log(rooms[roomID].isPrivate);
         if(!rooms[roomId].isPrivate) {
             res.status(200).json({
                 roomId: roomId
