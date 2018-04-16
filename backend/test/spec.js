@@ -1,6 +1,11 @@
+
+//NOTE: All tests pass if and only if you do not currently have a user named "aaaaa" in your mongodb database.
+//Otherwise the first "create user" will fail, as it is attempting to create a new user that isn't currently in the database.
+
 var request = require('supertest');
 describe('loading express', function () {
   var server;
+  var user;
 
   beforeEach(function () {
     server = require('../bin/www');
@@ -30,7 +35,7 @@ describe('loading express', function () {
 	       "email":"user3@user.com",
          "password":"123455"
        })
-      .expect(409 || 200)
+      .expect(200)
       .end(function (err, res) { done(); });
   });
 
@@ -59,7 +64,9 @@ describe('loading express', function () {
          "password":"123455"
        })
        .expect(200)
-       .end(function (err, res) { done(); });
+       .end(function (err, res) {
+         user = res.body.user;
+         done(); });
    });
 
    it('login (wrong password)', function testPath(done){
@@ -72,18 +79,37 @@ describe('loading express', function () {
          "password":"12345WRONG"
         })
         .expect(401)
-        .end(function (err, res) { done(); });
+        .end(function (err, res) {  done(); });
     });
 
-    /*
-    TODO: find out how to test delete user
     it('delete user', function testPath(done){
       request(server)
-        .delete('/users/?')
-         .expect(401)
+         .delete("/user/"+user._id)
+         .expect(200)
          .end(function (err, res) { done(); });
      });
-     */
+
+
+     //TODO: testing creating a lobby
+     it('create lobby', function testPath(done){
+      request(server)
+      .post('/lobby/create')
+      .type('form')
+      .send({
+        "roomname":"aaaaa"
+      })
+      .expect(200)
+      .end(function (err, res) { done(); });
+    });
+
+
+    it('join lobby', function testPath(done){
+      request(server)
+      .get('/lobby/guest')
+      .expect(200 || 304, done);
+    });
+
+
 
 
 
