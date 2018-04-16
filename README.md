@@ -21,11 +21,11 @@ The application is divided into three parts, the frontend 💻 ([Angular](https:
 
 3. Run `npm install` in the base directory of the application layer you are interested in running:
 
-The frontend of the application is in: `frontend/`
+    * The frontend of the application is in: `frontend/`
 
-The backend of the application is in: `backend/`
+    * The backend of the application is in: `backend/`
 
-The video service of the application is in: `videoservice/lib`
+    * The video service of the application is in: `videoservice/lib`
 
 4. Run `npm start`, and experience the joy of painting! 😊 NOTE: We use npm scripts for our projects, therefore all available scripts are in each layer's `package.json`.
 
