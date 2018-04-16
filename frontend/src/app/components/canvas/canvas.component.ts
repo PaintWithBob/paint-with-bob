@@ -58,8 +58,8 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                   defaultStrokeWidth: 10,
                   watermarkImage: '',
                   imageSize: {
-                      width: 500,
-                      height: 500
+                      width: 600,
+                      height: 600
                   },
                   keyboardShortcuts: false
               };

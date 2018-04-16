@@ -1,5 +1,7 @@
 #lobby {
     h1 {
+        font-size: 40px;
+        font-weight: 700;
         text-align: left;
         margin: 0 0 10px;
         line-height: 1;
@@ -7,6 +9,7 @@
     .section {
         padding-left: 0;
         padding-right: 0;
+        padding-top: 2rem;
     }
 }
 
@@ -33,7 +36,8 @@
 
 .random-quote{
     font-weight: bold;
-    padding-bottom: 5px;
+    margin: 0;
+    border-radius: 0;
 }
 
 .app-stream-embed{
