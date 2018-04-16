@@ -2,9 +2,13 @@
 
 [![Build Status](https://travis-ci.org/PaintWithBob/paint-with-bob.svg?branch=master)](https://travis-ci.org/PaintWithBob/paint-with-bob)
 
-🎨 Paint with Bob, Experience the Joy of Painting with Friends or Strangers! 🎨
+🎨 Paint with Bob - Experience the Joy of Painting with Friends or Strangers! 🎨
 
 ![Paint With Bob Usage Demo Gif](./readmeAssets/paintWithBobDemoReadme.gif)
+
+## Motivation
+
+Paint with Bob is an application that allows users to paint with public domain, live streamed videos of Bob Ross. You can invite friends to join your lobby, with live updates of each other's canvases and a synced video feed, to watch each other experience the Joy of Painting. The canvas uses [literally canvas](http://literallycanvas.com/), and gives the nostalgia of the great MS Pain programs of yesteryear. This project was done as a School Project at CSULB, for CECS 491B (Senior Project), by Kyle Wadsworth, Aaron Turner, Josh Warejko, and Chelsea Soldan.
 
 ## Usage
 
