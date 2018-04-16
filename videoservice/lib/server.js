@@ -13,16 +13,27 @@ let STREAM_NAME = '';
 let PORT = 8000;
 let VIDEOS = [];
 let NODE_MEDIA_SERVER = false;
+let FFMPEG = false;
 
 const initialize = (videoDirectory, streamName, port) => {
 
-  if(!videoDirectory || !streamName || !port) {
+  // Check for required fields
+  if(!videoDirectory) {
+    console.log('You must pass a video directory to initialize.');
     return false;
   }
 
+  if(videoDirectory.charAt(videoDirectory.length - 1) !== '/') {
+    videoDirectory = videoDirectory + '/';
+  }
+
   VIDEO_DIRECTORY = videoDirectory;
-  STREAM_NAME = streamName;
-  PORT = port;
+  if(streamName) {
+    STREAM_NAME = streamName;
+  }
+  if(port) {
+    PORT = port;
+  }
 
   // Our available videos
   // Get all of the mp4 files in the video directory
@@ -41,7 +52,7 @@ const ffmpegStartNewVideo = () => {
   // ffmpeg -re -i INPUT_FILE_NAME -c copy -f flv rtmp://localhost/live/STREAM_NAME
   const videoPath = `${VIDEO_DIRECTORY}${VIDEOS[Math.floor(Math.random() * VIDEOS.length)]}`;
   console.log(`Playing the video at: ${videoPath}`);
-  const ffmpegCommand = ffmpeg(videoPath)
+  FFMPEG = ffmpeg(videoPath)
     // .seekInput('27:20.000') Seek input for debugging
     .inputOptions('-re')
     .videoCodec('libx264')
@@ -94,12 +105,21 @@ const startStream = () => {
   }, 1000)
 }
 
-const endStream = () => {
+const stopStream = () => {
+  if(NODE_MEDIA_SERVER) {
+    NODE_MEDIA_SERVER.stop();
+  }
 
+  if(FFMPEG) {
+    FFMPEG.kill('SIGTERM');
+  }
+
+  FFMPEG = false;
+  NODE_MEDIA_SERVER = false;
 }
 
 module.exports = {
   initialize: initialize,
   startStream: startStream,
-  endStream: endStream
+  stopStream: stopStream
 }

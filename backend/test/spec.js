@@ -91,13 +91,25 @@ describe('loading express', function () {
 
 
      //TODO: testing creating a lobby
-     /*
-     it('create lobby', function testPath(done)){
+     it('create lobby', function testPath(done){
+      request(server)
+      .post('/lobby/create')
+      .type('form')
+      .send({
+        "roomname":"aaaaa"
+      })
+      .expect(200)
+      .end(function (err, res) { done(); });
+    });
 
 
+    it('join lobby', function testPath(done){
+      request(server)
+      .get('/lobby/guest')
+      .expect(200 || 304, done);
+    });
 
-     }
-     */
+
 
 
 

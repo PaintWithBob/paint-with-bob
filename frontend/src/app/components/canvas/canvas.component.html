@@ -3,14 +3,16 @@
     <div class="canvas-inner">
         <div class="tools-wrapper">
             <div class="tools">
-                <div class="tool button is-primary" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" placement="top" ngbTooltip="{{tool.name}}" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
-                <button class="button is-primary" (click)="decBrush()" placement="top" ngbTooltip="decrement"> - </button>
-                <button class="button is-primary" (click)="incBrush()" placement="top" ngbTooltip="increment"> + </button>
-                <button class="button is-primary" (click)="undoButton()" placement="top" ngbTooltip="undo"> ← </button>
-                <button class="button is-primary" (click)="redoButton()" placement="top" ngbTooltip="redo"> → </button>
-                <button class="button is-primary" (click)="clearButton()" placement="top" ngbTooltip="clear"> X </button>
-                <p *ngIf="activeTool">Brush Size: {{this.activeTool.tool.strokeWidth}}</p>
+                <div class="tool button is-primary is-outlined" [ngClass]="{'is-active': activeTool.name === tool.name}" *ngFor="let tool of tools" placement="top" ngbTooltip="{{tool.name}}" (click)="activateTool(tool)"><fa name="{{tool.icon}}"></fa></div>
             </div>
+            <p class="brushSize" *ngIf="activeTool">Brush: {{this.activeTool.tool.strokeWidth}}</p>
+            <div class="tools">
+            <button class="button is-primary is-outlined" (click)="decBrush()" placement="bottom" ngbTooltip="decrement"><i class="fa fa-minus"></i></button>
+            <button class="button is-primary is-outlined" (click)="incBrush()" placement="bottom" ngbTooltip="increment"><i class="fa fa-plus"></i></button>
+            <button class="button is-primary is-outlined" (click)="undoButton()" placement="bottom" ngbTooltip="undo"><i class="fa fa-undo"></i></button>
+            <button class="button is-primary is-outlined" (click)="redoButton()" placement="bottom" ngbTooltip="redo"><i class="fa fa-repeat"></i></button>
+            <button class="button is-primary is-outlined" (click)="clearButton()" placement="bottom" ngbTooltip="clear"><i class="fa fa-times"></i></button>
+          </div>
         </div>
         <div class="rest-of-container">
             <div class="color-selectors">

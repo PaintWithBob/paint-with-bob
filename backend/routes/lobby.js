@@ -36,8 +36,10 @@ const createLobbyTask = async (req, res, token) => {
             roomId = (Math.random() * 100).toString(36).substring(7);
         }
 
-        //Define room ID
-        rooms[roomId] = Object.assign({}, roomObjectSchema);
+        // Define room ID
+        // Using JSONParse/stringify for deep clone
+        // https://medium.com/@tkssharma/objects-in-javascript-object-assign-deep-copy-64106c9aefab
+        rooms[roomId] = JSON.parse(JSON.stringify(roomObjectSchema));
 
         // Set room name
         if(req.body.roomName) {
@@ -87,13 +89,18 @@ router.post('/create', function(req, res, next) {
 
 // Lobby Joining and creation for guests
 router.get('/guest', function(req, res, next) {
+
     // Search all rooms for a non-private room
     // If a non-private room is found, send that to the user
     const foundRoom = Object.keys(rooms).some((roomId) => {
+<<<<<<< HEAD
 
         console.log(rooms[roomId]);
         //console.log(rooms[roomID].isPrivate);
         if(!rooms[roomId].isPrivate) {
+=======
+        if(!rooms[roomId].isPrivate && rooms[roomId].usersInRoom.length < 4) {
+>>>>>>> da546d6322af5a75a0b537b2459a75a5de31d8ee
             res.status(200).json({
                 roomId: roomId
             });
