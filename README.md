@@ -8,11 +8,11 @@
 
 ## Motivation
 
-Paint with Bob is an application that allows users to paint with public domain, live streamed videos of Bob Ross. You can invite friends to join your lobby, with live updates of each other's canvases and a synced video feed, to watch each other experience the Joy of Painting. The canvas uses [literally canvas](http://literallycanvas.com/), and gives the nostalgia of the great MS Pain programs of yesteryear. This project was done as a School Project at CSULB, for CECS 491B (Senior Project), by Kyle Wadsworth, Aaron Turner, Josh Warejko, and Chelsea Soldan.
+Paint with Bob is an application that allows users to paint with public domain, live streamed videos of Bob Ross. You can invite friends to join your lobby, with live updates of each other's canvases and a synced video feed, to watch each other experience the Joy of Painting. The canvas uses [literally canvas](http://literallycanvas.com/), and gives the nostalgia of the great MS Paint programs of yesteryear. This project was done as a School Project at CSULB, for CECS 491B (Senior Project), by Kyle Wadsworth, Aaron Turner, Josh Warejko, and Chelsea Soldan.
 
 ## Usage
 
-The application can either be accessed from the [live website](https://paintwithbob.com), the [developer webstie](https://dev.paintwithbob.com), or run locally by installing the project dependencies and running it.
+The application can either be accessed from the [live website](https://paintwithbob.com), the [developer website](https://dev.paintwithbob.com), or run locally by installing the project dependencies and running it.
 
 ## Install
 
