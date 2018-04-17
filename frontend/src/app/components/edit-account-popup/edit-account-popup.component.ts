@@ -19,7 +19,6 @@ export class EditAccountPopupComponent implements OnInit {
         private userService: UserService
     ) {
       this.form = {};
-      this.formError = {};
     }
 
     ngOnInit() {
