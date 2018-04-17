@@ -1,12 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 @Pipe({
-    name: 'inRoomSince'
+  name: 'inRoomSince'
 })
 export class InRoomSincePipe implements PipeTransform {
-
-    constructor(private datePipe: DatePipe) {}
 
     transform(value: any, args?: any): any {
         let date = new Date(value);
@@ -15,13 +12,16 @@ export class InRoomSincePipe implements PipeTransform {
             return this.getStandardTime(date);
 
         } else {
-            return `${this.datePipe.transform(date, 'mm/dd/yyyy')} ${this.getStandardTime(date)}`;
+            const day = new Date(value).getDate();
+            const month = new Date(value).getMonth();
+            const year = new Date(value).getFullYear();
+            return `${month}/${day}/${year} ${this.getStandardTime(date)}`;
         }
     }
 
     getStandardTime(date: any) {
         let time;
-        time = this.datePipe.transform(date, 'HH:mm').split(':'); // convert to array
+        time = `${new Date(date).getHours()}:${new Date(date).getMinutes()}`.split(':');
         // fetch
         var hours = Number(time[0]);
         var minutes = Number(time[1]);

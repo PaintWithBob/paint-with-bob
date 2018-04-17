@@ -50,47 +50,59 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
             // Read only canvases will simply embed svgs
             if(!this.isReadOnly) {
-              const options = {
-                  primaryColor: this.brushColor,
-                  secondaryColor: this.secondaryColor,
-                  backgroundColor: this.backgroundColor,
-                  strokeWidths: [1, 2, 5, 10, 20, 30],
-                  defaultStrokeWidth: 10,
-                  watermarkImage: '',
-                  imageSize: {
-                      width: 600,
-                      height: 600
-                  },
-                  keyboardShortcuts: false
-              };
-              this.canvas = (<any>window).LC.init(this.canvasElement, options);
+                const options = {
+                    primaryColor: this.brushColor,
+                    secondaryColor: this.secondaryColor,
+                    backgroundColor: this.backgroundColor,
+                    strokeWidths: [1, 2, 5, 10, 20, 30],
+                    defaultStrokeWidth: 10,
+                    watermarkImage: '',
+                    imageSize: {
+                        width: 600,
+                        height: 600
+                    },
+                    keyboardShortcuts: false
+                };
+                this.canvas = (<any>window).LC.init(this.canvasElement, options);
 
-              // Array of tools, add here to add new tools
-              this.tools = [
-                  { name: 'pencil', icon: 'pencil', tool: new (<any>window).LC.tools.Pencil(this.canvas) },
-                  { name: 'eraser', icon: 'eraser', tool: new (<any>window).LC.tools.Eraser(this.canvas) },
-                  { name: 'line', icon: 'minus', tool: new (<any>window).LC.tools.Line(this.canvas) },
-                  { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
-                  { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
-                  { name: 'ellipse', icon: 'circle', tool: new (<any>window).LC.tools.Ellipse(this.canvas) },
-                  { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) },
-                  { name: 'eyedropper', icon: 'magic', tool: new (<any>window).LC.tools.Eyedropper(this.canvas) }
-              ];
+                // Array of tools, add here to add new tools
+                this.tools = [
+                    { name: 'pencil', icon: 'pencil', tool: new (<any>window).LC.tools.Pencil(this.canvas) },
+                    { name: 'eraser', icon: 'eraser', tool: new (<any>window).LC.tools.Eraser(this.canvas) },
+                    { name: 'line', icon: 'minus', tool: new (<any>window).LC.tools.Line(this.canvas) },
+                    { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
+                    { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
+                    { name: 'ellipse', icon: 'circle', tool: new (<any>window).LC.tools.Ellipse(this.canvas) },
+                    { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) },
+                    { name: 'eyedropper', icon: 'magic', tool: new (<any>window).LC.tools.Eyedropper(this.canvas) }
+                ];
 
-              // Default tool is pencil
-              this.activateTool(this.tools[0]);
+                // Default tool is pencil
+                this.activateTool(this.tools[0]);
 
-              this.lcDrawingChangeListener = this.canvas.on('drawingChange', () => {
-                  if (this.socket) {
-                      // Emit to the server, which will then bounce to the approprite users
-                      if(this.user) {
-                          this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-                              user: this.user,
-                              svg: this.canvas.getSVGString()
-                          });
-                      }
-                  }
-              });
+                this.lcDrawingChangeListener = this.canvas.on('drawingChange', () => {
+                    if (this.socket) {
+                        // Emit to the server, which will then bounce to the approprite users
+                        if(this.user) {
+                            this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+                                user: this.user,
+                                svg: this.canvas.getSVGString()
+                            });
+                        }
+                    }
+                });
+                this.canvas.on('primaryColorChange', (response) => {
+                    function componentToHex(c) {
+                        var hex = c.toString(16);
+                        return hex.length == 1 ? "0" + hex : hex;
+                    }
+
+                    function rgbToHex(r, g, b) {
+                        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+                    }
+                    console.log(response.split("(")[1].split(")")[0]);
+                    this.canvas.setColor('primary', response);
+                });
             }
         });
     }
