@@ -16,7 +16,7 @@
                         <div *ngIf="isPrivate">Private Room</div>
                         <h4>Number of users: {{numberOfUsers}}</h4>
                         <div class="users">
-                            <div class="user" *ngFor="let user of users">{{user.user.username}}, in room since {{user.timeJoined | inRoomSince}}</div>
+                            <div class="user" *ngFor="let user of users">{{user.user.username}}, painting since {{user.timeJoined | inRoomSince}}</div>
                         </div>
                     </div>
                 </div>
@@ -36,9 +36,7 @@
             <section class="other-canvases">
                 <ul class="lobby-canvases columns">
                     <li *ngFor="let user of getOtherUsersInLobby()" class="column">
-                        <div class="other-user-info">
-                            {{user.user.username}}
-                        </div>
+                        <h4 class="other-user-info has-text-primary has-text-weight-bold">{{user.user.username}}</h4>
                         <app-canvas [socket]="socket" [user]="user.user" [isReadOnly]="true"></app-canvas>
                     </li>
                 </ul>
