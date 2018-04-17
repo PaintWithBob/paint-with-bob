@@ -30,7 +30,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     socket: any;
     okToJoin: boolean;
     numberOfUsers: number = 0;
-    testString: string = "...";
+    testString: string = '';
     users: any[];
     user: any;
     otherUsers: any[];
@@ -44,14 +44,13 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         private router: Router,
         private modalService: NgbModal,
         private location: Location
-    ) { }
-
-    randQuoteEnter(){
-        this.testString = "..."
+    ) {
+        setInterval(() => {
+            this.randQuote();
+        }, 10000);
     }
 
     randQuote(){
-
         var quote = Math.floor(Math.random() * 4); //0-9
         switch(quote) {
             case 0:
@@ -66,10 +65,11 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
             default:
             this.testString = "Your painting is looking rather lovely right now.";
         }
-
     }
 
     ngOnInit() {
+
+        this.randQuote();
 
         this.shareUrl = window.location.href;
 
@@ -171,7 +171,6 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         // Runs when the room status is updated (users enters, user leaves, etc.)
         this.socket.on('ROOM_UPDATE', data => {
-            console.log('Room updated: ', data);
             setTimeout(() => {
                 if(data.reason === 'USER_JOINED') {
                     this.roomUpdate(data);

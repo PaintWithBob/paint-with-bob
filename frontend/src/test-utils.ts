@@ -28,6 +28,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 // 3P Services
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+// Pipes
+import { InRoomSincePipe } from '../src/app/pipes';
+
 
 export function configureComponentTestBed(TestBed, Component) {
   TestBed.configureTestingModule({
@@ -68,7 +71,8 @@ export function configurePageComponentTestBed(TestBed, Component) {
       CreateLobbyPopupComponent,
       EditAccountPopupComponent,
       DeleteAccountPopupComponent,
-      Component
+      Component,
+      InRoomSincePipe
     ],
     providers: [
       AuthService,

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 
@@ -36,6 +37,9 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 
+// Pipes
+import { InRoomSincePipe } from './pipes';
+
 
 // The main app routes that will be used for navigation.
 const appRoutes: Routes = [
@@ -67,7 +71,8 @@ const appRoutes: Routes = [
     EditAccountPopupComponent,
     TermsOfServiceComponent,
     DeleteAccountPopupComponent,
-    JoinLobbyPageComponent
+    JoinLobbyPageComponent,
+    InRoomSincePipe
   ],
   imports: [
     BrowserModule,
@@ -83,7 +88,7 @@ const appRoutes: Routes = [
     ),
     NgbModule.forRoot()
   ],
-  providers: [ AuthService, LobbyService, UserService ],
+  providers: [ AuthService, LobbyService, UserService, DatePipe ],
   bootstrap: [ AppComponent ],
   entryComponents: [
     PageNotFoundComponent,

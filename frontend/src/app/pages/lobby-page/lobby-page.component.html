@@ -1,4 +1,7 @@
 <div id="lobby" *ngIf="okToJoin">
+    <div class="notification is-primary random-quote has-text-centered">
+        <h2 class="subtitle" >{{testString}}</h2>
+    </div>
     <main class="section">
         <div class="container is-fluid">
             <section class="top-bar">
@@ -13,13 +16,9 @@
                         <div *ngIf="isPrivate">Private Room</div>
                         <h4>Number of users: {{numberOfUsers}}</h4>
                         <div class="users">
-                            <div class="user" *ngFor="let user of users">{{user.user.email}}, in room since {{user.timeJoined | date:'MM/dd/yyyy HH:mm:ss'}}</div>
+                            <div class="user" *ngFor="let user of users">{{user.user.username}}, in room since {{user.timeJoined | inRoomSince}}</div>
                         </div>
                     </div>
-
-                    <!-- <div class ="random-quote" (mouseenter)="randQuoteEnter()" (mouseleave)="randQuote()">
-                        <h2 class="subtitle" >{{testString}}</h2>
-                    </div> -->
                 </div>
             </section>
 
