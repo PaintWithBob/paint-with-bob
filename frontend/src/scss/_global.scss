@@ -19,3 +19,13 @@ h2, .h2 {
         font-size: 30px;
     }
 }
+
+.read-only {
+    .canvas-target {
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+}

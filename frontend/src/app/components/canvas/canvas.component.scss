@@ -11,8 +11,17 @@
         .color-selectors {
             display: none;
         }
+        .canvas-inner .rest-of-container {
+            width: 100%;
+        }
         .canvas-target {
-            height: 400px;
+            width: 100%;
+            height: auto;
+            svg {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
         }
     }
     .canvas-target {
