@@ -22,6 +22,12 @@
         <div class="container">
             <h2 class="title">Saved Paintings</h2>
             <div class="is-info" *ngIf="!user.paintings || user.paintings.length === 0">You currently do not have any saved paintings.</div>
+            <div class="paintings" *ngIf="user.paintings && user.paintings.length > 0">
+                <div class="painting column is-one-fifth-desktop is-one-third-tablet" *ngFor="let painting of user.paintings">
+                    <div class="date">{{painting.date | date:'short'}}</div>
+                    <div class="svg-wrapper" [innerHTML]="makePaintingsSafe(painting.svg)"></div>
+                </div>
+            </div>
         </div>
     </section>
 </div>

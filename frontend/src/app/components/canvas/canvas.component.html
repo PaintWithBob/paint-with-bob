@@ -12,6 +12,7 @@
             <button class="button is-primary is-outlined" (click)="undoButton()" placement="bottom" ngbTooltip="undo"><i class="fa fa-undo"></i></button>
             <button class="button is-primary is-outlined" (click)="redoButton()" placement="bottom" ngbTooltip="redo"><i class="fa fa-repeat"></i></button>
             <button class="button is-primary is-outlined" (click)="clearButton()" placement="bottom" ngbTooltip="clear"><i class="fa fa-times"></i></button>
+            <button class="button is-primary is-outlined" (click)="savePainting()" placement="bottom" ngbTooltip="clear">Save</button>
           </div>
         </div>
         <div class="rest-of-container">
@@ -59,5 +60,6 @@
             <div [attr.id]="canvasElementId" class="canvas-target"></div>
         </div>
     </div>
-
+    <div class="notification is-danger" *ngIf="savePaintingError">{{savePaintingError}}</div>
+    <div class="notification is-primary" *ngIf="savePaintingSuccess">{{savePaintingSuccess}}</div>
 </div>

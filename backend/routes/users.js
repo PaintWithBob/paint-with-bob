@@ -350,7 +350,50 @@ router.delete('/:userId', (req, res, next) => {
     ], error => {
         if(error) return res.status(error.status).send(error.message);
         return res.status(200).json({message: 'Successfully deleted user.'});
-    })
+    });
 });
+
+router.post('/save-painting', (req, res, next) => {
+    // Check header or url parameters or post parameters for token
+    var token = req.headers['authorization'] || req.body.token || req.query.token;
+    console.log(token);
+    async.waterfall([
+        (callback) => {
+            if(!token) {
+                return callback({status: 400, message: 'User not authorized to update resource.'});
+            }
+            if(!req.body || !req.body.painting) {
+                return callback({status: 400, message: 'No painting found in request body.'});
+            }
+            return callback();
+        }, (callback) => {
+            // Validate the token.
+            return TokenService.validateToken(token).then(tokenUser => {
+                if(!tokenUser) {
+                    return callback({status: 400, message: 'Invalid token.'});
+                }
+                return callback(null, tokenUser);
+            }, error => {
+                return callback(error);
+            });
+        }, (tokenUser, callback) => {
+            return User.findOne({_id: tokenUser._id}, (error, user) => {
+                if(error) return callback({status: 400, message: 'No user found with matching ID.', error: error});
+                if(!user) return callback({status: 400, message: 'No user found with matching ID.'});
+                return callback(null, user);
+            });
+        }, (user, callback) => {
+            // Save painting
+            user.paintings.push(req.body.painting);
+            return user.save((error) => {
+                if(error) return callback({status: 400, message: 'Error saving user.', error: error});
+                return callback(null, user);
+            });
+        }
+    ], (error, user) => {
+        if(error) return res.status(error.status).send(error.message);
+        return res.status(200).json({user: user, message: 'Successfully saved painting'});
+    });
+})
 
 module.exports = router;
