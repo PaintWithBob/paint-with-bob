@@ -11,4 +11,12 @@ npm install
 
 # https://github.com/angular/angular-cli/wiki/build
 
-ng build --environment=stage
+ng build --prod --environment=stage
+
+# Copy the build output to public/ if successful build
+if [ $? -eq 0 ]; then
+   mkdir -p public
+   cp -r dist public
+else
+    echo "Failed Building the frontend"
+fi
