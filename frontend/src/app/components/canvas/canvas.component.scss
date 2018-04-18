@@ -25,9 +25,11 @@
         }
     }
     .canvas-target {
-        border: 1px solid #000;
         max-width: 500px;
         max-height: 500px;
+        .literally {
+            border: 1px solid #000;
+        }
     }
 }
 

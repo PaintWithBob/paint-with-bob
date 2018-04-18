@@ -84,4 +84,23 @@ export class UserService {
         });
     }
 
+    // Save user's painting to database
+    savePainting(painting: any): Observable<any> {
+        let httpOptions = { headers: new HttpHeaders() };
+        return new Observable(observer => {
+            return this.authService.getToken().subscribe(token => {
+                httpOptions.headers = new HttpHeaders({
+                    'Authorization': token
+                });
+                return this.http.post(`${environment.apiUrl}/users/save-painting`, {painting: painting}, httpOptions).subscribe(response => {
+                    observer.next(response);
+                    return observer.complete();
+                }, error => {
+                    observer.error(error);
+                    return observer.complete();
+                });
+            });
+        });
+    }
+
 }

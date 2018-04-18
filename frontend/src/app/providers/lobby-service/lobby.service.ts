@@ -25,7 +25,7 @@ export class LobbyService {
     // Creates lobby with user token.
     createLobby(form: any): Observable<{}> {
         let httpOptions = { headers: new HttpHeaders() };
-        return Observable.create(observer => {
+        return new Observable(observer => {
             return this.authService.getToken().subscribe(token => {
                 httpOptions.headers = new HttpHeaders({
                     'Authorization': token
@@ -62,7 +62,7 @@ export class LobbyService {
             }, error => {
                 observer.error(error);
                 return observer.complete();
-            })
+            });
         });
     }
 

@@ -7,12 +7,13 @@
             </div>
             <p class="brushSize" *ngIf="activeTool">Brush: {{this.activeTool.tool.strokeWidth}}</p>
             <div class="tools">
-            <button class="button is-primary is-outlined" (click)="decBrush()" placement="bottom" ngbTooltip="decrement"><i class="fa fa-minus"></i></button>
-            <button class="button is-primary is-outlined" (click)="incBrush()" placement="bottom" ngbTooltip="increment"><i class="fa fa-plus"></i></button>
-            <button class="button is-primary is-outlined" (click)="undoButton()" placement="bottom" ngbTooltip="undo"><i class="fa fa-undo"></i></button>
-            <button class="button is-primary is-outlined" (click)="redoButton()" placement="bottom" ngbTooltip="redo"><i class="fa fa-repeat"></i></button>
-            <button class="button is-primary is-outlined" (click)="clearButton()" placement="bottom" ngbTooltip="clear"><i class="fa fa-times"></i></button>
-          </div>
+                <button class="button is-primary is-outlined" (click)="decBrush()" placement="bottom" ngbTooltip="decrement"><i class="fa fa-minus"></i></button>
+                <button class="button is-primary is-outlined" (click)="incBrush()" placement="bottom" ngbTooltip="increment"><i class="fa fa-plus"></i></button>
+                <button class="button is-primary is-outlined" (click)="undoButton()" placement="bottom" ngbTooltip="undo"><i class="fa fa-undo"></i></button>
+                <button class="button is-primary is-outlined" (click)="redoButton()" placement="bottom" ngbTooltip="redo"><i class="fa fa-repeat"></i></button>
+                <button class="button is-primary is-outlined" (click)="clearButton()" placement="bottom" ngbTooltip="clear"><i class="fa fa-times"></i></button>
+                <button class="button is-primary is-outlined" (click)="savePainting()" placement="bottom" ngbTooltip="clear">Save</button>
+            </div>
         </div>
         <div class="rest-of-container">
             <div class="color-selectors">
@@ -56,8 +57,11 @@
                     </div>
                 </div>
             </div>
-            <div [attr.id]="canvasElementId" class="canvas-target"></div>
+            <div class="canvas-target">
+                <div [attr.id]="canvasElementId"></div>
+                <div class="notification is-danger" *ngIf="savePaintingError">{{savePaintingError}}</div>
+                <div class="notification is-primary" *ngIf="savePaintingSuccess">{{savePaintingSuccess}}</div>
+            </div>
         </div>
     </div>
-
 </div>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { AuthService } from '../../providers';
+import { DomSanitizer} from '@angular/platform-browser';
+import { AuthService, UserService } from '../../providers';
 
 declare var require: any;
 
@@ -30,8 +31,14 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     socketInitialized: boolean = false;
     lcDrawingChangeListener: any;
     canvasUpdateEvent: any;
+    savePaintingSuccess: any;
+    savePaintingError: any;
 
-    constructor(private authService: AuthService) {
+    constructor(
+        private authService: AuthService,
+        private sanitizer: DomSanitizer,
+        private userService: UserService
+    ) {
         this.canvasElementId = `literally-canvas-${Math.floor(Math.random() * 100000).toString(36)}`;
     }
 
@@ -169,6 +176,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     incBrush(){
         this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
     }
+
     undoButton(){
         this.canvas.undo();
     }
@@ -179,6 +187,21 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
     clearButton(){
         this.canvas.clear();
+    }
+
+    savePainting() {
+        this.userService.savePainting({svg: this.canvas.getSVGString()}).subscribe(response => {
+            this.savePaintingSuccess = 'Successfully saved painting.';
+            setTimeout(() => {
+                this.savePaintingSuccess = null;
+            }, 5000);
+        }, error => {
+            console.error(error);
+            this.savePaintingError = error.message;
+            setTimeout(() => {
+                this.savePaintingError = null;
+            }, 5000);
+        });
     }
 
     ngOnDestroy() {

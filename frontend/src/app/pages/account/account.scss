@@ -10,4 +10,14 @@
             }
         }
     }
+    .paintings .painting {
+        display: inline-block;
+        margin-bottom: 10px;
+        .date {
+            margin-bottom: 10px;
+        }
+        .svg-wrapper {
+            border: 1px solid;
+        }
+    }
 }

@@ -31,7 +31,9 @@ module.exports = (app, server) => {
       'http://stream.paintwithbob.com',
       'https://dev.paintwithbob.com',
       'https://api.paintwithbob.com',
-      'https://stream.paintwithbob.com'
+      'https://stream.paintwithbob.com',
+      'http://paintwithbob.com',
+      'https://paintwithbob.com'
     ];
     const origin = req.headers.origin;
     if(allowedOrigins.indexOf(origin) > -1){
