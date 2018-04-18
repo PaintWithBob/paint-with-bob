@@ -15,8 +15,9 @@ ng build --prod --environment=stage
 
 # Copy the build output to public/ if successful build
 if [ $? -eq 0 ]; then
+   rm -rf public
    mkdir -p public
-   cp -r dist public
+   cp -r dist/* public/
 else
     echo "Failed Building the frontend"
 fi
