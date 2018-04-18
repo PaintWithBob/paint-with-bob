@@ -9,6 +9,7 @@
     .section {
         padding-left: 0;
         padding-right: 0;
+        padding-top: 2rem;
     }
 }
 
@@ -35,9 +36,15 @@
 
 .random-quote{
     font-weight: bold;
-    padding-bottom: 5px;
+    margin: 0;
+    border-radius: 0;
 }
 
 .app-stream-embed{
     padding-top: 300px;
+}
+
+.other-user-info {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
