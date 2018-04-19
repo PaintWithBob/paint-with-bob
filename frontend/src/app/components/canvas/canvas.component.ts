@@ -19,7 +19,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     @Input() user: any;
     @Input() isReadOnly: boolean = false;
 
-    authUser: any;
     canvas: any;
     canvasElementId: string;
     canvasElement: Element;
