@@ -37,6 +37,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     token: any;
     closeResult: any;
     shareUrl: any;
+    messages: any[] = [];
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -159,9 +160,6 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         this.isPrivate = data.room.isPrivate;
     }
 
-    //trying to change string
-
-
     // Function called in ngOnInit
     private setEventHandlersOnSocket() {
 
@@ -209,6 +207,11 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
                 // For now, redirect back to homepage.
                 this.router.navigate(['../']);
             }
+        });
+
+        this.socket.on('CHAT_MESSAGE', data => {
+            this.messages.push(data);
+            console.log(data);
         });
     }
 

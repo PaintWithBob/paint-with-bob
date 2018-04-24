@@ -79,8 +79,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
                     { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
                     { name: 'ellipse', icon: 'circle', tool: new (<any>window).LC.tools.Ellipse(this.canvas) },
-                    { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) },
-                    { name: 'eyedropper', icon: 'magic', tool: new (<any>window).LC.tools.Eyedropper(this.canvas) }
+                    { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) }
                 ];
 
                 // Default tool is pencil
@@ -98,16 +97,30 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 });
                 this.canvas.on('primaryColorChange', (response) => {
-                    function componentToHex(c) {
-                        var hex = c.toString(16);
-                        return hex.length == 1 ? "0" + hex : hex;
+                    function toHex(n) {
+                        n = parseInt(n,10);
+                        if (isNaN(n)) return "00";
+                        n = Math.max(0,Math.min(n,255));
+                        return '0123456789ABCDEF'.charAt((n-n%16)/16) + '0123456789ABCDEF'.charAt(n%16);
                     }
 
                     function rgbToHex(r, g, b) {
-                        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+                        const hexString = "#" + toHex(r) + toHex(g) + toHex(b);
+                        console.log(hexString)
+                        return hexString;
                     }
-                    console.log(response.split("(")[1].split(")")[0]);
-                    this.canvas.setColor('primary', response);
+                    // console.log(response);
+                    if(response && response.contains('rgb')) {
+                        const betweenParenthesis = response.match(/\(([^)]+)\)/);
+                        if(betweenParenthesis && betweenParenthesis[1]) {
+                            const rgb = betweenParenthesis[1].split(', ');
+                            if(rgb.length === 3) {
+                                const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+                                this.brushColor = hex;
+                                this.canvas.setColor('primary', hex);
+                            }
+                        }
+                    }
                 });
             }
         });
