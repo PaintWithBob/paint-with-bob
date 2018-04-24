@@ -70,6 +70,9 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     keyboardShortcuts: false
                 };
                 this.canvas = (<any>window).LC.init(this.canvasElement, options);
+                // Undocumented hack for canvas responsiveness
+                // https://stackoverflow.com/questions/38486381/how-to-change-default-literally-canvas-drawing-region-height?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+                this.canvas.respondToSizeChange();
 
                 // Array of tools, add here to add new tools
                 this.tools = [

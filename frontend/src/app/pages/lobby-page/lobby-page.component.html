@@ -24,22 +24,27 @@
 
             <!-- Main Painting area -->
             <section class="columns main-painting-area">
-                <div class="column is-two-fifths">
+
+                <!-- Left column -->
+                <div class="column is-two-fifths main-painting-area__stream">
+                    <!-- Stream Video -->
                     <app-stream-embed></app-stream-embed>
+
+                    <!-- Friends Canvases -->
+                    <div class="other-canvases">
+                      <div class="lobby-canvases" *ngFor="let user of getOtherUsersInLobby()">
+                          <h4 class="other-user-info has-text-primary has-text-weight-bold">{{user.user.username}}</h4>
+                          <app-canvas [socket]="socket" [user]="user.user" [isReadOnly]="true"></app-canvas>
+                      </div>
+                    </div>
                 </div>
-                <div class="column is-three-fifths">
+
+                <!-- Right Column -->
+                <div class="column is-three-fifths main-painting-area__drawing">
                     <app-canvas [socket]="socket" [user]="user"></app-canvas>
                 </div>
-            </section>
 
-            <!-- Friends Canvases -->
-            <section class="other-canvases">
-                <ul class="lobby-canvases columns">
-                    <li *ngFor="let user of getOtherUsersInLobby()" class="column">
-                        <h4 class="other-user-info has-text-primary has-text-weight-bold">{{user.user.username}}</h4>
-                        <app-canvas [socket]="socket" [user]="user.user" [isReadOnly]="true"></app-canvas>
-                    </li>
-                </ul>
+
             </section>
         </div>
     </main>
