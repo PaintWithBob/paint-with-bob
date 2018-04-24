@@ -1,10 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { configureComponentTestBed } from '../../../test-utils';
+
 import { ChatComponent } from './chat.component';
 
 describe('ChatComponent', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
+
+  beforeEach(async(() => {
+    configureComponentTestBed(TestBed, ChatComponent);
+  }));
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
