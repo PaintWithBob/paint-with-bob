@@ -52,19 +52,40 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     }
 
     randQuote(){
-        var quote = Math.floor(Math.random() * 4); //0-9
+        var quote = Math.floor(Math.random() * 10); //0-9 quotes
         switch(quote) {
             case 0:
-            this.testString = "We're all here to relax and make new friends.";
-            break;
+              this.testString = "We're all here to relax and make new friends.";
+              break;
             case 1:
-            this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
-            break;
+              this.testString = "If you think your painting is bad, try thinking of it as a happy little accident instead.";
+              break;
             case 2:
-            this.testString = "Don't worry, nobody is here to judge you.";
-            break;
+              this.testString = "Don't worry, nobody is here to judge you.";
+              break;
+            case 3:
+              this.testString = "Lets get a little crazy.";
+              break;
+            case 4:
+              this.testString = "Its ok if you don't want to paint along. Sometimes its nice to let your imagination run wild.";
+              break;
+            case 5:
+              this.testString = "You can do it. We believe in you.";
+              break;
+            case 6:
+              this.testString = "This is your world. Find freedom on the canvas.";
+              break;
+            case 7:
+              this.testString = "The secret to doing anything is believing in yourself.";
+              break;
+            case 8:
+              this.testString = "Mix it up. Draw a tree. Make it a desert. This is your painting.";
+              break;
+            case 9:
+              this.testString = "Lets all have a great time together.";
+              break;
             default:
-            this.testString = "Your painting is looking rather lovely right now.";
+              this.testString = "Your painting is looking rather lovely right now.";
         }
     }
 
