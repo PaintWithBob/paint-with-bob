@@ -1,0 +1,90 @@
+@import "../../../scss/variables";
+#chat {
+    border: 1px solid rgba(#000, 0.5);
+    box-shadow: 0px 2px 2px rgba(#000, 0.5);
+    border-bottom: 0 none;
+    .chat-header {
+        cursor: pointer;
+        padding: 5px;
+        background: $primary;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+    }
+    .chat-body {
+        &.collapsed {
+            height: 0;
+            visibility: hidden;
+            padding: 0;
+        }
+        .messages {
+            min-height: 100px;
+            max-height: 350px;
+            overflow: scroll;
+            padding: 10px;
+            .message-list li {
+                background: none;
+                text-align: right;
+                margin-bottom: 10px;
+                position: relative;
+                .message-inner {
+                    display: inline-block;
+                    max-width: 220px;
+                    .user {
+                        font-size: 12px;
+                        font-weight: 700;
+                        margin-left: 11px;
+                        text-align: left;
+                    }
+                    .message {
+                        padding: 5px 10px;
+                        border-radius: 10px;
+                        font-size: 14px;
+                        text-align: left;
+                    }
+                    .message-date {
+                        position: absolute;
+                        font-size: 12px;
+                        right: auto;
+                        left: 0;
+                        top: 0px;
+                        color: grey;
+                    }
+                }
+                &.my-message {
+                    text-align: left;
+                    .message-inner {
+                        .message {
+                            background: $primary;
+                            color: #fff;
+                        }
+                        .message-date {
+                            right: 0;
+                            left: auto;
+                        }
+                    }
+                }
+            }
+        }
+        .field {
+            display: flex;
+            .control {
+                width: calc(100% - 50px);
+                input {
+                    border-radius: 0;
+                    box-shadow: none;
+                    border-left: 0 none;
+                    border-right: 0 none;
+                    border-bottom: 0 none;
+                    font-size: 14px;
+                    &:active, &:focus {
+                        border-color: $primary;
+                    }
+                }
+            }
+            button {
+                border-radius: 0;
+            }
+        }
+    }
+}

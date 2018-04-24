@@ -39,6 +39,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 // Pipes
 import { InRoomSincePipe } from './pipes';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 // The main app routes that will be used for navigation.
@@ -72,7 +73,8 @@ const appRoutes: Routes = [
     TermsOfServiceComponent,
     DeleteAccountPopupComponent,
     JoinLobbyPageComponent,
-    InRoomSincePipe
+    InRoomSincePipe,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
