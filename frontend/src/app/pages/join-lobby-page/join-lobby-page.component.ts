@@ -13,6 +13,8 @@ import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/c
 })
 export class JoinLobbyPageComponent implements OnInit {
 
+    token: any;
+    userLoggedIn: boolean;
     lobbyId: string;
     form: any;
     formError: any;
