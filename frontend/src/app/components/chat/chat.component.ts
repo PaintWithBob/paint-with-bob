@@ -14,7 +14,7 @@ export class ChatComponent {
     @Input() user: any;
     @Input() messages: any[] = [];
     input: any;
-    collapsed: false;
+    collapsed: boolean;
 
     constructor() {}
 
