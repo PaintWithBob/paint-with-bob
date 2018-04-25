@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 const CHAT_UPDATE_EVENT_ID = 'CHAT_MESSAGE';
@@ -8,7 +8,7 @@ const CHAT_UPDATE_EVENT_ID = 'CHAT_MESSAGE';
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent {
+export class ChatComponent implements OnChanges {
 
     @Input() socket: any;
     @Input() user: any;
@@ -17,6 +17,19 @@ export class ChatComponent {
     collapsed: boolean;
 
     constructor() {}
+
+    ngOnChanges(changes: SimpleChanges) {
+      if (changes.messages) {
+        // Scroll back to the bottom of the view
+        let scrollableMessages = document.querySelector('#chat .messages');
+        if(scrollableMessages) {
+          // Timeout to allow Dom Changes
+          setTimeout(() => {
+            scrollableMessages.scrollTop = scrollableMessages.scrollHeight;
+          }, 100)
+        }
+      }
+    }
 
     sendMessage(form: NgForm) {
         if(form.valid) {
