@@ -6,7 +6,7 @@
             <div class="columns">
                 <div class="column">
                     <h4 class="left-header">Join lobby by ID</h4>
-                    <form (submit)="joinLobby(joinLobbyForm)" #joinLobbyForm="ngForm" novalidate>
+                    <form class="join-lobby-form" (submit)="joinLobby(joinLobbyForm)" #joinLobbyForm="ngForm" novalidate>
                         <div class="field has-addons">
                             <label class="label is-small sr-only">Lobby ID</label>
                             <div class="control has-icons-left" [ngClass]="{'ready': !lobbyId.hasError('required')}">

@@ -1,10 +1,12 @@
 #join-lobby-page {
+
     .section {
         background: url('/assets/images/winter-bg.jpg');
         background-size: cover;
         position: relative;
         height: 620px;
         background-position: top center;
+
         .overlay {
             position: absolute;
             top: 0;
@@ -13,6 +15,7 @@
             right: 0;
             background: rgba(#000, 0.6);
         }
+
         .container {
             position: absolute;
             top: 50%;
@@ -20,16 +23,25 @@
             right: 0;
             padding: 30px;
             transform: translateY(-50%);
+
+            .join-lobby-form {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
             h2 {
                 margin-bottom: 40px;
                 text-align: center;
                 color: #fff;
             }
+
             h4 {
                 font-size: 20px;
                 color: #fff;
                 margin-bottom: 10px;
             }
+
             @media (min-width: 769px) {
                 width: auto;
                 left: 50%;
