@@ -50,7 +50,10 @@
 
     .other-canvases {
 
+      min-height: 10vh;
       margin-top: 10px;
+      margin-bottom: 10px;
+      
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
