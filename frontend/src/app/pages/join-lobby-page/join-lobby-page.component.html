@@ -29,6 +29,10 @@
                     <h4>Join a random lobby.</h4>
                     <button class="button is-primary" (click)="joinRandomLobby()">Join Lobby</button>
                 </div>
+                <div class="column" *ngIf="userLoggedIn">
+                    <h4>Create a lobby.</h4>
+                    <div class="button is-primary" (click)="createLobby()">Create Lobby</div>
+                </div>
             </div>
         </div>
     </section>
