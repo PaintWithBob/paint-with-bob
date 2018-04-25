@@ -100,6 +100,9 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
       LobbyService.kickUser(socket, socket.id, KICK_EVENT.REASON.INVALID_TOKEN, error.message);
     });
   }
+
+  // Register the chat listener
+  chatEvents(socket, socketIoRoom, rooms, roomId);
 }
 
 const addUserToRoom = (socket, socketIoRoom, rooms, roomId, user) => {
@@ -193,6 +196,17 @@ const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
       });
     }
   }
+}
+
+const chatEvents = (socket, socketIoRoom, rooms, roomId) => {
+    socket.on(CHAT_EVENT.EVENT_ID, (event) => {
+        socketIoRoom.emit(CHAT_EVENT.EVENT_ID, {
+            message: event.message,
+            username: event.user.username,
+            userId: event.user._id,
+            date: new Date()
+        });
+    });
 }
 
 module.exports = LobbyService;

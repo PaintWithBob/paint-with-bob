@@ -1,0 +1,32 @@
+<div id="chat">
+    <div class="chat-header" (click)="collapsed = !collapsed">
+        <div class="chat-title">Chat</div>
+        <div class="chat-icon">
+            <fa name="plus" *ngIf="collapsed"></fa>
+            <fa name="minus" *ngIf="!collapsed"></fa>
+        </div>
+    </div>
+    <div class="chat-body" [ngClass]="{'collapsed': collapsed}">
+        <div class="messages">
+            <ul class="message-list">
+                <li *ngFor="let message of messages" [ngClass]="{'my-message': message.userId === user._id}">
+                    <div class="message-inner">
+                        <div class="user">{{message.username}}</div>
+                        <div class="message">{{message.message}}</div>
+                        <div class="message-date">{{message.date | date:'h:mm a'}}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <form (submit)="sendMessage(messageForm)" #messageForm="ngForm">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" name="message" id="message" [(ngModel)]="input" #message="ngModel" placeholder="Message" required>
+                </div>
+                <div class="btn-wrapper">
+                    <button type="submit" class="button is-primary">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

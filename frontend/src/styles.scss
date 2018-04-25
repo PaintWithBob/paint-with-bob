@@ -9,27 +9,7 @@
 @import "../node_modules/bulma/sass/utilities/initial-variables";
 @import "../node_modules/bulma/sass/utilities/functions";
 
-// 2. Set your own initial variables
-$pink: #ffb3b3;
-$pink-invert: #fff;
-$navbar-item-img-max-height: 3rem;
-$secondary: #328cc1;
-
-// 3. Set the derived variables (overrides)
-$footer-background-color: #363636;
-$primary: #0b3c5d;
-$danger: #dc3545;
-$warning: #d9b310;
-$text: #1d2731;
-$title-color: $secondary;
-
-// 4. Setup your Custom Colors
-$linkedin: #0077B5;
-$linkedin-invert: findColorInvert($linkedin);
-$twitter: #1DA1F2;
-$twitter-invert: findColorInvert($twitter);
-$github: #222222;
-$github-invert: findColorInvert($github);
+@import "./scss/variables";
 
 // 5. Add new color variables to the color map.
 @import "../node_modules/bulma/sass/utilities/derived-variables.sass";

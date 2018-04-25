@@ -71,3 +71,12 @@
         padding-top: 300px;
     }
 }
+
+chat {
+    position: fixed;
+    bottom: 0;
+    background: #fff;
+    right: 20px;
+    min-width: 300px;
+    z-index: 100;
+}
