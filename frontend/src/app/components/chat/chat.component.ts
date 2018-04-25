@@ -13,13 +13,21 @@ export class ChatComponent implements OnChanges {
     @Input() socket: any;
     @Input() user: any;
     @Input() messages: any[] = [];
+    newMessages: boolean = false;
     input: any;
-    collapsed: boolean;
+    collapsed: boolean = true;
 
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges) {
+
       if (changes.messages) {
+
+        // Set that we have new messages
+        if(changes.messages && !changes.messages.firstChange && this.collapsed) {
+          this.newMessages = true;
+        }
+
         // Scroll back to the bottom of the view
         let scrollableMessages = document.querySelector('#chat .messages');
         if(scrollableMessages) {
@@ -29,6 +37,11 @@ export class ChatComponent implements OnChanges {
           }, 100)
         }
       }
+    }
+
+    handleHeaderClick() {
+      this.newMessages = false;
+      this.collapsed = !this.collapsed;
     }
 
     sendMessage(form: NgForm) {

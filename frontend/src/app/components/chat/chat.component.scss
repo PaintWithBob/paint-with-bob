@@ -9,7 +9,16 @@
         background: $primary;
         color: #fff;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        align-items: center;
+
+        .new-message {
+          margin-left: 10px;
+        }
+
+        .chat-icon {
+          margin-left: auto;
+        }
     }
     .chat-body {
         &.collapsed {
