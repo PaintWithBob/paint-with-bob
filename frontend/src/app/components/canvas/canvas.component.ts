@@ -56,6 +56,9 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
             // Read only canvases will simply embed svgs
             if(!this.isReadOnly) {
+                // Image size is undefined as it will allow canvases to be resized for their view
+                // This fixes saved canvases for mobile
+                // http://literallycanvas.com/api/initializing.html#opt-imagesize
                 const options = {
                     primaryColor: this.brushColor,
                     secondaryColor: this.secondaryColor,
@@ -64,15 +67,12 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     defaultStrokeWidth: 10,
                     watermarkImage: '',
                     imageSize: {
-                        width: 600,
-                        height: 600
+                        width: undefined,
+                        height: undefined
                     },
                     keyboardShortcuts: false
                 };
                 this.canvas = (<any>window).LC.init(this.canvasElement, options);
-                // Undocumented hack for canvas responsiveness
-                // https://stackoverflow.com/questions/38486381/how-to-change-default-literally-canvas-drawing-region-height?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                this.canvas.respondToSizeChange();
 
                 // Array of tools, add here to add new tools
                 this.tools = [

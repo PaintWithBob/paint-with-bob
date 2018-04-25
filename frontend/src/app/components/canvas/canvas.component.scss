@@ -88,15 +88,31 @@
 }
 
 .color-selectors {
-    margin-bottom: 0;
-    input {
-        max-width: 70px;
-    }
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
     .field {
         padding-top: 0;
         padding-bottom: 0;
         margin-right: 0;
-        display: inline-block;
+        margin-bottom: 0px;
+        width: 32%;
+
+        label {
+          font-size: 0.75rem;
+        }
+
+        * {
+          cursor: pointer;
+        }
+
+        input {
+          width: 100%;
+        }
     }
 }
 
