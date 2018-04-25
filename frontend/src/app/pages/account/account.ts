@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService, UserService, LobbyService } from '../../providers';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateLobbyPopupComponent } from '../../components/create-lobby-popup/create-lobby-popup.component';
@@ -27,7 +28,8 @@ export class AccountPage implements OnInit {
         private userService: UserService,
         private lobbyService: LobbyService,
         private router: Router,
-        private modal: NgbModal
+        private modal: NgbModal,
+        private sanitizer: DomSanitizer
     ) { }
 
 	ngOnInit() {
@@ -88,6 +90,9 @@ export class AccountPage implements OnInit {
 
     }
 
+    makePaintingsSafe(svg) {
+        return this.sanitizer.bypassSecurityTrustHtml(svg);
+    }
 
 
 }

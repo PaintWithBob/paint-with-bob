@@ -12,6 +12,7 @@ import { LobbyService } from './app/providers/lobby-service/lobby.service';
 import { HeaderComponent } from './app/components/header/header.component';
 import { FooterComponent } from './app/components/footer/footer.component';
 import { CanvasComponent } from './app/components/canvas/canvas.component';
+import { ChatComponent } from './app/components/chat/chat.component';
 import { StreamEmbedComponent } from './app/components/stream-embed/stream-embed.component';
 import { LobbyPopupComponent } from './app/components/lobby-popup/lobby-popup.component';
 import { CreateLobbyPopupComponent } from './app/components/create-lobby-popup/create-lobby-popup.component';
@@ -66,6 +67,7 @@ export function configurePageComponentTestBed(TestBed, Component) {
       HeaderComponent,
       FooterComponent,
       CanvasComponent,
+      ChatComponent,
       StreamEmbedComponent,
       LobbyPopupComponent,
       CreateLobbyPopupComponent,

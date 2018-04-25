@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { AuthService } from '../../providers';
+import { DomSanitizer} from '@angular/platform-browser';
+import { AuthService, UserService } from '../../providers';
 
 declare var require: any;
 
@@ -18,7 +19,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     @Input() user: any;
     @Input() isReadOnly: boolean = false;
 
-    authUser: any;
     canvas: any;
     canvasElementId: string;
     canvasElement: Element;
@@ -30,8 +30,14 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     socketInitialized: boolean = false;
     lcDrawingChangeListener: any;
     canvasUpdateEvent: any;
+    savePaintingSuccess: any;
+    savePaintingError: any;
 
-    constructor(private authService: AuthService) {
+    constructor(
+        private authService: AuthService,
+        private sanitizer: DomSanitizer,
+        private userService: UserService
+    ) {
         this.canvasElementId = `literally-canvas-${Math.floor(Math.random() * 100000).toString(36)}`;
     }
 
@@ -73,8 +79,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
                     { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
                     { name: 'ellipse', icon: 'circle', tool: new (<any>window).LC.tools.Ellipse(this.canvas) },
-                    { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) },
-                    { name: 'eyedropper', icon: 'magic', tool: new (<any>window).LC.tools.Eyedropper(this.canvas) }
+                    { name: 'text', icon: 'font', tool: new (<any>window).LC.tools.Text(this.canvas) }
                 ];
 
                 // Default tool is pencil
@@ -92,16 +97,30 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 });
                 this.canvas.on('primaryColorChange', (response) => {
-                    function componentToHex(c) {
-                        var hex = c.toString(16);
-                        return hex.length == 1 ? "0" + hex : hex;
+                    function toHex(n) {
+                        n = parseInt(n,10);
+                        if (isNaN(n)) return "00";
+                        n = Math.max(0,Math.min(n,255));
+                        return '0123456789ABCDEF'.charAt((n-n%16)/16) + '0123456789ABCDEF'.charAt(n%16);
                     }
 
                     function rgbToHex(r, g, b) {
-                        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+                        const hexString = "#" + toHex(r) + toHex(g) + toHex(b);
+                        console.log(hexString)
+                        return hexString;
                     }
-                    console.log(response.split("(")[1].split(")")[0]);
-                    this.canvas.setColor('primary', response);
+                    // console.log(response);
+                    if(response && response.contains('rgb')) {
+                        const betweenParenthesis = response.match(/\(([^)]+)\)/);
+                        if(betweenParenthesis && betweenParenthesis[1]) {
+                            const rgb = betweenParenthesis[1].split(', ');
+                            if(rgb.length === 3) {
+                                const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+                                this.brushColor = hex;
+                                this.canvas.setColor('primary', hex);
+                            }
+                        }
+                    }
                 });
             }
         });
@@ -169,6 +188,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
     incBrush(){
         this.activeTool.tool.strokeWidth = this.activeTool.tool.strokeWidth + 5;
     }
+
     undoButton(){
         this.canvas.undo();
     }
@@ -179,6 +199,21 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
 
     clearButton(){
         this.canvas.clear();
+    }
+
+    savePainting() {
+        this.userService.savePainting({svg: this.canvas.getSVGString()}).subscribe(response => {
+            this.savePaintingSuccess = 'Successfully saved painting.';
+            setTimeout(() => {
+                this.savePaintingSuccess = null;
+            }, 5000);
+        }, error => {
+            console.error(error);
+            this.savePaintingError = error.message;
+            setTimeout(() => {
+                this.savePaintingError = null;
+            }, 5000);
+        });
     }
 
     ngOnDestroy() {
