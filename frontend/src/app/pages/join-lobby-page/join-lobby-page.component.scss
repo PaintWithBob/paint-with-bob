@@ -30,6 +30,9 @@
                 color: #fff;
                 margin-bottom: 10px;
             }
+            .has-addons {
+                justify-content: center;
+            }
             @media (min-width: 769px) {
                 width: auto;
                 left: 50%;
@@ -43,11 +46,9 @@
                         border-right: 1px solid #fff;
                         padding-right: 40px;
                     }
-                    &:nth-of-type(3) {
-                        border-left: 1px solid #fff;
-                        padding-left: 40px;
-                    }
                     &:last-of-type {
+                        padding-left: 40px;
+                        border-left: 1px solid #fff;
                         padding-left: 40px;
                     }
                     h4.left-header {
