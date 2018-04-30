@@ -6,6 +6,13 @@ component-header {
     top: 0px;
     left: 0px;
 }
+
+.navbar-menu {
+  width: 100vw;
+  z-index: 10000;
+  position: fixed;
+}
+
 .navbar-brand .navbar-item {
     background: none;
     &:hover {

@@ -1,11 +1,19 @@
 #join-lobby-page {
 
     .section {
-        background: url('/assets/images/winter-bg.jpg');
-        background-size: cover;
         position: relative;
-        height: 620px;
-        background-position: top center;
+        min-height: 620px;
+
+        .sectionImage {
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          z-index: -1;
+          object-fit: cover;
+          width: 100vw;
+          height: 620px;
+        }
 
         .overlay {
             position: absolute;
