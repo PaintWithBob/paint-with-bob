@@ -35,7 +35,7 @@
                 left: 50%;
                 right: auto;
                 transform: translateX(-50%) translateY(-50%);
-                min-width: 640px;
+                min-width: 850px;
                 .columns .column {
                     padding-top: 40px;
                     padding-bottom: 40px;
@@ -52,6 +52,9 @@
                     }
                     h4.left-header {
                         text-align: right;
+                    }
+                    .has-addons {
+                        justify-content: flex-end;
                     }
                 }
             }
