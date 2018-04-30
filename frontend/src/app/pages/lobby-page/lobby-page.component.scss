@@ -10,6 +10,10 @@
         padding-left: 0;
         padding-right: 0;
         padding-top: 2rem;
+
+        @media only screen and (max-height: 500px) and (orientation: landscape) {
+          padding-top: 5px;
+        }
     }
 }
 
@@ -26,6 +30,10 @@
     font-weight: bold;
     margin: 0;
     border-radius: 0;
+
+    @media only screen and (max-height: 500px) and (orientation: landscape) {
+      display: none;
+    }
 }
 
 .other-user-info {
