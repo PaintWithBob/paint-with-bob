@@ -31,6 +31,7 @@ import { DeleteAccountPopupComponent } from './components/delete-account-popup/d
 import { AuthService, LobbyService, UserService } from './providers';
 
 // 3P Modules
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -88,7 +89,8 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
     ),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    LazyLoadImageModule
   ],
   providers: [ AuthService, LobbyService, UserService, DatePipe ],
   bootstrap: [ AppComponent ],

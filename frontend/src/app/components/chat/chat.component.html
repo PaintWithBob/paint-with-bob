@@ -1,6 +1,13 @@
 <div id="chat">
-    <div class="chat-header" (click)="collapsed = !collapsed">
+    <div class="chat-header"
+    [ngStyle]="{
+      'background-color': newMessages === true ? '#A8DBA8' : ''
+    }"
+    (click)="handleHeaderClick()">
         <div class="chat-title">Chat</div>
+        <div *ngIf="newMessages" class="chat-title new-message">
+          New Message
+        </div>
         <div class="chat-icon">
             <fa name="plus" *ngIf="collapsed"></fa>
             <fa name="minus" *ngIf="!collapsed"></fa>

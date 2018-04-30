@@ -9,7 +9,16 @@
         background: $primary;
         color: #fff;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        align-items: center;
+
+        .new-message {
+          margin-left: 10px;
+        }
+
+        .chat-icon {
+          margin-left: auto;
+        }
     }
     .chat-body {
         &.collapsed {
@@ -22,6 +31,12 @@
             max-height: 350px;
             overflow: scroll;
             padding: 10px;
+
+            // On mobile, max height is shorted to not go off the top of the screen
+            @media (max-width: 900px) {
+          		max-height: 200px;
+          	}
+
             .message-list li {
                 background: none;
                 text-align: right;

@@ -2,9 +2,15 @@
     display: block;
     width: auto;
     height: auto;
+
+
     &.read-only {
         pointer-events: none;
         width: auto;
+
+        max-height: 5vh;
+
+
         .tools-wrapper {
             display: none;
         }
@@ -24,53 +30,93 @@
             }
         }
     }
+
+
     .canvas-target {
+        width: 100%;
         max-width: 500px;
-        max-height: 500px;
+
+        flex-grow: 1;
+        max-height: 500px !important;
+
+        .literally, canvas {
+          min-height: inherit !important;
+          height: 60vh;
+          max-height: 500px !important;
+        }
+
         .literally {
-            border: 1px solid #000;
+            border: 2px solid #020202;
         }
     }
 }
 
 .canvas-inner {
-    font-size: 0;
-    > div {
-        display: inline-block;
-        vertical-align: top;
-        font-size: 16px;
-        &.tools-wrapper {
-            width: 100px;
-            margin-top: 75px;
-        }
-        &.rest-of-container {
-            width: calc(100% - 100px);
-        }
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .tools-wrapper {
+      width: 100px;
     }
+
+
+    .rest-of-container {
+        font-size: 1rem;
+        flex-grow: 1;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
 }
 
 .tools {
     display: flex;
     width: 100px;
     flex-wrap: wrap;
-    .tool {
+    .tool, button {
         margin-bottom: 5px;
         margin-left: 5px;
         width: 40px;
         height: 40px;
+
+        max-width: 5vw;
+        max-height: 5vw;
     }
 }
 
 .color-selectors {
-    margin-bottom: 0;
-    input {
-        max-width: 70px;
-    }
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
     .field {
         padding-top: 0;
         padding-bottom: 0;
         margin-right: 0;
-        display: inline-block;
+        margin-bottom: 0px;
+        width: 32%;
+
+        label {
+          font-size: 0.75rem;
+        }
+
+        * {
+          cursor: pointer;
+        }
+
+        input {
+          width: 100%;
+        }
     }
 }
 

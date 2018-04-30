@@ -1,13 +1,17 @@
 <div id="home">
     <div class="backGnd">
-        <div class="overlay"></div>
+        <img class="backGndImage"
+        src="/assets/images/blurryMountainsLofi.jpg"
+        [lazyLoad]="'/assets/images/home-bg2.jpg'" />
+        <div class="overlay">
+        </div>
         <div class="container has-text-centered">
             <div class="breathingRoom">
-                <h1 class="h2 title">Paint With Bob</h1>
-                <h2 class="subtitle">Experience the Joy of Painting with Friends or Strangers!</h2>
-                <a class="button is-primary is-inverted is-outlined" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Register</a>
-                <a class="button is-primary is-inverted is-outlined" routerLink="/login" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Login</a>
-                <a class="button is-primary is-inverted is-outlined" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Paint Now</a>
+                <h1 class="h2 title animated fadeInUp">Paint With Bob</h1>
+                <h2 class="subtitle animated fadeInUp">Experience the Joy of Painting with Friends or Strangers!</h2>
+                <a class="button is-primary is-inverted is-outlined animated fadeInLeft" routerLink="/register" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Register</a>
+                <a class="button is-primary is-inverted is-outlined animated fadeInDown" routerLink="/login" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" *ngIf="!userLoggedIn">Login</a>
+                <a class="button is-primary is-inverted is-outlined animated fadeInRight" routerLink="/lobby" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}">Paint Now</a>
             </div>
         </div>
     </div>
@@ -15,13 +19,15 @@
         <div class="container has-text-centered">
             <div class="columns">
                 <div class="column">
-                    <img src='/assets/videos/register.gif'>
+                    <img src="/assets/images/blurryMountainsLofi.jpg"
+                    [lazyLoad]="'/assets/videos/register.gif'">
                 </div>
                 <div class="column">
                     Welcome! Join a lobby and paint away! If you want to create a lobby for only you and your friends, make an account, share the link, and paint in privacy!
                 </div>
                 <div class="column">
-                    <img src='/assets/videos/paint.gif'>
+                    <img src="/assets/images/blurryMountainsLofi.jpg"
+                    [lazyLoad]="'/assets/videos/paint.gif'">
                 </div>
             </div>
         </div>

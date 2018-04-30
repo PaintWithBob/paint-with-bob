@@ -10,6 +10,10 @@
         padding-left: 0;
         padding-right: 0;
         padding-top: 2rem;
+
+        @media only screen and (max-height: 500px) and (orientation: landscape) {
+          padding-top: 5px;
+        }
     }
 }
 
@@ -22,26 +26,14 @@
     }
 }
 
-.main-painting-area {
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-.lobby-canvases {
-    list-style: none;
-    padding: 0px;
-    justify-content: center;
-    align-items: center;
-}
-
 .random-quote{
     font-weight: bold;
     margin: 0;
     border-radius: 0;
-}
 
-.app-stream-embed{
-    padding-top: 300px;
+    @media only screen and (max-height: 500px) and (orientation: landscape) {
+      display: none;
+    }
 }
 
 .other-user-info {
@@ -49,10 +41,71 @@
     margin-bottom: 10px;
 }
 
+.main-painting-area {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    &__stream {
+      max-width: 40%;
+    }
+
+    &__drawing {
+      max-width: calc(60% - 10px);
+
+      // Hide on mobile portrait
+      @media all and (orientation: portrait) {
+        display: none;
+      }
+    }
+
+    .other-canvases {
+
+      min-height: 10vh;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: space-around;
+
+      .lobby-canvases {
+          width: 30%;
+          padding: 0px;
+
+        .other-user-info {
+          word-wrap: break-word;
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .app-stream-embed{
+        padding-top: 300px;
+    }
+}
+
 chat {
     position: fixed;
     bottom: 0;
     background: #fff;
-    right: 0;
+    right: 20px;
     min-width: 300px;
+    z-index: 100;
+}
+
+// Overlay for when we are trying to paint in mobile portrait
+.mobile-portrait-overlay {
+  display: none;
+
+  .modal-close {
+    display: none;
+  }
+
+  @media all and (orientation: portrait) {
+    display: flex;
+  }
 }

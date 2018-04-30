@@ -232,7 +232,9 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         this.socket.on('CHAT_MESSAGE', data => {
             this.messages.push(data);
-            console.log(data);
+            // Need to reset the array for change detection
+            // https://stackoverflow.com/questions/43223582/why-angular-2-ngonchanges-not-responding-to-input-array-push?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+            this.messages = this.messages.slice();
         });
     }
 

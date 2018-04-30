@@ -20,6 +20,7 @@ import { EditAccountPopupComponent } from './app/components/edit-account-popup/e
 import { DeleteAccountPopupComponent } from './app/components/delete-account-popup/delete-account-popup.component';
 
 // 3P Modules used in component syntax
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -55,7 +56,8 @@ export function configureComponentTestBed(TestBed, Component) {
       ColorPickerModule,
       ClipboardModule,
       AngularFontAwesomeModule,
-      NgbModule.forRoot()
+      NgbModule.forRoot(),
+      LazyLoadImageModule
     ]
   })
   .compileComponents();
@@ -93,7 +95,8 @@ export function configurePageComponentTestBed(TestBed, Component) {
       ColorPickerModule,
       ClipboardModule,
       AngularFontAwesomeModule,
-      NgbModule.forRoot()
+      NgbModule.forRoot(),
+      LazyLoadImageModule
     ]
   })
   .compileComponents();

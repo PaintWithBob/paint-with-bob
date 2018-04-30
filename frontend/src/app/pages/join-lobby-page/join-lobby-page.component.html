@@ -1,12 +1,15 @@
 <div id="join-lobby-page">
     <section class="section has-text-centered-mobile">
+        <img class="sectionImage"
+        src="/assets/images/blurryMountainsLofi.jpg"
+        [lazyLoad]="'/assets/images/winter-bg.jpg'" />
         <div class="overlay"></div>
         <div class="container">
-            <h2>Starting Painting Now!</h2>
-            <div class="columns">
+            <h2 class="animated fadeIn">Starting Painting Now!</h2>
+            <div class="columns animated fadeInUp">
                 <div class="column">
                     <h4 class="left-header">Join lobby by ID</h4>
-                    <form (submit)="joinLobby(joinLobbyForm)" #joinLobbyForm="ngForm" novalidate>
+                    <form class="join-lobby-form" (submit)="joinLobby(joinLobbyForm)" #joinLobbyForm="ngForm" novalidate>
                         <div class="field has-addons">
                             <label class="label is-small sr-only">Lobby ID</label>
                             <div class="control has-icons-left" [ngClass]="{'ready': !lobbyId.hasError('required')}">

@@ -39,4 +39,6 @@ $colors: map-merge($colors, $addColors);
 
 @import "./scss/bootstrap-modals";
 
+@import "./scss/animate";
+
 @import "./scss/global";
