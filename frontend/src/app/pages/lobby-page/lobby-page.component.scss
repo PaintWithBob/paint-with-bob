@@ -56,3 +56,15 @@ chat {
     right: 0;
     min-width: 300px;
 }
+
+.users .user {
+    .kick {
+        margin-right: 5px;
+        color: red;
+        font-size: 12px;
+        display: none;
+    }
+    &:hover .kick {
+        display: inline;
+    }
+}
