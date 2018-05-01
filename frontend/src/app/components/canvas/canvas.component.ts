@@ -51,6 +51,68 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
         // Wrap in a timeout to fire off change detection
         setTimeout(() => {
 
+            // Declaring custom tools here to access component 'this'
+            // This is sooo nasty. I am sorry.
+            const componentThis = this;
+
+            // Create a custom eraser tool
+            // https://github.com/literallycanvas/literallycanvas/blob/master/src/tools/Pencil.coffee
+            const BgEraser: any = function(lc) {  // take lc as constructor arg
+              var self = this;
+
+              return {
+                usesSimpleAPI: false,  // DO NOT FORGET THIS!!!
+                name: 'BgEraser',
+                iconName: 'line',
+                strokeWidth: lc.opts.defaultStrokeWidth,
+                optionsStyle: 'stroke-width',
+
+                didBecomeActive: function(lc) {
+                  var onPointerDown = function(pt) {
+                    self.currentShape = (<any>window).LC.createShape('Point', {
+                      x: pt.x,
+                      y: pt.y,
+                      size: lc.opts.defaultStrokeWidth,
+                      color: componentThis.backgroundColor
+                    });
+                    lc.setShapesInProgress([self.currentShape]);
+                    lc.repaintLayer('main');
+                  };
+
+                  var onPointerDrag = function(pt) {
+                    self.currentShape.x2 = pt.x;
+                    self.currentShape.y2 = pt.y;
+                    lc.setShapesInProgress([self.currentShape]);
+                    lc.repaintLayer('main');
+                  };
+
+                  var onPointerUp = function(pt) {
+                    self.currentShape.x2 = pt.x;
+                    self.currentShape.y2 = pt.y;
+                    lc.setShapesInProgress([]);
+                    lc.saveShape(self.currentShape);
+                  };
+
+                  var onPointerMove = function(pt) {
+                    // console.log("Mouse moved to", pt);
+                  };
+
+                  // lc.on() returns a function that unsubscribes us. capture it.
+                  self.unsubscribeFuncs = [
+                    lc.on('lc-pointerdown', onPointerDown),
+                    lc.on('lc-pointerdrag', onPointerDrag),
+                    lc.on('lc-pointerup', onPointerUp),
+                    lc.on('lc-pointermove', onPointerMove)
+                  ];
+                },
+
+                willBecomeInactive: function(lc) {
+                  // call all the unsubscribe functions
+                  self.unsubscribeFuncs.map(function(f) { f() });
+                }
+              }
+            };
+
             // Get our canvas element
             this.canvasElement = document.querySelector(`#${this.canvasElementId}`);
 
@@ -77,7 +139,7 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                 // Array of tools, add here to add new tools
                 this.tools = [
                     { name: 'pencil', icon: 'pencil', tool: new (<any>window).LC.tools.Pencil(this.canvas) },
-                    { name: 'eraser', icon: 'eraser', tool: new (<any>window).LC.tools.Eraser(this.canvas) },
+                    { name: 'eraser', icon: 'eraser', tool: new BgEraser(this.canvas) },
                     { name: 'line', icon: 'minus', tool: new (<any>window).LC.tools.Line(this.canvas) },
                     { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
                     { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
@@ -92,10 +154,10 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     if (this.socket) {
                         // Emit to the server, which will then bounce to the approprite users
                         if(this.user) {
-                            this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-                                user: this.user,
-                                svg: this.canvas.getSVGString()
-                            });
+                          this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+                              user: this.user,
+                              svg: this.canvas.getSVGString()
+                          });
                         }
                     }
                 });
