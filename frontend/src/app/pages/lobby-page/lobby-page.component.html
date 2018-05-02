@@ -51,8 +51,13 @@
     <chat [socket]="socket" [user]="user" [messages]="messages"></chat>
 </div>
 
+<div *ngIf="!okToJoin" class="loading">
+  <div class="donut">
+  </div>
+</div>
+
 <!-- Overlay to tell mobile users to rotate device -->
-<div class="mobile-portrait-overlay modal is-active">
+<div class="mobile-portrait-overlay">
   <div class="modal-background"></div>
   <div class="modal-content box">
     <h1>Please rotate the device to landscape. 📱</h1>

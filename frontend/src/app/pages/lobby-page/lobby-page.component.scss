@@ -98,6 +98,14 @@ chat {
     z-index: 100;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 300px;
+}
+
 // Overlay for when we are trying to paint in mobile portrait
 .mobile-portrait-overlay {
   display: none;

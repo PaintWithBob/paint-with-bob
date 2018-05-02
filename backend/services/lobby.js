@@ -51,6 +51,10 @@ LobbyService.kickUser = (socket, userSocketId, reasonId, message) => {
     reason: reasonId,
     message: message
   });
+  // Disconnect from the socket if it didn't exist to begin with
+  if (KICK_EVENT.REASON.ROOM_DOES_NOT_EXIST) {
+    socket.disconnect();
+  }
 }
 
 // Function to get a room object for a user, will delete server specific attributes
