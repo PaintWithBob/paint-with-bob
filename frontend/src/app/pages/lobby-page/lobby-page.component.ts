@@ -142,6 +142,11 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
       }
     }
 
+    // Eat clicks on the landscape/portrait overlay
+    overlayClick() {
+      return;
+    }
+
     // Opens modal and sets the input elements
     openModal(title: string, body: string, buttons: button[], cssClass?: any) {
         const modalRef = this.modalService.open(LobbyPopupComponent, { windowClass: cssClass });
@@ -195,7 +200,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         // Listen for when the socket disconnects from us
         this.socket.on('disconnect', () => {
           this.disconnectSocket();
-          this.openModal('Reoom Disconnected','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+          this.openModal('Reoom Disconnected','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
         });
 
         // Runs when the room status is updated (users enters, user leaves, etc.)
@@ -217,12 +222,12 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
             if(data.reason === 'ROOM_FULL') {
                 console.log('KICK - ROOM_FULL: ', data);
                 this.roomUpdate(data);
-                this.openModal('Room Full','Looks like the room you are trying to connect to is full.', [{newRoom: false, text: 'Back Home', link: '/'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Full','Looks like the room you are trying to connect to is full.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
                 this.disconnectSocket();
             } else if(data.reason === 'ADMIN_KICK') {
                 console.log('KICK - ADMIN_KICK: ', data);
                 this.roomUpdate(data);
-                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
                 this.disconnectSocket();
             } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
                 console.log("Room doesn't exist bro");
@@ -234,7 +239,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         this.socket.on('error', (error) => {
             if(error === 'Invalid namespace') {
                 console.log("Invalid room");
-                this.openModal('Room Invalid','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Invalid','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
                 this.disconnectSocket();
             } else if (typeof console !== "undefined" && console !== null) {
                 console.error("Socket.io reported a generic error");

@@ -57,10 +57,8 @@
 </div>
 
 <!-- Overlay to tell mobile users to rotate device -->
-<div class="mobile-portrait-overlay">
-  <div class="modal-background"></div>
+<div class="mobile-portrait-overlay" (click)="overlayClick()">
   <div class="modal-content box">
     <h1>Please rotate the device to landscape. 📱</h1>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
 </div>
