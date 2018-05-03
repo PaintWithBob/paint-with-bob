@@ -98,7 +98,7 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         // Disconnect from the socket when you leave the room.
         this.router.events.filter(event => event instanceof NavigationStart).subscribe((event:any) => {
             if(this.socket) {
-              this.socket.disconnect();
+              this.disconnectSocket();
             }
         });
 
@@ -138,8 +138,13 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
       if(this.socket) {
-        this.socket.disconnect();
+        this.disconnectSocket();
       }
+    }
+
+    // Eat clicks on the landscape/portrait overlay
+    overlayClick() {
+      return;
     }
 
     // Opens modal and sets the input elements
@@ -185,7 +190,17 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
     private setEventHandlersOnSocket() {
 
         this.socket.on('connect', () => {
-            this.okToJoin = true;
+          this.okToJoin = true;
+        });
+
+        this.socket.on('connect_error', (error) => {
+          this.defaultSocketError(error);
+        });
+
+        // Listen for when the socket disconnects from us
+        this.socket.on('disconnect', () => {
+          this.disconnectSocket();
+          this.openModal('Reoom Disconnected','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
         });
 
         // Runs when the room status is updated (users enters, user leaves, etc.)
@@ -203,14 +218,17 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         // Listen for user getting kicked.
         this.socket.on('KICK', data => {
+            console.log('Kicked, Data:', data);
             if(data.reason === 'ROOM_FULL') {
                 console.log('KICK - ROOM_FULL: ', data);
                 this.roomUpdate(data);
-                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Full','Looks like the room you are trying to connect to is full.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
+                this.disconnectSocket();
             } else if(data.reason === 'ADMIN_KICK') {
                 console.log('KICK - ADMIN_KICK: ', data);
                 this.roomUpdate(data);
-                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
+                this.disconnectSocket();
             } else if(data.reason === 'ROOM_DOES_NOT_EXIST') {
                 console.log("Room doesn't exist bro");
                 this.roomUpdate(data);
@@ -221,12 +239,13 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
         this.socket.on('error', (error) => {
             if(error === 'Invalid namespace') {
                 console.log("Invalid room");
-                this.openModal('Room Inactive','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '../'}, {newRoom: true, text: 'Find New Lobby', link: '../'}], 'error');
+                this.openModal('Room Invalid','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
+                this.disconnectSocket();
             } else if (typeof console !== "undefined" && console !== null) {
                 console.error("Socket.io reported a generic error");
                 // Show a popup telling user that room does not exist
                 // For now, redirect back to homepage.
-                this.router.navigate(['../']);
+                this.defaultSocketError(error);
             }
         });
 
@@ -236,6 +255,20 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
             // https://stackoverflow.com/questions/43223582/why-angular-2-ngonchanges-not-responding-to-input-array-push?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
             this.messages = this.messages.slice();
         });
+    }
+
+    private defaultSocketError(error) {
+      // Just redirect back home, most likely on a bad refresh
+      console.error(error);
+      this.disconnectSocket();
+      this.router.navigate(['/']);
+    }
+
+    private disconnectSocket() {
+      if(this.socket) {
+        this.socket.disconnect();
+        this.socket = undefined;
+      }
     }
 
     private getDismissReason(reason: any): string {

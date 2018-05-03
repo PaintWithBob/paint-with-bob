@@ -1,16 +1,11 @@
 component-header {
     display: block;
 }
+
 .navbar {
     box-shadow: 0px 0px 3px rgba(#000, 0.2);
     top: 0px;
     left: 0px;
-}
-
-.navbar-menu {
-  width: 100vw;
-  z-index: 10000;
-  position: fixed;
 }
 
 .navbar-brand .navbar-item {

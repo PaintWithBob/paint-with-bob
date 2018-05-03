@@ -10,6 +10,7 @@
         padding-left: 0;
         padding-right: 0;
         padding-top: 2rem;
+        padding-bottom: 10vh;
 
         @media only screen and (max-height: 500px) and (orientation: landscape) {
           padding-top: 5px;
@@ -97,15 +98,37 @@ chat {
     z-index: 100;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 300px;
+}
+
 // Overlay for when we are trying to paint in mobile portrait
 .mobile-portrait-overlay {
-  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
 
-  .modal-close {
-    display: none;
+  display: none;
+  opacity: 0.0;
+  transition: opacity, 0.5s;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2147483646;
+
+  .modal-content {
+    pointer-events: none;
+    z-index: 2147483647;
   }
 
   @media all and (orientation: portrait) {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1.0;
   }
 }
