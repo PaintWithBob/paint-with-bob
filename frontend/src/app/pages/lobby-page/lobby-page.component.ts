@@ -199,8 +199,12 @@ export class LobbyPageComponent implements OnInit, OnDestroy {
 
         // Listen for when the socket disconnects from us
         this.socket.on('disconnect', () => {
-          this.disconnectSocket();
-          this.openModal('Reoom Disconnected','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'Back Home', link: '/'}], 'error');
+          setTimeout(() => {
+            if(this.socket) {
+              this.disconnectSocket();
+              this.openModal('Room Disconnected','Looks like the room you are trying to connect to is no longer active.', [{newRoom: false, text: 'OK', link: '/'}], 'error');
+            }
+          }, 500);
         });
 
         // Runs when the room status is updated (users enters, user leaves, etc.)
