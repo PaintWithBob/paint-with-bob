@@ -132,3 +132,15 @@ chat {
     opacity: 1.0;
   }
 }
+
+.users .user {
+    .kick {
+        margin-right: 5px;
+        color: red;
+        font-size: 12px;
+        display: none;
+    }
+    &:hover .kick {
+        display: inline;
+    }
+}

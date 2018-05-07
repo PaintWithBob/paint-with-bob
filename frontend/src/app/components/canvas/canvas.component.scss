@@ -8,8 +8,9 @@
         pointer-events: none;
         width: auto;
 
-        max-height: 5vh;
-
+        @media (max-width: 767px) {
+            max-height: 5vh;
+        }
 
         .tools-wrapper {
             display: none;
@@ -40,9 +41,9 @@
         max-height: 500px !important;
 
         .literally, canvas {
-          min-height: inherit !important;
-          height: 60vh;
-          max-height: 500px !important;
+            min-height: inherit !important;
+            height: 60vh;
+            max-height: 500px !important;
         }
 
         .literally {
@@ -59,7 +60,7 @@
     align-items: center;
 
     .tools-wrapper {
-      width: 100px;
+        width: 100px;
     }
 
 
@@ -107,15 +108,15 @@
         width: 32%;
 
         label {
-          font-size: 0.75rem;
+            font-size: 0.75rem;
         }
 
         * {
-          cursor: pointer;
+            cursor: pointer;
         }
 
         input {
-          width: 100%;
+            width: 100%;
         }
     }
 }
@@ -128,6 +129,6 @@ button {
 }
 
 .brushSize {
-  margin-top: 15px;
-  margin-left: 5px;
+    margin-top: 15px;
+    margin-left: 5px;
 }

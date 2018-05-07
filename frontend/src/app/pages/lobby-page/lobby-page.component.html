@@ -16,7 +16,9 @@
                         <div *ngIf="isPrivate">Private Room</div>
                         <h4>Number of users: {{numberOfUsers}}</h4>
                         <div class="users">
-                            <div class="user" *ngFor="let user of users">{{user.user.username}}, painting since {{user.timeJoined | inRoomSince}}</div>
+                            <div class="user" *ngFor="let lobbyUser of users">
+                                {{lobbyUser.user.username}}, painting since {{lobbyUser.timeJoined | inRoomSince}}
+                            </div>
                         </div>
                     </div>
                 </div>
