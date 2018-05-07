@@ -54,6 +54,10 @@ LobbyService.kickUser = (socket, userSocketId, roomId, rooms, reasonId, message)
         message: message,
         room: LobbyService.getRoomForClient(rooms[roomId])
     });
+    // Disconnect from the socket if it didn't exist to begin with
+    if (KICK_EVENT.REASON.ROOM_DOES_NOT_EXIST) {
+        socket.disconnect();
+    }
 }
 
 // Function to get a room object for a user, will delete server specific attributes
@@ -108,7 +112,7 @@ const connectionEventHandler = (socket, socketIoRoom, rooms, roomId) => {
     chatEvents(socket, socketIoRoom, rooms, roomId);
 
     // Track admin kick events.
-    adminKick(socket, socketIoRoom, rooms, roomId);
+    // adminKick(socket, socketIoRoom, rooms, roomId);
 }
 
 const addUserToRoom = (socket, socketIoRoom, rooms, roomId, user) => {
@@ -215,19 +219,32 @@ const disconnectEventHandler = (socket, socketIoRoom, rooms, roomId) => {
         });
     }
 
-    const adminKick = (socket, socketIoRoom, rooms, roomId) => {
-        socket.on(KICK_EVENT.EVENT_ID, (event) => {
-            if(event.reason === 'ADMIN_KICK') {
-                if(rooms[roomId].owner === event.kicker._id) {
-                    rooms[roomId].usersInRoom.some((user, index) => {
-                        if (event.userToKick._id === user._id) {
-                            LobbyService.kickUser(socket, user.socketId, roomId, rooms, KICK_EVENT.REASON.ADMIN_KICK, "You have been kicked from the room.");
-                        }
-                        return false;
-                    });
-                }
-            }
-        });
-    }
+    // const adminKick = (socket, socketIoRoom, rooms, roomId) => {
+    //     socket.on(KICK_EVENT.EVENT_ID, (event) => {
+    //         console.log('Users top: ', rooms[roomId].usersInRoom);
+    //         console.log("Event: ", event);
+    //         let outerIndex = -1;
+    //         if(event.reason === 'ADMIN_KICK') {
+    //             if(rooms[roomId].owner === event.kicker._id) {
+    //                 rooms[roomId].usersInRoom.some((user, index) => {
+    //                     console.log('In some: ', user);
+    //                     console.log('True or false: ', event.userToKick.user._id === user.user._id);
+    //                     if (event.userToKick.user._id === user.user._id) {
+    //                         LobbyService.kickUser(socket, user.socketId, roomId, rooms, KICK_EVENT.REASON.ADMIN_KICK, "You have been kicked from the room.");
+    //                         outerIndex = index;
+    //                         return true;
+    //                     }
+    //                     return false;
+    //                 });
+    //                 console.log('Outerindex: ', outerIndex);
+    //                 console.log('Users length: ', rooms[roomId].usersInRoom.length);
+    //                 if(outerIndex !== undefined) {
+    //                     rooms[roomId].usersInRoom.splice(outerIndex, 1);
+    //                 }
+    //                 console.log('Users bottom: ', rooms[roomId].usersInRoom);
+    //             }
+    //         }
+    //     });
+    // }
 
     module.exports = LobbyService;

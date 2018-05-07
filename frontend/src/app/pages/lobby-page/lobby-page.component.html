@@ -17,7 +17,7 @@
                         <h4>Number of users: {{numberOfUsers}}</h4>
                         <div class="users">
                             <div class="user" *ngFor="let lobbyUser of users">
-                                <a class="kick" (click)="adminKickUser(lobbyUser)" *ngIf="lobbyUser.user._id != user._id && user._id === roomOwner">Kick</a>{{lobbyUser.user.username}}, painting since {{lobbyUser.timeJoined | inRoomSince}}
+                                {{lobbyUser.user.username}}, painting since {{lobbyUser.timeJoined | inRoomSince}}
                             </div>
                         </div>
                     </div>
@@ -53,11 +53,14 @@
     <chat [socket]="socket" [user]="user" [messages]="messages"></chat>
 </div>
 
+<div *ngIf="!okToJoin" class="loading">
+  <div class="donut">
+  </div>
+</div>
+
 <!-- Overlay to tell mobile users to rotate device -->
-<div class="mobile-portrait-overlay modal is-active">
-  <div class="modal-background"></div>
+<div class="mobile-portrait-overlay" (click)="overlayClick()">
   <div class="modal-content box">
     <h1>Please rotate the device to landscape. 📱</h1>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
 </div>

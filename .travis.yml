@@ -25,4 +25,4 @@ script:
   # Video Service test wont work on travis: "Uncaught TypeError: Cannot read property 'socket' of undefined"
   #  - cd videoservice/lib && npm install && npm test && cd ../..
   - cd backend && npm install && npm test && cd ..
-  - cd frontend && npm install && npm test && cd ..
+  - cd frontend && npm install && ng build --prod --environment=stage && npm test && cd ..

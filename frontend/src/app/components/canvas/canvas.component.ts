@@ -77,7 +77,6 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                 // Array of tools, add here to add new tools
                 this.tools = [
                     { name: 'pencil', icon: 'pencil', tool: new (<any>window).LC.tools.Pencil(this.canvas) },
-                    { name: 'eraser', icon: 'eraser', tool: new (<any>window).LC.tools.Eraser(this.canvas) },
                     { name: 'line', icon: 'minus', tool: new (<any>window).LC.tools.Line(this.canvas) },
                     { name: 'rectangle', icon: 'stop', tool: new (<any>window).LC.tools.Rectangle(this.canvas) },
                     { name: 'polygon', icon: 'play', tool: new (<any>window).LC.tools.Polygon(this.canvas) },
@@ -92,10 +91,10 @@ export class CanvasComponent implements OnInit, OnChanges, OnDestroy {
                     if (this.socket) {
                         // Emit to the server, which will then bounce to the approprite users
                         if(this.user) {
-                            this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
-                                user: this.user,
-                                svg: this.canvas.getSVGString()
-                            });
+                          this.socket.emit(CANVAS_UPDATE_EVENT_ID, {
+                              user: this.user,
+                              svg: this.canvas.getSVGString()
+                          });
                         }
                     }
                 });
